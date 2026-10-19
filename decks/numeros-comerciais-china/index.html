@@ -182,12 +182,36 @@
     <div class="loader__track"><div class="loader__bar"></div></div>
   </div>
 
+  <!-- Trava. Nasce escondida: quem decide mostrá-la é trava.js, e só
+       quando a apresentação é aberta de outra máquina. Em inglês porque
+       é a língua do deck que ela guarda. -->
+  <div class="trava" hidden>
+    <form class="trava__form" autocomplete="off">
+      <img class="trava__marca" src="../../shared/brand/logo-dark.png" alt="Lesco">
+      <p class="trava__olho">Commercial figures</p>
+      <h1 class="trava__titulo">This deck is<br>password protected</h1>
+      <div class="trava__linha">
+        <input class="trava__campo" type="password" name="senha"
+               placeholder="Password" aria-label="Password"
+               autocomplete="current-password" spellcheck="false">
+        <button class="trava__botao" type="submit">Open</button>
+      </div>
+      <p class="trava__erro" role="alert"></p>
+    </form>
+  </div>
+
+  <!--
+    engine/deck.js NÃO entra aqui. Quem o carrega é trava.js, depois que a
+    senha confere — assim nenhum slide existe no documento antes disso.
+    A ordem dos demais continua a mesma de sempre.
+  -->
   <script src="../../engine/layouts.js"></script>
   <script src="dados.js"></script>
   <script src="mapa-brasil.js"></script>
   <script src="layouts-dados.js"></script>
   <script src="deck.js"></script>
-  <script src="../../engine/deck.js"></script>
+  <script src="trava-senha.js"></script>
+  <script src="trava.js"></script>
 
 </body>
 </html>

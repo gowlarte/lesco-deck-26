@@ -382,6 +382,47 @@ var CAMBIO = 5.05;   // R$ por US$ 1,00 — 19/10/2026
 Trocar esse número troca a apresentação inteira, inclusive os rodapés que
 declaram a cotação.
 
+### A senha
+
+Esta apresentação pede senha; a live técnica abre direto. Para trocar:
+
+```bash
+node tools/senha.js numeros-comerciais-china
+```
+
+O comando pergunta a senha sem ecoar na tela, sorteia um sal novo e grava
+`trava-senha.js` com o **hash**. A senha em si não fica escrita em arquivo
+nenhum — guarde-a você.
+
+**A trava não pede nada em `file://`, `localhost` nem `127.0.0.1`.** Quem está
+nesses endereços já tem os arquivos na mão, e pedir senha ali só quebraria a
+exportação em PDF, que abre `http://127.0.0.1:4321/…?export` num Chrome sem
+interface. Para ver a tela de senha mesmo estando local, acrescente `?trancar`.
+
+Enquanto a senha não confere, `engine/deck.js` nem é carregado: quem carrega é
+`trava.js`, depois do acerto. Então não existe slide no documento para ser
+inspecionado antes disso.
+
+> **O que a senha protege, e o que não protege.** Ela protege a **tela** de
+> quem abre a apresentação de outra máquina — o caso de passar o endereço da
+> rede do escritório para alguém dar retorno. Ela **não** protege o
+> **arquivo**: `dados.js` é um .js servido ao lado, e quem digitar o endereço
+> dele no navegador lê os números sem passar pela trava. O mesmo vale para
+> quem abre o repositório, que é público. Isso não é falha de implementação —
+> é o limite de qualquer senha em site estático, onde o conteúdo precisa
+> chegar ao navegador para ser desenhado. Fechar isso de verdade é tornar o
+> repositório privado.
+>
+> O hash vai para o repositório junto com o resto, então é atacável offline
+> por quem clonar: **não reaproveite aqui uma senha usada em outro lugar.**
+
+A conferência é SHA-256 repetido 120 mil vezes sobre sal+senha, escrito à mão
+em `trava.js`. Não dá para usar `crypto.subtle`: ele só existe em contexto
+seguro, e `http://192.168.x.x:4321` — exatamente o endereço que a trava existe
+para proteger — não é contexto seguro. As 120 mil voltas são de propósito:
+deixam a conferência em torno de 0,9 s no navegador e, na mesma medida,
+encarecem tentar adivinhar a senha a partir do hash publicado.
+
 ### O mapa
 
 `mapa-brasil.js` é gerado, não escrito à mão. Sai de um GeoJSON do IBGE,

@@ -1025,6 +1025,136 @@
 }
 
 /* =====================================================================
+   Trava de senha
+
+   Enquanto .trancado está no body, o palco e o cromo somem — não é só
+   questão de estética: o motor ainda nem foi carregado, então o que
+   estaria ali embaixo é uma moldura vazia.
+   ===================================================================== */
+
+body.trancado .deck-viewport,
+body.trancado .chrome,
+body.trancado .loader { display: none !important; }
+
+.trava {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  /* O palco é escalado por transform; esta tela não — ela é cromo, e
+     cromo se mede em pixel de tela, não em pixel de palco. */
+  font-family: var(--font-text);
+}
+
+.trava[hidden] { display: none; }
+
+.trava__form {
+  width: min(520px, calc(100vw - 48px));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.trava__marca { width: 118px; height: auto; margin-bottom: 52px; }
+
+.trava__olho {
+  margin: 0 0 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.trava__olho::before {
+  content: "";
+  width: 30px;
+  height: 2px;
+  background: var(--accent);
+}
+
+.trava__titulo {
+  margin: 0 0 40px;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 34px;
+  line-height: 1.22;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-strong);
+}
+
+.trava__linha { display: flex; gap: 10px; width: 100%; }
+
+.trava__campo {
+  flex: 1;
+  min-width: 0;
+  padding: 16px 18px;
+  font-family: var(--font-text);
+  font-size: 17px;
+  color: var(--text-strong);
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color var(--dur-fast) var(--ease-standard);
+}
+
+.trava__campo:focus { border-color: var(--ink-500); }
+
+.trava__botao {
+  padding: 16px 28px;
+  font-family: var(--font-text);
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--ink-900);
+  border: 0;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: opacity var(--dur-fast) var(--ease-standard);
+}
+
+.trava__botao:hover { opacity: 0.86; }
+.trava__botao:disabled { opacity: 0.5; cursor: default; }
+
+.trava__erro {
+  margin: 16px 0 0;
+  min-height: 20px;
+  font-size: 15px;
+  color: var(--ink-600);
+}
+
+/* Erro: o bloco balança uma vez. Curto e seco, sem pulo — é a mesma
+   contenção de movimento do resto da apresentação. */
+.trava.is-erro .trava__linha { animation: travaNega 420ms var(--ease-standard); }
+
+@keyframes travaNega {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-7px); }
+  45%      { transform: translateX(6px); }
+  70%      { transform: translateX(-3px); }
+}
+
+/* Acerto: some dando lugar ao primeiro slide. */
+.trava.is-aberto {
+  opacity: 0;
+  transition: opacity 380ms var(--ease-out);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trava.is-erro .trava__linha { animation: none; }
+  .trava.is-aberto { transition-duration: 1ms; }
+}
+
+/* =====================================================================
    Exportação em PDF
 
    Em ?export nenhum slide recebe .is-current, então nada do que depende
