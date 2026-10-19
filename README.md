@@ -564,21 +564,41 @@ esperar 342 MB de fotos carregarem.
 
 ---
 
-## Se um dia quiser subir para o GitHub e a Vercel
+## GitHub e Vercel
 
-Já está pronto: `.gitignore` e `vercel.json` existem, e o projeto é estático puro
-— a Vercel publica sem nenhuma configuração extra.
+O projeto vive em `github.com/gowlarte/lesco-deck-26`, repositório **privado**,
+e é publicado pela Vercel a partir da branch `main`. Todo push redeploya.
 
-Dois pontos a resolver **antes**:
+`_source/` e `export/` ficam de fora do versionamento: o primeiro é material de
+origem — PDFs, manual da marca e as fotos de obra em resolução cheia —, o
+segundo é saída gerada.
 
-1. **Peso.** As imagens somam 342 MB. O GitHub fica lento nesse tamanho e a
-   Vercel tem limite de deploy. Converter para WebP a 2560 px derruba isso para
-   algo entre 15 e 25 MB, sem diferença visível na projeção. Peça e eu monto o
-   script de conversão.
+### A barra no fim da URL — leia antes de mexer no `vercel.json`
 
-2. **Fontes.** PP Neue Machina e PP Object Sans são licenciadas. Num repositório
-   público você estaria redistribuindo os arquivos. Use repositório privado, ou
-   mantenha as fontes fora do versionamento.
+```json
+{ "trailingSlash": true }
+```
 
-`_source/` já está no `.gitignore`: é material de origem, não faz parte da
-apresentação e continua só na sua máquina.
+Essa linha não é enfeite. Sem ela, a Vercel redirecionava
+`/decks/<pasta>/index.html` para `/decks/<pasta>`, **sem a barra no fim** — e
+sem a barra o navegador resolve todo caminho relativo um nível acima. `deck.js`
+virava `/decks/deck.js`, `dados.js` virava `/decks/dados.js`, os dois davam 404,
+e o resultado era a live reclamando de `window.DECK` e o deck de números parado
+no "Preparando a apresentação".
+
+Local nada disso aparece: `tools/serve.js` não redireciona, e por `file://` o
+problema não existe. É falha que só nasce no deploy.
+
+Então: **não troque `trailingSlash` por `cleanUrls`.** `cleanUrls` é
+justamente quem tirava a barra. Se um dia o deploy voltar a abrir em branco,
+abra o console do navegador e veja se os `.js` da pasta do deck estão vindo 404
+— é este bug de volta.
+
+### Proteção
+
+A senha de `trava.js` protege a **tela**, não o **arquivo** (ver *A senha*,
+acima). Num site publicado, quem abrir
+`.../decks/numeros-comerciais-china/dados.js` lê os números sem passar por ela.
+Para fechar isso de verdade, a proteção tem que estar na Vercel, antes do
+arquivo sair do servidor: **Password Protection** no plano Pro, com o escopo
+**All Deployments** — o escopo padrão deixa o domínio de produção aberto.

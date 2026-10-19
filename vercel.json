@@ -1,5 +1,5 @@
 {
-  "cleanUrls": true,
+  "trailingSlash": true,
   "headers": [
     {
       "source": "/decks/(.*).(jpg|jpeg|png|webp|gif)",
