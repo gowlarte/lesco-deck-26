@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Carrossel · Instalação de Revestimentos e Estruturas · Lesco</title>
+
+<!--
+  Carrossel de chamada da live, em sete quadros de 1080 × 1350.
+
+  É convite, não resumo: cada quadro abre uma dúvida e a live responde.
+  Ficha técnica, área e prazo ficam de fora de propósito — isso é conteúdo
+  da apresentação, não isca.
+
+  Abrir este arquivo mostra os quadros empilhados, para conferir.
+  Para gerar os PNG prontos para postar:
+
+      node tools/export-carrossel.js
+
+  O script fotografa um quadro por vez (index.html?n=1, ?n=2, …) e salva
+  em export/carrossel-live/.
+
+  O que estiver marcado com a classe "vago" ainda precisa ser preenchido:
+  data, horário e o perfil do Instagram.
+-->
+
+<link rel="stylesheet" href="../../theme/fonts.css">
+<link rel="stylesheet" href="../../theme/tokens.css">
+<link rel="stylesheet" href="carrossel.css">
+</head>
+<body>
+
+<!-- 1 · o gancho, primeira metade --------------------------------------- -->
+<p class="etiqueta">Quadro 1 · capa</p>
+<section class="quadro quadro--escuro sobre-foto" data-n="1">
+  <img class="quadro__foto" src="../../decks/instalacao-de-estruturas/img/ekos/e01.webp"
+       alt="Fachada com brises verticais instalados" style="--focal: 50% 45%">
+  <div class="quadro__veu"></div>
+  <div class="quadro__conteudo">
+    <p class="olho">Live técnica · Lesco</p>
+    <div class="empurra"></div>
+    <h1 class="titulo">O catálogo<br>mostra o perfil.</h1>
+    <div class="empurra"></div>
+    <div class="rodape">
+      <img class="marca" src="../../shared/brand/logo-light.png" alt="Lesco">
+      <span class="arrasta">Arrasta</span>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · o gancho, segunda metade ---------------------------------------- -->
+<p class="etiqueta">Quadro 2 · a virada</p>
+<section class="quadro" data-n="2">
+  <div class="quadro__conteudo">
+    <div class="empurra"></div>
+    <h2 class="titulo">A obra<br>mostra o resto.</h2>
+    <p class="legenda">Espera chumbada no concreto. Parafuso certo. Espaçamento que não perdoa. Travamento que ninguém vê depois de pronto.</p>
+    <p class="legenda" style="margin-top: 26px">Nada disso está desenhado na prancha.</p>
+    <div class="empurra"></div>
+    <div class="rodape">
+      <img class="marca" src="../../shared/brand/logo-dark.png" alt="Lesco">
+      <span class="arrasta" style="color: var(--text-muted)">Arrasta</span>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · cinco sistemas --------------------------------------------------- -->
+<p class="etiqueta">Quadro 3 · cinco sistemas</p>
+<section class="quadro quadro--escuro sobre-foto" data-n="3">
+  <img class="quadro__foto" src="../../decks/instalacao-de-estruturas/img/salt/s3.webp"
+       alt="Torre do Salt Praia Brava com o muxarabi montado" style="--focal: 50% 45%">
+  <div class="quadro__veu"></div>
+  <div class="quadro__conteudo">
+    <p class="olho">Na live</p>
+    <div class="empurra"></div>
+    <h2 class="titulo titulo--medio">Cinco obras.<br>Cinco jeitos<br>de prender.</h2>
+    <p class="legenda">Brise, pivotante, muxarabi, deck e painel. Cada um pede uma subestrutura diferente — e erra de um jeito diferente.</p>
+  </div>
+</section>
+
+<!-- 4 · altura ----------------------------------------------------------- -->
+<p class="etiqueta">Quadro 4 · trabalho em altura</p>
+<section class="quadro quadro--escuro sobre-foto" data-n="4">
+  <img class="quadro__foto" src="../../decks/instalacao-de-estruturas/img/amira/forro.webp"
+       alt="Forro de madeira visto de baixo, no Amira" style="--focal: 50% 45%">
+  <div class="quadro__veu"></div>
+  <div class="quadro__conteudo">
+    <p class="olho">Na live</p>
+    <div class="empurra"></div>
+    <h2 class="titulo titulo--medio">Como se monta<br>o que fica<br>em cima da cabeça.</h2>
+    <p class="legenda">Fachada inteira feita de balancim, sem andaime na frente toda. A logística é parte do prazo.</p>
+  </div>
+</section>
+
+<!-- 5 · a peça que se move ----------------------------------------------- -->
+<p class="etiqueta">Quadro 5 · a peça que se move</p>
+<section class="quadro quadro--escuro sobre-foto" data-n="5">
+  <img class="quadro__foto" src="../../decks/instalacao-de-estruturas/img/ala/a03.webp"
+       alt="Painéis pivotantes da Alla, finalizados" style="--focal: 50% 55%">
+  <div class="quadro__veu"></div>
+  <div class="quadro__conteudo">
+    <p class="olho">Na live</p>
+    <div class="empurra"></div>
+    <h2 class="titulo titulo--medio">E quando o brise<br>precisa girar?</h2>
+    <p class="legenda">Alma de aço por dentro do perfil, eixo, folga e o teste de giro. O que muda quando a peça não é fixa.</p>
+  </div>
+</section>
+
+<!-- 6 · para quem é ------------------------------------------------------ -->
+<p class="etiqueta">Quadro 6 · para quem é</p>
+<section class="quadro" data-n="6">
+  <div class="quadro__conteudo">
+    <p class="olho">Para quem é</p>
+    <div class="empurra"></div>
+    <h2 class="titulo titulo--medio">Quem especifica,<br>quem monta<br>e quem vende.</h2>
+    <p class="legenda">Ao vivo, com a equipe que montou cada uma dessas obras. Pergunta aberta o tempo todo — inclusive as que ninguém faz na frente do cliente.</p>
+    <div class="empurra"></div>
+    <div class="rodape">
+      <img class="marca" src="../../shared/brand/logo-dark.png" alt="Lesco">
+      <span class="arrasta" style="color: var(--text-muted)">Arrasta</span>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · chamada ---------------------------------------------------------- -->
+<p class="etiqueta">Quadro 7 · chamada</p>
+<section class="quadro quadro--escuro" data-n="7">
+  <div class="quadro__conteudo">
+    <p class="olho" style="color: var(--on-dark-muted)">Ao vivo</p>
+    <div class="empurra"></div>
+    <p class="quando"><span class="vago">dia e horário</span></p>
+    <p class="legenda">Aqui no Instagram. Ative o lembrete — não vai ter regravação.</p>
+    <p class="quando" style="font-size: 52px; margin-top: 48px"><span class="vago">@perfil</span></p>
+    <div class="empurra"></div>
+    <div class="rodape">
+      <img class="marca" src="../../shared/brand/logo-light.png" alt="Lesco">
+    </div>
+  </div>
+</section>
+
+<script>
+  /* ?n=3 isola o quadro 3 para o Chrome fotografar; sem parâmetro, a página
+     fica no modo revisão, com todos empilhados. */
+  (function () {
+    var n = new URLSearchParams(location.search).get('n');
+    if (!n) { document.body.className = 'revisao'; return; }
+
+    document.body.className = 'captura';
+    var alvo = document.querySelector('.quadro[data-n="' + n + '"]');
+    if (alvo) alvo.classList.add('alvo');
+  })();
+</script>
+
+</body>
+</html>

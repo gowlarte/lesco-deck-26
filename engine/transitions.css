@@ -1,0 +1,231 @@
+/* ---------------------------------------------------------------------------
+   Transições.
+
+   Cada layout tem uma transição padrão (definida em engine/layouts.js) e
+   qualquer slide pode sobrescrevê-la com `transition: 'nome'`.
+
+       curtain  cortina vertical — capas e aberturas de projeto
+       mask     máscara lateral + parallax na foto — slides fotográficos
+       stagger  revelação escalonada dos elementos — slides de conteúdo
+       push     deslocamento lateral com profundidade
+       fade     dissolve simples
+
+   O sentido da navegação chega como data-dir="fwd" | "back", de modo que
+   voltar um slide desfaz o movimento em vez de repeti-lo.
+   --------------------------------------------------------------------------- */
+
+/* =====================================================================
+   Entrada do slide
+   ===================================================================== */
+
+.slide.is-current { animation-duration: var(--dur-scene); animation-timing-function: var(--ease-out); animation-fill-mode: both; }
+.slide.is-outgoing { animation-duration: var(--dur-scene); animation-timing-function: var(--ease-out); animation-fill-mode: both; }
+
+/* ---- curtain --------------------------------------------------------- */
+
+.slide.is-current[data-enter="curtain"][data-dir="fwd"]  { animation-name: curtainUp; }
+.slide.is-current[data-enter="curtain"][data-dir="back"] { animation-name: curtainDown; }
+
+@keyframes curtainUp {
+  from { clip-path: inset(100% 0 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes curtainDown {
+  from { clip-path: inset(0 0 100% 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+.slide.is-outgoing[data-leave="curtain"] { animation-name: recede; }
+
+/* ---- mask ------------------------------------------------------------ */
+
+.slide.is-current[data-enter="mask"][data-dir="fwd"]  { animation-name: maskRight; }
+.slide.is-current[data-enter="mask"][data-dir="back"] { animation-name: maskLeft; }
+
+@keyframes maskRight {
+  from { clip-path: inset(0 0 0 100%); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes maskLeft {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+.slide.is-outgoing[data-leave="mask"][data-dir="fwd"]  { animation-name: driftLeft; }
+.slide.is-outgoing[data-leave="mask"][data-dir="back"] { animation-name: driftRight; }
+
+@keyframes driftLeft {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(-9%, 0, 0) scale(1.02); }
+}
+
+@keyframes driftRight {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(9%, 0, 0) scale(1.02); }
+}
+
+/* ---- stagger --------------------------------------------------------- */
+/* O fundo entra rápido; quem carrega a transição são os filhos [data-anim]. */
+
+.slide.is-current[data-enter="stagger"] {
+  animation-name: surfaceIn;
+  animation-duration: 340ms;
+}
+
+@keyframes surfaceIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.slide.is-outgoing[data-leave="stagger"] {
+  animation-name: surfaceOut;
+  animation-duration: 300ms;
+}
+
+@keyframes surfaceOut {
+  from { opacity: 1; transform: translate3d(0, 0, 0); }
+  to   { opacity: 0; transform: translate3d(0, -18px, 0); }
+}
+
+/* ---- push ------------------------------------------------------------ */
+
+.slide.is-current[data-enter="push"][data-dir="fwd"]  { animation-name: pushInFwd; }
+.slide.is-current[data-enter="push"][data-dir="back"] { animation-name: pushInBack; }
+
+@keyframes pushInFwd {
+  from { transform: translate3d(100%, 0, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes pushInBack {
+  from { transform: translate3d(-100%, 0, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+
+.slide.is-outgoing[data-leave="push"][data-dir="fwd"]  { animation-name: pushOutFwd; }
+.slide.is-outgoing[data-leave="push"][data-dir="back"] { animation-name: pushOutBack; }
+
+@keyframes pushOutFwd {
+  from { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
+  to   { transform: translate3d(-26%, 0, 0) scale(0.94); opacity: 0.35; }
+}
+
+@keyframes pushOutBack {
+  from { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
+  to   { transform: translate3d(26%, 0, 0) scale(0.94); opacity: 0.35; }
+}
+
+/* ---- fade ------------------------------------------------------------ */
+
+.slide.is-current[data-enter="fade"]  { animation-name: surfaceIn; animation-duration: var(--dur-slow); }
+.slide.is-outgoing[data-leave="fade"] { animation-name: fadeOut; animation-duration: var(--dur-slow); }
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* ---- saída neutra ---------------------------------------------------- */
+
+@keyframes recede {
+  from { transform: scale(1); opacity: 1; }
+  to   { transform: scale(0.94); opacity: 0.55; }
+}
+
+/* =====================================================================
+   Revelação dos elementos internos
+   ===================================================================== */
+
+/* O índice --i é atribuído em engine/deck.js na ordem em que os elementos
+   aparecem no slide, o que dá a cascata sem precisar numerar na mão. */
+
+.slide.is-current [data-anim] {
+  animation: riseIn 680ms var(--ease-out) both;
+  animation-delay: calc(var(--enter-lag, 120ms) + var(--i, 0) * var(--stagger));
+}
+
+@keyframes riseIn {
+  from { opacity: 0; transform: translate3d(0, 26px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* Variante para títulos grandes: revela por máscara, sem deslocar a linha. */
+.slide.is-current [data-anim="mask"] {
+  animation-name: maskIn;
+  animation-duration: 880ms;
+}
+
+@keyframes maskIn {
+  from { clip-path: inset(0 0 108% 0); opacity: 0; }
+  60%  { opacity: 1; }
+  to   { clip-path: inset(0 0 -20% 0); opacity: 1; }
+}
+
+/* Variante para o numeral gigante das aberturas de projeto. */
+.slide.is-current [data-anim="numeral"] {
+  animation-name: numeralIn;
+  animation-duration: 1100ms;
+}
+
+@keyframes numeralIn {
+  from { opacity: 0; transform: translate3d(0, 64px, 0); letter-spacing: 0.10em; }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); letter-spacing: normal; }
+}
+
+/* Variante lateral: usada nas linhas de tabela e listas. */
+.slide.is-current [data-anim="slide"] {
+  animation-name: slideIn;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translate3d(-22px, 0, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* Slides de cortina esperam a máscara abrir antes de revelar o conteúdo. */
+.slide.is-current[data-enter="curtain"] { --enter-lag: 300ms; }
+.slide.is-current[data-enter="mask"]    { --enter-lag: 260ms; }
+
+/* =====================================================================
+   Fotografia
+   ===================================================================== */
+
+/* Toda foto assenta de uma escala levemente maior — dá peso ao corte. */
+.slide.is-current .frame img {
+  animation: imgSettle 1400ms var(--ease-out) both;
+}
+
+@keyframes imgSettle {
+  from { transform: scale(1.085); }
+  to   { transform: scale(1); }
+}
+
+/* Com drift: assenta e depois respira devagar, para slides de pausa longa. */
+.slide.is-current[data-drift="true"] .frame img {
+  animation: imgSettleDrift 30s var(--ease-out) both;
+}
+
+@keyframes imgSettleDrift {
+  0%   { transform: scale(1.09); }
+  5%   { transform: scale(1.005); }
+  100% { transform: scale(1.075); }
+}
+
+/* =====================================================================
+   Acessibilidade — respeita quem pediu menos movimento
+   ===================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .slide.is-current,
+  .slide.is-outgoing,
+  .slide.is-current [data-anim],
+  .slide.is-current .frame img {
+    animation-name: surfaceIn !important;
+    animation-duration: 220ms !important;
+    animation-delay: 0ms !important;
+  }
+
+  .slide.is-outgoing { animation-name: fadeOut !important; }
+}

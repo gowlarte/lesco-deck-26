@@ -1,0 +1,13 @@
+# Fim de linha: normaliza texto no repositorio e deixa cada maquina com o seu
+# na copia de trabalho. Sem isto, Windows e macOS produzem diff em arquivo que
+# ninguem editou.
+* text=auto eol=lf
+
+# Binario: nunca normalizar, nunca tentar fazer diff de texto.
+*.webp  binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.otf   binary
+*.mp4   binary
+*.pdf   binary

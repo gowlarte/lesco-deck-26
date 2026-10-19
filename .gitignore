@@ -1,0 +1,27 @@
+# Sistema operacional
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editores
+.vscode/
+.idea/
+
+# O projeto nao usa dependencias, mas caso voce adicione alguma
+node_modules/
+
+# Material de origem e referencia: PDFs, fotos brutas e o arquivo .dc.html
+# original. Nao faz parte da apresentacao e continua na sua maquina.
+#
+# Desde a conversao para WebP, _source/originais/ guarda tambem as fotos de
+# obra em resolucao cheia — 516 MB que nao precisam ir para o repositorio.
+# As apresentacoes usam as versoes em WebP, de 2560 px.
+_source/
+
+# Saida gerada: PDFs de revisao e os quadros do carrossel. Sao refeitos a
+# qualquer momento por tools/export-pdf.js e tools/export-carrossel.js, e o
+# PDF sozinho pesa 36 MB.
+export/
+
+# Permissoes locais do Claude Code — especificas desta maquina.
+.claude/settings.local.json

@@ -1,0 +1,858 @@
+/* ---------------------------------------------------------------------------
+   Palco, cromo e painéis auxiliares.
+
+   O palco tem 1920 × 1080 fixos e é escalado inteiro por transform. Isso faz
+   com que o slide fique idêntico em qualquer tela — notebook, projetor ou
+   captura de OBS — sem nenhum reflow de tipografia.
+   --------------------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #0e0d0c;
+  font-family: var(--font-text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body.is-idle { cursor: none; }
+
+/* ---- Viewport e palco ----------------------------------------------- */
+
+.deck-viewport {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Ancorado no canto superior esquerdo e posicionado por transform, calculado
+   em engine/deck.js. Centralizar por grid ou flex não serve: o palco tem
+   1920 px de largura e transborda o viewport, e nesse caso o navegador
+   alinha o item no início em vez de centralizá-lo. */
+.stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  background: var(--paper);
+  overflow: hidden;
+}
+
+/* ---- Slides ---------------------------------------------------------- */
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: none;
+  background: var(--paper);
+  color: var(--text-strong);
+  font-family: var(--font-text);
+}
+
+.slide.is-current,
+.slide.is-outgoing { display: block; }
+
+.slide.is-outgoing { z-index: 1; }
+.slide.is-current   { z-index: 2; }
+
+/* Tom grafite: usado nas capas, aberturas de projeto e encerramento. */
+.slide[data-tone="ink"] {
+  background: var(--ink-900);
+  color: var(--on-dark-strong);
+}
+
+/* ---- Cromo (progresso, contador, navegação) -------------------------- */
+
+.chrome {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity var(--dur-base) var(--ease-standard);
+}
+
+body.is-idle .chrome,
+body.is-overview .chrome { opacity: 0; }
+
+.chrome__progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.10);
+}
+
+.chrome__progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width var(--dur-slow) var(--ease-out);
+}
+
+.chrome__counter {
+  position: absolute;
+  right: 26px;
+  bottom: 22px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  color: rgba(247, 243, 234, 0.72);
+  font-variant-numeric: tabular-nums;
+}
+
+.chrome__counter b { font-weight: 300; color: #fff; }
+.chrome__counter span { color: rgba(247, 243, 234, 0.38); }
+
+.chrome__timer {
+  position: absolute;
+  left: 26px;
+  bottom: 22px;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  color: rgba(247, 243, 234, 0.55);
+  font-variant-numeric: tabular-nums;
+  pointer-events: auto;
+  cursor: pointer;
+  user-select: none;
+}
+
+.chrome__timer[data-running="false"] { color: rgba(247, 243, 234, 0.28); }
+
+/* O painel de notas ocupa a faixa de baixo — contador e cronômetro sobem
+   para não ficarem escondidos atrás dele. */
+body.is-presenter .chrome__counter,
+body.is-presenter .chrome__timer { bottom: 132px; }
+
+.chrome__nav {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(247, 243, 234, 0.18);
+  border-radius: 999px;
+  background: rgba(20, 19, 18, 0.35);
+  backdrop-filter: blur(6px);
+  color: rgba(247, 243, 234, 0.75);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background var(--dur-fast) var(--ease-standard),
+              border-color var(--dur-fast) var(--ease-standard);
+}
+
+.chrome__nav:hover {
+  background: rgba(20, 19, 18, 0.72);
+  border-color: rgba(247, 243, 234, 0.42);
+}
+
+.chrome__nav[disabled] { opacity: 0.18; pointer-events: none; }
+.chrome__nav--prev { left: 18px; }
+.chrome__nav--next { right: 18px; }
+.chrome__nav svg { width: 17px; height: 17px; }
+
+/* ---- Carregamento inicial -------------------------------------------- */
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 26px;
+  background: #0e0d0c;
+  transition: opacity var(--dur-slow) var(--ease-standard);
+}
+
+.loader.is-done { opacity: 0; pointer-events: none; }
+
+.loader__title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.30em;
+  font-size: 13px;
+  color: rgba(247, 243, 234, 0.55);
+}
+
+.loader__track {
+  width: 220px;
+  height: 2px;
+  background: rgba(247, 243, 234, 0.12);
+  overflow: hidden;
+}
+
+.loader__bar {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width 220ms linear;
+}
+
+/* ---- Grade de slides (tecla G) --------------------------------------- */
+
+.overview {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: none;
+  background: #0e0d0c;
+  padding: 40px 44px 44px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+body.is-overview .overview { display: block; }
+
+.overview__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.overview__title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 14px;
+  color: rgba(247, 243, 234, 0.85);
+}
+
+.overview__hint {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: rgba(247, 243, 234, 0.35);
+}
+
+.overview__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(258px, 1fr));
+  gap: 22px;
+}
+
+.thumb {
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: none;
+  padding: 0;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+
+.thumb__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--paper);
+  outline: 1px solid rgba(247, 243, 234, 0.10);
+  outline-offset: -1px;
+  transition: outline-color var(--dur-fast) var(--ease-standard);
+}
+
+.thumb:hover .thumb__frame { outline-color: rgba(247, 243, 234, 0.45); }
+.thumb.is-current .thumb__frame { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+/* O conteúdo clonado é renderizado em 1920×1080 e reduzido por transform. */
+.thumb__inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: top left;
+  pointer-events: none;
+}
+
+/* Miniaturas nunca animam: o clone entra já no estado final. */
+.thumb__inner *,
+.thumb__inner *::before,
+.thumb__inner *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+.thumb__meta {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 10px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: rgba(247, 243, 234, 0.45);
+}
+
+.thumb__num {
+  font-family: var(--font-display);
+  font-weight: 300;
+  color: rgba(247, 243, 234, 0.75);
+  font-variant-numeric: tabular-nums;
+}
+
+.thumb__label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.thumb.is-current .thumb__num,
+.thumb.is-current .thumb__label { color: var(--accent-soft); }
+
+/* ---- Painel do apresentador (tecla N) -------------------------------- */
+
+.presenter {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 50;
+  display: none;
+  grid-template-columns: 1fr 300px;
+  gap: 28px;
+  align-items: start;
+  padding: 22px 26px 34px;
+  background: linear-gradient(to top, rgba(10, 9, 8, 0.97) 60%, rgba(10, 9, 8, 0));
+  color: var(--on-dark-body);
+}
+
+body.is-presenter .presenter { display: grid; }
+body.is-presenter.is-overview .presenter { display: none; }
+
+.presenter__eyebrow {
+  font-family: var(--font-display);
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 11px;
+  color: rgba(247, 243, 234, 0.38);
+  margin-bottom: 10px;
+}
+
+.presenter__notes {
+  font-size: 17px;
+  line-height: 1.55;
+  color: rgba(247, 243, 234, 0.90);
+  max-width: 1100px;
+}
+
+.presenter__notes:empty::after {
+  content: "Sem notas para este slide.";
+  color: rgba(247, 243, 234, 0.30);
+}
+
+.presenter__next {
+  border-left: 1px solid rgba(247, 243, 234, 0.14);
+  padding-left: 22px;
+}
+
+.presenter__next-label {
+  font-size: 15px;
+  line-height: 1.4;
+  color: rgba(247, 243, 234, 0.75);
+}
+
+.presenter__next-num {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 13px;
+  color: var(--accent-soft);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 6px;
+}
+
+/* ---- Modo exportação (?export) ------------------------------------------
+   Empilha os slides como páginas, um por folha, sem cromo nem animação.
+   Serve para conferir o conteúdo no papel ou gerar um PDF de revisão.
+
+   A página tem os mesmos 1920 × 1080 do palco e o conteúdo NÃO é reduzido.
+   Já tentei páginas menores com transform: scale(): na tela funciona, mas
+   ao paginar o Chrome recorta pela altura do conteúdo sem escalar, e as
+   fichas técnicas perdiam metade das linhas. Sem escala, a página impressa
+   é idêntica à projetada. */
+
+@page {
+  size: 1920px 1080px;
+  margin: 0;
+}
+
+/* A raiz precisa deixar de cortar e de ter altura fixa, senão a impressão
+   para na primeira folha — o resto das páginas fica fora do recorte. */
+html.is-export,
+html.is-export body {
+  height: auto;
+  overflow: visible;
+}
+
+body.is-export {
+  background: #55524d;
+  /* Sem isto o navegador descarta os fundos escuros na impressão. */
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+body.is-export .deck-viewport { position: static; overflow: visible; }
+
+body.is-export .stage {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  transform: none;
+  background: none;
+}
+
+body.is-export .slide {
+  position: relative;
+  display: block;
+  width: 1920px;
+  height: 1080px;
+  margin: 0 auto 24px;
+  overflow: hidden;
+  break-after: page;
+  page-break-after: always;
+}
+
+body.is-export .slide:last-child { break-after: auto; page-break-after: auto; }
+
+/* Na tela a pilha é reduzida só para caber na janela. `zoom` não vale para
+   a impressão (ver acima), mas para conferência em monitor é seguro. */
+@media screen {
+  body.is-export .stage { zoom: 0.5; }
+}
+
+/* Número da página, para citar o slide ao dar retorno. */
+body.is-export .slide::after {
+  content: attr(data-page);
+  position: absolute;
+  right: 30px;
+  bottom: 22px;
+  z-index: 10;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 20px;
+  letter-spacing: 0.10em;
+  color: var(--ink-400);
+  font-variant-numeric: tabular-nums;
+}
+
+body.is-export .slide[data-tone="ink"]::after { color: rgba(247, 243, 234, 0.45); }
+
+/* Nada anima e nada de cromo na exportação. */
+body.is-export *,
+body.is-export *::before,
+body.is-export *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+body.is-export .chrome,
+body.is-export .menu,
+body.is-export .menu-scrim,
+body.is-export .overview,
+body.is-export .presenter,
+body.is-export .help,
+body.is-export .inkboard,
+body.is-export .loader { display: none !important; }
+
+@media print {
+  body.is-export { background: none; }
+  body.is-export .slide { margin: 0; }
+}
+
+/* ---- Anotação na tela (tecla D) ---------------------------------------- */
+/* A tela de desenho vive DENTRO do palco, então escala junto com ele e as
+   coordenadas ficam sempre em 1920 × 1080, independente do tamanho da tela.
+   Fica acima dos slides e abaixo do cromo, para as setas seguirem clicáveis. */
+
+.inkboard {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+body.is-drawing .inkboard {
+  pointer-events: auto;
+  cursor: crosshair;
+}
+
+/* Aviso discreto de que o modo de anotação está ligado. */
+.chrome__drawing {
+  position: absolute;
+  top: 22px;
+  left: 26px;
+  display: none;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 14px 7px 11px;
+  border-radius: 999px;
+  background: rgba(20, 19, 18, 0.62);
+  backdrop-filter: blur(6px);
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(247, 243, 234, 0.85);
+}
+
+body.is-drawing .chrome__drawing { display: flex; }
+
+.chrome__drawing::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--ink-color, #bd8571);
+}
+
+/* ---- Menu de controles ------------------------------------------------- */
+
+.chrome__menu {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(247, 243, 234, 0.18);
+  border-radius: 999px;
+  background: rgba(20, 19, 18, 0.35);
+  backdrop-filter: blur(6px);
+  color: rgba(247, 243, 234, 0.75);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background var(--dur-fast) var(--ease-standard),
+              border-color var(--dur-fast) var(--ease-standard);
+}
+
+.chrome__menu:hover {
+  background: rgba(20, 19, 18, 0.72);
+  border-color: rgba(247, 243, 234, 0.42);
+}
+
+.chrome__menu svg { width: 18px; height: 18px; }
+
+.menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 65;
+  width: 384px;
+  max-width: 92vw;
+  display: flex;
+  flex-direction: column;
+  background: #131211;
+  border-left: 1px solid rgba(247, 243, 234, 0.10);
+  color: var(--on-dark-body);
+  transform: translateX(100%);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+body.is-menu .menu { transform: translateX(0); }
+
+.menu__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid rgba(247, 243, 234, 0.10);
+}
+
+.menu__title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 13px;
+  color: rgba(247, 243, 234, 0.90);
+}
+
+.menu__close {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 999px;
+  background: none;
+  color: rgba(247, 243, 234, 0.55);
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+
+.menu__close:hover { color: rgba(247, 243, 234, 0.95); }
+
+.menu__block {
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(247, 243, 234, 0.10);
+}
+
+.menu__block--grow {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-bottom: none;
+}
+
+.menu__label {
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(247, 243, 234, 0.38);
+  margin-bottom: 14px;
+}
+
+.menu__row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.menu__btn {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 10px 14px;
+  border: 1px solid rgba(247, 243, 234, 0.16);
+  border-radius: var(--radius-sm);
+  background: rgba(247, 243, 234, 0.04);
+  color: rgba(247, 243, 234, 0.82);
+  font-family: var(--font-text);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur-fast) var(--ease-standard),
+              border-color var(--dur-fast) var(--ease-standard),
+              color var(--dur-fast) var(--ease-standard);
+}
+
+.menu__btn:hover {
+  background: rgba(247, 243, 234, 0.10);
+  border-color: rgba(247, 243, 234, 0.34);
+  color: #fff;
+}
+
+/* Estado ligado: o acento da marca marca o que está ativo. */
+.menu__btn.is-on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--ink-900);
+}
+
+.menu__btn[disabled] {
+  opacity: 0.55;
+  cursor: default;
+  background: rgba(247, 243, 234, 0.04);
+  border-color: rgba(247, 243, 234, 0.16);
+  color: rgba(247, 243, 234, 0.82);
+}
+
+.menu__hint {
+  margin-top: 11px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(247, 243, 234, 0.40);
+}
+
+.menu__hint.is-working { color: var(--accent-soft); }
+.menu__hint.is-error   { color: var(--argila-300, #d6aa98); }
+
+.menu__timer {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 40px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: rgba(247, 243, 234, 0.92);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 16px;
+}
+
+.menu__timer[data-running="true"] { color: var(--accent-soft); }
+
+/* Cores da anotação */
+.menu__swatches { display: flex; gap: 10px; margin-top: 14px; }
+
+.menu__swatch {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  /* Anel claro para que a cor grafite também se veja no painel escuro. */
+  box-shadow: 0 0 0 1px rgba(247, 243, 234, 0.30);
+  transition: transform var(--dur-fast) var(--ease-standard),
+              box-shadow var(--dur-fast) var(--ease-standard);
+}
+
+.menu__swatch:hover { transform: scale(1.12); }
+
+.menu__swatch.is-on {
+  box-shadow: 0 0 0 2px #131211, 0 0 0 4px rgba(247, 243, 234, 0.92);
+}
+
+/* Busca e lista de slides */
+.menu__search {
+  width: 100%;
+  padding: 10px 13px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(247, 243, 234, 0.16);
+  border-radius: var(--radius-sm);
+  background: rgba(247, 243, 234, 0.04);
+  color: rgba(247, 243, 234, 0.92);
+  font-family: var(--font-text);
+  font-size: 13px;
+}
+
+.menu__search::placeholder { color: rgba(247, 243, 234, 0.32); }
+
+.menu__search:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.menu__list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 0 -8px -4px;
+  padding: 0 8px 20px;
+}
+
+.menu__item {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  width: 100%;
+  padding: 9px 10px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: rgba(247, 243, 234, 0.72);
+  font-family: var(--font-text);
+  font-size: 13px;
+  line-height: 1.35;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-standard),
+              color var(--dur-fast) var(--ease-standard);
+}
+
+.menu__item:hover { background: rgba(247, 243, 234, 0.08); color: #fff; }
+
+.menu__item-num {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 12px;
+  color: rgba(247, 243, 234, 0.40);
+  font-variant-numeric: tabular-nums;
+}
+
+.menu__item.is-current { background: rgba(148, 162, 145, 0.18); color: var(--accent-soft); }
+.menu__item.is-current .menu__item-num { color: var(--accent-soft); }
+
+.menu__empty {
+  padding: 14px 10px;
+  font-size: 13px;
+  color: rgba(247, 243, 234, 0.35);
+}
+
+/* Clique fora fecha o menu. */
+.menu-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 64;
+  display: none;
+  background: rgba(10, 9, 8, 0.45);
+}
+
+body.is-menu .menu-scrim { display: block; }
+
+/* ---- Tela preta (tecla B) --------------------------------------------- */
+/* Apaga a projeção sem sair do slide, para puxar a atenção de volta
+   para quem está falando. */
+
+body.is-black::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: #000;
+}
+
+/* ---- Ajuda (tecla ?) -------------------------------------------------- */
+
+.help {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: none;
+  place-items: center;
+  background: rgba(14, 13, 12, 0.90);
+  backdrop-filter: blur(3px);
+}
+
+body.is-help .help { display: grid; }
+
+.help__card {
+  width: min(560px, 90vw);
+  background: var(--paper);
+  color: var(--text-strong);
+  padding: 44px 46px;
+  border-radius: var(--radius-md);
+}
+
+.help__title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.20em;
+  font-size: 16px;
+  margin: 0 0 28px;
+}
+
+.help__row {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 18px;
+  align-items: baseline;
+  padding: 11px 0;
+  border-top: 1px solid var(--hairline);
+  font-size: 15px;
+}
+
+.help__keys {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--accent-deep);
+  text-transform: uppercase;
+}
+
+.help__desc { color: var(--text-body); }

@@ -1,0 +1,35 @@
+/* Lesco — Typography tokens
+   Neue Machina (→ Space Grotesk) for display/headings; Object Sans (→ Manrope) for text. */
+:root {
+  --font-display: 'Space Grotesk', 'Neue Machina', ui-sans-serif, system-ui, sans-serif;
+  --font-text:    'Manrope', 'Object Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    'Space Grotesk', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Type scale (px) — architectural, generous headlines */
+  --fs-display:  clamp(48px, 7vw, 88px); /* @kind font */
+  --fs-h1:       clamp(36px, 4.5vw, 56px); /* @kind font */
+  --fs-h2:       32px; /* @kind font */
+  --fs-h3:       24px; /* @kind font */
+  --fs-h4:       19px; /* @kind font */
+  --fs-body-lg:  18px; /* @kind font */
+  --fs-body:     16px; /* @kind font */
+  --fs-sm:       14px; /* @kind font */
+  --fs-caption:  13px; /* @kind font */
+  --fs-micro:    11px; /* @kind font */
+
+  --lh-tight:   1.02; /* @kind font */
+  --lh-snug:    1.15; /* @kind font */
+  --lh-normal:  1.5; /* @kind font */
+  --lh-relaxed: 1.65; /* @kind font */
+
+  --tracking-display: -0.02em; /* @kind font */
+  --tracking-tight:   -0.01em; /* @kind font */
+  --tracking-normal:  0em; /* @kind font */
+  --tracking-wide:    0.08em; /* @kind font */
+  --tracking-mega:    0.18em; /* @kind font */
+
+  --fw-regular: 400; /* @kind font */
+  --fw-medium:  500; /* @kind font */
+  --fw-semibold:600; /* @kind font */
+  --fw-bold:    700; /* @kind font */
+}

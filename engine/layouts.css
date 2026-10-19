@@ -1,0 +1,1023 @@
+/* ---------------------------------------------------------------------------
+   Layouts de slide.
+
+   Cada layout é uma classe .l-<nome> e corresponde a um renderizador em
+   engine/layouts.js. Para criar um slide novo basta escolher o layout e
+   preencher os campos — nenhum CSS precisa ser escrito por apresentação.
+   --------------------------------------------------------------------------- */
+
+/* =====================================================================
+   Primitivas compartilhadas
+   ===================================================================== */
+
+/* A raiz de todo layout preenche o slide — assim nenhum layout precisa
+   se preocupar em posicionar a si mesmo. */
+.slide__content {
+  position: absolute;
+  inset: 0;
+}
+
+.pad {
+  padding: var(--pad-y) var(--pad-x);
+}
+
+.pad--tight {
+  padding: var(--pad-y-tight) var(--pad-x);
+}
+
+/* Eyebrow com o filete de acento — assinatura discreta da marca. */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 46px;
+  height: 2px;
+  flex: none;
+  background: var(--accent);
+}
+
+[data-tone="ink"] .eyebrow { color: var(--on-dark-muted); }
+[data-tone="ink"] .eyebrow::before { background: var(--accent-soft); }
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: var(--track-title);
+  line-height: 1.14;
+  color: var(--text-strong);
+}
+
+[data-tone="ink"] .title { color: var(--on-dark-strong); }
+
+.title--hero { font-size: var(--fs-hero); line-height: 1.10; }
+.title--xl   { font-size: var(--fs-title); }
+.title--lg   { font-size: var(--fs-h2); }
+.title--md   { font-size: var(--fs-h3); }
+
+.lead {
+  margin: 0;
+  font-size: var(--fs-lead);
+  line-height: 1.64;
+  color: var(--text-body);
+}
+
+.sub {
+  margin: 0;
+  font-size: var(--fs-sub);
+  line-height: 1.58;
+  color: var(--text-muted);
+  max-width: 1200px;
+}
+
+[data-tone="ink"] .lead { color: var(--on-dark-body); }
+[data-tone="ink"] .sub  { color: var(--on-dark-muted); }
+
+/* Moldura de foto: recorta, arredonda de leve e serve de palco ao parallax. */
+.frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--surface-sunk);
+}
+
+.frame--bleed { border-radius: 0; background: var(--ink-900); }
+
+.frame img,
+.frame video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--focal, 50% 50%);
+}
+
+/* =====================================================================
+   Chamada sobre a foto — ponto apontado, fio em cotovelo e quadro
+   ===================================================================== */
+
+/* O véu do layout photo é irmão da moldura e vem depois dela, então sem
+   z-index ele passaria por cima da chamada e deixaria o quadro acinzentado.
+   A legenda, em z-index 2, continua acima de tudo. */
+.chamada { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+
+.chamada__fio { position: absolute; inset: 0; }
+.chamada__fio svg { width: 100%; height: 100%; display: block; }
+.chamada__fio polyline {
+  stroke: rgba(255, 255, 255, 0.95);
+  stroke-width: 3;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+.chamada__ponto {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;     /* o ponto fica centrado na coordenada */
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.chamada__quadro {
+  position: absolute;
+  background: #fff;
+  padding: 30px 34px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+/* Aqui a foto NÃO preenche a moldura: é a peça isolada, tem de aparecer
+   inteira e no próprio formato. Desfaz o posicionamento de .frame img. */
+.chamada__quadro img {
+  position: static;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Quadro do YouTube: preenche a moldura, já vem em 16:9. */
+.frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+/* Vídeo de celular vem em pé. Cortar para preencher a moldura deitada
+   comeria justamente o que interessa, então ele aparece inteiro, com as
+   tarjas escuras dos lados — do jeito que todo mundo já vê vídeo vertical. */
+.frame video {
+  object-fit: contain;
+  background: var(--ink-900);
+}
+
+/* Desenho técnico ocupando uma moldura de foto. A foto é cortada para
+   preencher a moldura; o desenho não pode ser cortado, então aparece
+   inteiro e com folga sobre a superfície clara. */
+/* Os desenhos chegam com fundo próprio: uns brancos, uns quase brancos,
+ outros transparentes. Sobre o bege da moldura, o fundo branco desenha um
+ retângulo no meio do slide — o corte que não deveria existir. Branco em
+ todas iguala a base e o corte some. */
+.frame--draw:not(.frame--bleed) { background: var(--surface); }
+
+.frame--draw img {
+  object-fit: contain;
+  padding: 40px;
+}
+
+/* Desenho vetorial: o SVG entra direto no slide, sem <img>. */
+.frame--draw > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 40px;
+  overflow: visible;
+}
+
+/* Espaço reservado para a foto que ainda não chegou. */
+.frame--empty {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--hairline);
+}
+
+.frame--empty.frame--bleed {
+  background: var(--ink-900);
+  box-shadow: inset 0 0 0 1px var(--on-dark-hair);
+}
+
+.frame__note {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 60px;
+  text-align: center;
+}
+
+.frame__note-tag {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.frame__note-text {
+  font-size: var(--fs-sub);
+  line-height: 1.5;
+  color: var(--text-muted);
+  max-width: 22ch;
+}
+
+.frame--bleed .frame__note-text { color: var(--on-dark-muted); max-width: 30ch; }
+.frame--bleed .frame__note-tag  { color: var(--accent-soft); }
+
+.brand-mark {
+  height: 58px;
+  width: auto;
+  align-self: flex-start;
+}
+
+/* ---- Imagem de fundo do slide --------------------------------------- */
+
+.slide-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.slide-bg img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--focal, 50% 50%);
+}
+
+.slide-bg__scrim { position: absolute; inset: 0; }
+
+/* Escurece do lado do texto e deixa o desenho aparecer do outro. */
+.slide-bg__scrim--left {
+  background: linear-gradient(
+    to right,
+    rgba(12, 11, 10, 0.94) 0%,
+    rgba(12, 11, 10, 0.86) 26%,
+    rgba(12, 11, 10, 0.58) 56%,
+    rgba(12, 11, 10, 0.24) 82%,
+    rgba(12, 11, 10, 0.10) 100%
+  );
+}
+
+.slide-bg__scrim--full   { background: rgba(12, 11, 10, 0.62); }
+.slide-bg__scrim--bottom {
+  background: linear-gradient(to top, rgba(12, 11, 10, 0.92) 6%, rgba(12, 11, 10, 0.30) 52%, rgba(12, 11, 10, 0.08) 100%);
+}
+
+/* O conteúdo do slide fica sempre à frente do fundo. */
+.l-cover > *:not(.slide-bg),
+.l-chapter > *:not(.slide-bg),
+.l-outro > *:not(.slide-bg) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Linhas de dados (label à esquerda, valor à direita). */
+.rows { display: flex; flex-direction: column; }
+
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 36px;
+  padding: 30px 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.rows .row:last-child { border-bottom: 1px solid var(--hairline); }
+
+.row__label {
+  font-size: var(--fs-label);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.row__value {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 38px;
+  color: var(--text-strong);
+  text-align: right;
+}
+
+/* Valor ainda não confirmado — fica visivelmente pendente. */
+.row__value.is-pending { color: var(--text-muted); }
+
+/* =====================================================================
+   01 · cover — capa da apresentação
+   ===================================================================== */
+
+.l-cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.l-cover__footer {
+  font-size: var(--fs-sub);
+  letter-spacing: 0.03em;
+  color: var(--on-dark-body);
+}
+
+.l-cover .eyebrow { margin-bottom: 52px; }
+
+/* O título da capa ficou com três linhas depois que o nome da live cresceu.
+   Em corpo de 124 as linhas se tocavam e o bloco ficava compacto demais no
+   meio do slide. Corpo menor e entrelinha mais solta abrem o respiro — e,
+   como a capa distribui o espaço que sobra, a folga volta para cima e para
+   baixo do bloco sozinha. O título do encerramento segue nos 124. */
+.l-cover .title--hero { font-size: 104px; line-height: 1.16; }
+
+/* =====================================================================
+   02 · index — sumário dos projetos
+   ===================================================================== */
+
+.l-index { display: flex; flex-direction: column; }
+
+.l-index .title { margin-bottom: 72px; }
+
+/* Subtítulo da capa: entra abaixo do título, miúdo, sem disputar com ele. */
+.l-cover__sub {
+  margin: 48px 0 0;
+  max-width: 980px;
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+  color: var(--on-dark-body);
+}
+
+.l-index__item {
+  display: grid;
+  grid-template-columns: 130px 1fr auto;
+  align-items: baseline;
+  gap: 40px;
+  padding: 34px 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.l-index__list .l-index__item:last-child { border-bottom: 1px solid var(--hairline); }
+
+/* Cinco obras na lista: o que fecha é o respiro, não o conteúdo. */
+.l-index--denso .title            { margin-bottom: 34px; }
+.l-index--denso .l-index__item    { padding: 11px 0; }
+.l-index--denso .l-index__name    { font-size: 38px; }
+.l-index--denso .l-index__bloco   { gap: 6px; }
+
+.l-index__num {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 44px;
+  color: var(--accent);
+}
+
+.l-index__name {
+  font-size: 46px;
+  letter-spacing: 0.02em;
+  color: var(--text-strong);
+}
+
+/* Nome e linha de apoio empilhados: a obra em cima, o sistema embaixo. */
+.l-index__bloco { display: flex; flex-direction: column; gap: 10px; }
+
+.l-index__apoio {
+  font-size: var(--fs-meta);
+  color: var(--text-muted);
+}
+
+.l-index__tag {
+  font-size: var(--fs-meta);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+/* =====================================================================
+   03 · split — texto à esquerda, linhas de dados à direita
+   ===================================================================== */
+
+.l-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 110px;
+  align-content: start;
+}
+
+.l-split__text .eyebrow  { margin-bottom: 40px; }
+.l-split__text .title    { margin-bottom: 52px; }
+.l-split__side           { padding-top: 96px; }
+
+.l-split__note {
+  margin: 44px 0 0;
+  font-size: var(--fs-eyebrow);
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+/* =====================================================================
+   04 · stats — três números grandes
+   ===================================================================== */
+
+.l-stats { display: flex; flex-direction: column; }
+
+.l-stats .title { margin-bottom: 28px; }
+.l-stats .sub   { margin-bottom: 76px; }
+.l-stats .title + .l-stats__grid { margin-top: 48px; }
+
+.l-stats__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 56px;
+  flex: 1;
+  min-height: 0;
+}
+
+.stat {
+  background: var(--surface-sunk);
+  border-radius: var(--radius-lg);
+  padding: 56px 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.stat__eyebrow {
+  font-size: var(--fs-label);
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.stat__caption {
+  font-size: var(--fs-meta);
+  color: var(--text-muted);
+}
+
+.stat__value {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--fs-stat);
+  line-height: 1;
+  color: var(--text-strong);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat__unit { font-size: 52px; margin-left: 12px; }
+
+/* =====================================================================
+   Destaques e etapas — peças reaproveitadas por vários layouts
+   ===================================================================== */
+
+/* Dois ou três números em corpo grande: o que o público leva embora mesmo
+   sem ler a ficha inteira. */
+.destaques {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 20px 52px;
+  margin-top: 46px;
+  padding-top: 38px;
+  border-top: 1px solid var(--hairline);
+}
+
+.destaques__item {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 62px;
+  line-height: 1;
+  color: var(--text-strong);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-tone="ink"] .destaques { border-color: var(--on-dark-hair); }
+[data-tone="ink"] .destaques__item { color: var(--on-dark-strong); }
+
+/* Etapas numeradas. O número fica na coluna da esquerda, em acento, e o
+   rótulo em caixa alta abre cada passo. */
+.passos { list-style: none; margin: 40px 0 0; padding: 0; }
+
+.passos__item {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  gap: 28px;
+  padding: 24px 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.passos__item:last-child { border-bottom: 1px solid var(--hairline); }
+
+.passos__num {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 34px;
+  line-height: 1.3;
+  color: var(--accent);
+}
+
+.passos__texto { display: flex; flex-direction: column; gap: 8px; }
+
+.passos__rotulo {
+  font-size: var(--fs-label);
+  font-weight: 400;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-strong);
+}
+
+.passos__descricao {
+  font-size: var(--fs-meta);
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+/* Cinco etapas ou mais: fecha o espaçamento para a coluna caber no slide. */
+.passos--denso { margin-top: 20px; }
+.passos--denso .passos__item { grid-template-columns: 58px 1fr; padding: 11px 0; gap: 20px; }
+.passos--denso .passos__texto { gap: 4px; }
+.passos--denso .passos__num { font-size: 26px; }
+.passos--denso .passos__rotulo { font-size: 24px; }
+.passos--denso .passos__descricao { font-size: 24px; line-height: 1.35; }
+
+[data-tone="ink"] .passos__item { border-color: var(--on-dark-hair); }
+[data-tone="ink"] .passos__rotulo { color: var(--on-dark-strong); }
+[data-tone="ink"] .passos__descricao { color: var(--on-dark-muted); }
+
+/* =====================================================================
+   13 · faixa — foto grande, texto ao lado e tira de etapas embaixo
+   ===================================================================== */
+
+.l-faixa { display: grid; grid-template-rows: 1fr auto; gap: 54px; }
+
+.l-faixa__topo {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 72px;
+  min-height: 0;
+}
+
+.l-faixa__topo > .frame { min-height: 0; }
+
+.l-faixa__texto { display: flex; flex-direction: column; justify-content: center; }
+.l-faixa__texto .eyebrow { margin-bottom: 26px; }
+.l-faixa__texto .title   { margin-bottom: 26px; }
+
+.l-faixa__tira { display: grid; grid-template-columns: repeat(5, 1fr); gap: 26px; }
+
+.l-faixa__item { display: flex; flex-direction: column; gap: 16px; }
+
+/* As miniaturas precisam de altura própria: numa grade de uma linha só,
+   a moldura não tem de quem herdar. */
+.l-faixa__item .frame { aspect-ratio: 4 / 3; }
+
+.l-faixa__legenda {
+  font-size: var(--fs-label);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Rótulo e nota dentro de um item de checklist. */
+.l-checklist__rotulo { display: block; font-weight: 400; color: var(--text-strong); }
+
+.l-checklist__nota {
+  display: block;
+  margin-top: 10px;
+  font-size: var(--fs-meta);
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+/* Ressalva embaixo da grade, no mesmo tom da nota do split. */
+.l-stats__note {
+  margin: 44px 0 0;
+  font-size: var(--fs-meta);
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+/* Quando o destaque é palavra e não cifra, quem manda é a leitura: quatro
+   colunas e corpo menor, senão "oposto às réguas" sai do bloco. */
+.l-stats--termos .l-stats__grid { grid-template-columns: repeat(4, 1fr); gap: 36px; }
+.l-stats--termos .stat { padding: 46px 38px; }
+.l-stats--termos .stat__value { font-size: 54px; line-height: 1.15; }
+
+/* Um único card por slide recebe o acento — nunca mais de um. */
+.stat--accent {
+  background: var(--ink-900);
+}
+
+.stat--accent .stat__eyebrow { color: var(--accent-soft); }
+.stat--accent .stat__caption { color: var(--on-dark-muted); }
+.stat--accent .stat__value   { color: var(--on-dark-strong); }
+
+/* =====================================================================
+   05 · chapter — abertura de projeto
+   ===================================================================== */
+
+.l-chapter {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.l-chapter__num {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--fs-numeral);
+  line-height: 1;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.l-chapter .eyebrow { margin-bottom: 38px; }
+
+.l-chapter__footer {
+  font-size: var(--fs-meta);
+  letter-spacing: 0.03em;
+  color: var(--on-dark-body);
+}
+
+/* =====================================================================
+   06 · specs — ficha técnica com desenho do perfil
+   ===================================================================== */
+
+.l-specs {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 100px;
+}
+
+/* Com faixa de destaques o slide ganha uma terceira linha, que corre por
+   baixo das duas colunas. */
+.l-specs:has(.destaques) {
+  grid-template-rows: 1fr auto;
+  gap: 60px 100px;
+}
+
+.l-specs .destaques {
+  grid-column: 1 / -1;
+  margin-top: 0;
+}
+
+.l-specs__text { display: flex; flex-direction: column; }
+.l-specs__text .eyebrow { margin-bottom: 34px; }
+.l-specs__text .title   { margin-bottom: 56px; }
+
+.l-specs__figure {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-sunk);
+  border-radius: var(--radius-lg);
+  padding: 70px;
+}
+
+.l-specs__figure img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* =====================================================================
+   07 · photo — foto de página inteira
+   ===================================================================== */
+
+.l-photo { padding: 0; background: var(--ink-900); }
+
+.l-photo > .frame { position: absolute; inset: 0; }
+
+.l-photo__caption {
+  position: absolute;
+  left: var(--pad-x);
+  bottom: 88px;
+  right: var(--pad-x);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.l-photo__caption .title { color: var(--on-dark-strong); }
+.l-photo__caption .eyebrow { color: var(--on-dark-body); }
+.l-photo__caption .eyebrow::before { background: var(--accent-soft); }
+
+/* Véu só existe quando há legenda por cima da imagem. */
+.l-photo__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to top, rgba(12, 11, 10, 0.78) 0%, rgba(12, 11, 10, 0.12) 38%, rgba(12, 11, 10, 0) 62%);
+}
+
+/* =====================================================================
+   08 · duo — título e duas fotos
+   ===================================================================== */
+
+.l-duo { display: flex; flex-direction: column; }
+
+/* Sem subtítulo o título precisa respirar mais antes das fotos. Resolvido
+   pelo irmão adjacente, e não por :last-of-type, que venceria sempre. */
+.l-duo .title { margin-bottom: 20px; }
+.l-duo .sub   { margin-bottom: 46px; }
+.l-duo .title + .l-duo__grid { margin-top: 34px; }
+
+.l-duo__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  flex: 1;
+  min-height: 0;
+}
+
+.l-duo__grid > .frame { min-height: 0; }
+
+/* Três fotos em pé: colunas mais estreitas pedem menos respiro entre elas. */
+.l-duo__grid--tres { grid-template-columns: repeat(3, 1fr); gap: 32px; }
+
+/* =====================================================================
+   09 · detail — foto grande e um bloco de texto
+   ===================================================================== */
+
+.l-detail {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 80px;
+}
+
+.l-detail > .frame { min-height: 0; }
+
+/* ---- Medalhão: a peça destacada ao lado da foto -------------------- */
+
+/* Com o medalhão a foto estreita e a calha entre as colunas abre, porque
+   é dentro dela que o disco fica — inteiro, sem encostar no texto. */
+.l-detail--medalhao {
+  grid-template-columns: 0.90fr 1fr;
+  gap: 330px;
+}
+
+.l-detail__media { position: relative; min-height: 0; }
+.l-detail__media > .frame { position: absolute; inset: 0; }
+
+.medalhao {
+  position: absolute;
+  top: var(--med-y, 20%);
+  left: 100%;
+  width: var(--med-tam, 280px);
+  height: var(--med-tam, 280px);
+  margin-top: calc(var(--med-tam, 280px) / -2);
+  margin-left: var(--med-folga, 25px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.16);
+  overflow: hidden;
+  z-index: 2;
+}
+
+.medalhao img { width: 86%; height: auto; }
+
+/* O fio troca de cor ao sair da foto: claro sobre a imagem, traço fino
+   sobre o papel. Sem isso ele some de um lado ou do outro. */
+/* Três pixels: a 1920 o fio de um pixel some, e este slide é visto
+   projetado. A sombra o segura tanto no céu quanto no concreto claro. */
+.medalhao__fio {
+  position: absolute;
+  top: var(--med-y, 20%);
+  height: 3px;
+  z-index: 2;
+}
+
+.medalhao__fio--dentro {
+  left: var(--ponto-x, 45%);
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.45));
+}
+
+.medalhao__fio--fora {
+  left: 100%;
+  width: var(--med-folga, 25px);
+  background: var(--text-muted);
+}
+
+.medalhao__ponto {
+  position: absolute;
+  top: var(--med-y, 20%);
+  left: var(--ponto-x, 45%);
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+  z-index: 3;
+}
+
+/* Duas pranchas na mesma coluna: metade da altura para cada uma. O
+   min-height zerado é o que permite encolherem dentro da grade em vez
+   de empurrarem o slide para baixo. */
+.l-detail__pranchas {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 28px;
+  min-height: 0;
+}
+
+.l-detail__pranchas > .frame { min-height: 0; }
+
+/* Com metade da altura, a folga de 40px em volta do desenho come espaço
+   demais. */
+.l-detail__pranchas .frame--draw img { padding: 24px; }
+
+.l-detail__text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.l-detail__text .eyebrow { margin-bottom: 34px; }
+.l-detail__text .title   { margin-bottom: 40px; line-height: 1.16; }
+.l-detail__text .title:last-child { margin-bottom: 0; }
+
+/* Quando o slide traz texto corrido E lista com descrição, a coluna passa
+   de um metro de altura e o último item fica cortado embaixo. Aqui o que
+   fecha é o espaçamento — nenhuma palavra sai do slide. */
+.l-detail--denso .l-detail__text .eyebrow { margin-bottom: 20px; }
+.l-detail--denso .l-detail__text .title   { margin-bottom: 26px; }
+.l-detail--denso .l-detail__text .lead    { line-height: 1.42; }
+.l-detail--denso .passos                  { margin-top: 24px; }
+.l-detail--denso .passos__item            { padding: 11px 0; }
+
+/* =====================================================================
+   10 · half — texto e foto sangrando pela metade
+   ===================================================================== */
+
+.l-half {
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1.02fr;
+}
+
+.l-half--reverse { grid-template-columns: 1.02fr 1fr; }
+.l-half--reverse .l-half__text { order: 2; }
+.l-half--reverse .l-half__media { order: 1; }
+
+/* Com a foto à esquerda, a folga interna espelha junto. */
+.l-half--reverse .l-half__text {
+  padding: var(--pad-y) var(--pad-x) var(--pad-y) 100px;
+}
+
+.l-half__text {
+  padding: var(--pad-y) 100px var(--pad-y) var(--pad-x);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.l-half--bottom .l-half__text { justify-content: flex-end; }
+
+.l-half__text .eyebrow { margin-bottom: 36px; }
+.l-half__text .title   { margin-bottom: 44px; line-height: 1.16; }
+.l-half__text .title:last-child { margin-bottom: 0; }
+
+.l-half__media { position: relative; background: var(--ink-900); }
+
+.l-half__media > .frame { position: absolute; inset: 0; }
+
+/* =====================================================================
+   11 · checklist — lista numerada em duas colunas
+   ===================================================================== */
+
+.l-checklist { display: flex; flex-direction: column; }
+
+.l-checklist .title { margin-bottom: 70px; }
+
+.l-checklist__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 90px;
+  flex: 1;
+  align-content: space-between;
+}
+
+.l-checklist__item {
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  gap: 28px;
+  align-items: baseline;
+  padding: 26px 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.l-checklist__num {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 36px;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.l-checklist__text {
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  color: var(--text-strong);
+}
+
+/* =====================================================================
+   12 · cards — três cards com imagem de produto
+   ===================================================================== */
+
+.l-cards { display: flex; flex-direction: column; }
+
+.l-cards .title { margin-bottom: 24px; }
+.l-cards .sub   { margin-bottom: 64px; }
+.l-cards .title + .l-cards__grid { margin-top: 40px; }
+
+.l-cards__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 56px;
+  flex: 1;
+  min-height: 0;
+}
+
+.l-cards__grid--quatro { grid-template-columns: repeat(4, 1fr); gap: 34px; }
+.l-cards__grid--quatro .card { padding: 34px; gap: 20px; }
+
+.card {
+  background: var(--surface-sunk);
+  border-radius: var(--radius-lg);
+  padding: 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  /* Sem isto o card cresce até caber a imagem inteira e estoura o slide:
+     um item de grid não encolhe abaixo do próprio conteúdo por padrão. */
+  min-height: 0;
+}
+
+.card__label {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 46px;
+  color: var(--text-strong);
+}
+
+/* Instrução curta embaixo do título, quando o card é um passo de
+   montagem e não só uma etiqueta. */
+.card__text {
+  margin: -10px 0 0;
+  font-size: 25px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.card__figure {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+.card__figure img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* =====================================================================
+   13 · outro — encerramento
+   ===================================================================== */
+
+.l-outro {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.l-outro__foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 60px;
+}
+
+.l-outro__contact {
+  font-size: var(--fs-sub);
+  line-height: 1.6;
+  color: var(--on-dark-body);
+}
+
+.l-outro__contact--right {
+  text-align: right;
+  font-size: var(--fs-meta);
+  color: var(--on-dark-muted);
+}

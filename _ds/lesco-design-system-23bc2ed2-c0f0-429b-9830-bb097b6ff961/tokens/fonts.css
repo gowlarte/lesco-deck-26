@@ -1,0 +1,11 @@
+/* Lesco — Fonts
+   Brand fonts are commercial (Pangram Pangram):
+     · Neue Machina  → display / headings / quotes
+     · Object Sans   → body / captions / technical specs
+   These are NOT on Google Fonts. Substituted with the closest free matches
+   until licensed webfont files are supplied (see readme.md → CAVEATS):
+     · Neue Machina → Space Grotesk (techy geometric grotesque)
+     · Object Sans  → Manrope       (neutral geometric grotesque)
+   To swap in the real fonts: drop the .woff2 files in assets/fonts/ and
+   replace the @import below with matching @font-face rules. */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');

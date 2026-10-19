@@ -1,0 +1,76 @@
+/* Lesco — Color tokens
+   Sober neutral base + four line "tonalidades" (accent families).
+   Accents are used quietly, and only when speaking about the line they belong to. */
+:root {
+  /* ---- Neutrals / ink (sóbrio) ---- */
+  --ink-900: #1a1a1a;   /* primary text, primary logo */
+  --ink-800: #262523;
+  --ink-700: #38352f;
+  --ink-600: #4a463f;
+  --ink-500: #6c675e;
+  --ink-400: #8f897d;
+  --ink-300: #b6b0a4;
+  --ink-200: #d8d2c6;
+  --ink-100: #e8e2d6;
+
+  /* ---- Paper / warm surfaces ---- */
+  --paper:       #f4efe6;  /* primary background (warm off-white) */
+  --paper-soft:  #faf6ee;
+  --surface:     #ffffff;
+  --surface-sunk:#ece5d8;
+
+  /* ---- Line: Azul (slate blue) ---- */
+  --azul-100: #dbe6ee;
+  --azul-200: #c0d3df;
+  --azul-300: #aabbc6;
+  --azul-500: #728ea0;
+  --azul-700: #4f6675;
+
+  /* ---- Line: Verde / Lesco Green (sage) ---- */
+  --verde-100: #e6ede4;
+  --verde-200: #d8e2d7;
+  --verde-300: #c0c9bf;
+  --verde-500: #94a291;
+  --verde-700: #5f6c5c;
+
+  /* ---- Line: Argila (clay / terracotta) ---- */
+  --argila-100: #f6e2d8;
+  --argila-200: #efbeaa;
+  --argila-300: #d6aa98;
+  --argila-500: #bd8571;
+  --argila-700: #8c5c4a;
+
+  /* ---- Line: Areia (sand / cream) ---- */
+  --areia-100: #fffbe4;
+  --areia-200: #fffad4;
+  --areia-300: #efdcc5;
+  --areia-500: #d8c3a3;
+  --areia-700: #a98f6c;
+
+  /* ---- Semantic aliases ---- */
+  --text-strong:   var(--ink-900);
+  --text-body:     var(--ink-700);
+  --text-muted:    var(--ink-500);
+  --text-faint:    var(--ink-400);
+  --text-inverse:  var(--paper);
+
+  --bg-page:       var(--paper);
+  --bg-elevated:   var(--surface);
+  --bg-sunk:       var(--surface-sunk);
+  --bg-inverse:    var(--ink-900);
+
+  --border-hair:   var(--ink-200);
+  --border-soft:   var(--ink-100);
+  --border-strong: var(--ink-900);
+
+  --accent:        var(--azul-500);   /* default quiet accent */
+  --accent-verde:  var(--verde-500);
+  --accent-argila: var(--argila-500);
+  --accent-areia:  var(--areia-500);
+
+  /* ---- Signature gradient (logo/degradê): blue → sage → clay → cream ---- */
+  --degrade-brand: linear-gradient(115deg, #728ea0 22%, #c0c9bf 46%, #d6aa98 72%, #efdcc5 92%); /* @kind color */
+  --degrade-soft:  linear-gradient(115deg, #c0d3df 22%, #d8e2d7 46%, #efbeaa 72%, #fffad4 92%); /* @kind color */
+  --degrade-warm:  linear-gradient(120deg, #d6aa98 0%, #efdcc5 100%); /* @kind color */
+  --degrade-cool:  linear-gradient(120deg, #728ea0 0%, #c0c9bf 100%); /* @kind color */
+}

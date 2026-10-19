@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apresentações · Lesco</title>
+
+<link rel="icon" href="shared/brand/symbol.png">
+<link rel="stylesheet" href="theme/fonts.css">
+<link rel="stylesheet" href="theme/tokens.css">
+<link rel="stylesheet" href="theme/hub.css">
+</head>
+
+<body>
+
+<div class="hub">
+
+  <header class="hub__head">
+    <img class="hub__logo" src="shared/brand/logo-dark.png" alt="Lesco">
+    <div>
+      <div class="hub__eyebrow">Lives técnicas</div>
+      <h1 class="hub__title">Apresentações</h1>
+    </div>
+  </header>
+
+  <div class="hub__grid" id="grid"></div>
+
+  <footer class="hub__foot">
+    Durante a apresentação: <kbd>←</kbd> <kbd>→</kbd> navegam · <kbd>G</kbd> abre a grade de slides ·
+    <kbd>N</kbd> mostra as notas · <kbd>F</kbd> entra em tela cheia · <kbd>?</kbd> lista os atalhos.
+  </footer>
+
+</div>
+
+<script src="decks/decks.js"></script>
+<script>
+/* ---------------------------------------------------------------------------
+   Monta a lista de apresentações.
+
+   Cada deck.js é carregado em sequência e define window.DECK. Lendo dali o
+   título, o subtítulo, a contagem de slides e a primeira foto, a página
+   inicial nunca fica desatualizada em relação ao conteúdo real.
+   --------------------------------------------------------------------------- */
+(function () {
+  'use strict';
+
+  var grid = document.getElementById('grid');
+  var ids = window.DECKS || [];
+
+  if (!ids.length) {
+    grid.outerHTML = '<p class="hub__empty">Nenhuma apresentação registrada ainda. ' +
+      'Crie uma pasta em <code>decks/</code> e acrescente o nome dela em <code>decks/decks.js</code>.</p>';
+    return;
+  }
+
+  /* Uma entrada do registro é o nome da pasta, ou um objeto quando a
+     apresentação precisa de outros arquivos carregados antes do deck.js
+     (ver o comentário em decks/decks.js). */
+  function normaliza(entrada) {
+    if (typeof entrada === 'string') return { id: entrada, antes: [] };
+    return { id: entrada.id, antes: entrada.antes || [] };
+  }
+
+  /* Põe um <script> na página e espera por ele. Não rejeita: uma
+     apresentação que não abre não pode impedir as outras de aparecerem. */
+  function script(src) {
+    return new Promise(function (resolve) {
+      var el = document.createElement('script');
+      el.src = src;
+      el.onload = function () { resolve(true); };
+      el.onerror = function () {
+        console.warn('Não foi possível ler ' + src);
+        resolve(false);
+      };
+      document.head.appendChild(el);
+    });
+  }
+
+  /* Carrega as dependências e o deck.js, nessa ordem, e devolve o objeto
+     que o deck.js definiu. */
+  function load(entrada) {
+    var pasta = 'decks/' + entrada.id + '/';
+
+    var cadeia = entrada.antes.reduce(function (anterior, arquivo) {
+      return anterior.then(function () { return script(pasta + arquivo); });
+    }, Promise.resolve());
+
+    return cadeia
+      .then(function () { return script(pasta + 'deck.js'); })
+      .then(function (ok) {
+        var data = ok ? window.DECK : null;
+        window.DECK = null;
+        return data ? { id: entrada.id, data: data } : null;
+      });
+  }
+
+  /* A capa do card é a primeira foto de verdade que aparece na apresentação.
+     Slides sem `src` (espaço reservado) são ignorados. */
+  function firstPhoto(data) {
+    for (var i = 0; i < data.slides.length; i++) {
+      var slide = data.slides[i];
+
+      if (slide.src) return slide.src;
+      if (slide.media) {
+        var list = Array.isArray(slide.media) ? slide.media : [slide.media];
+        for (var j = 0; j < list.length; j++) {
+          if (list[j] && list[j].src) return list[j].src;
+        }
+      }
+    }
+    return null;
+  }
+
+  function card(entry) {
+    var data = entry.data;
+    var base = 'decks/' + entry.id + '/';
+    var cover = firstPhoto(data);
+    var opening = data.slides[0] || {};
+
+    var link = document.createElement('a');
+    link.className = 'deck-card';
+    link.href = base + 'index.html';
+
+    var photo = cover
+      ? '<img class="deck-card__photo" src="' + base + cover + '" alt="">'
+      : '';
+
+    link.innerHTML =
+      '<div class="deck-card__cover">' +
+        photo +
+        '<div class="deck-card__veil"></div>' +
+        '<div class="deck-card__inner">' +
+          '<div class="deck-card__eyebrow"></div>' +
+          '<h2 class="deck-card__name"></h2>' +
+        '</div>' +
+      '</div>' +
+      '<div class="deck-card__meta">' +
+        '<span class="deck-card__sub"></span>' +
+        '<span class="deck-card__count"></span>' +
+      '</div>';
+
+    /* Texto entra por textContent: o conteúdo do deck é texto, não HTML. */
+    link.querySelector('.deck-card__eyebrow').textContent = opening.eyebrow || 'Apresentação';
+    link.querySelector('.deck-card__name').textContent = data.title || entry.id;
+    link.querySelector('.deck-card__sub').textContent = data.subtitle || '';
+    link.querySelector('.deck-card__count').textContent = data.slides.length + ' slides';
+
+    return link;
+  }
+
+  /* Em sequência, e não em paralelo: todos os deck.js escrevem na mesma
+     variável global, então dois carregamentos simultâneos se atropelariam. */
+  ids.map(normaliza).reduce(function (chain, entrada) {
+    return chain.then(function () {
+      return load(entrada).then(function (entry) {
+        if (entry) grid.appendChild(card(entry));
+      });
+    });
+  }, Promise.resolve());
+})();
+</script>
+
+</body>
+</html>

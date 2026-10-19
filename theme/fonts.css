@@ -1,0 +1,37 @@
+/* ---------------------------------------------------------------------------
+   Fontes da marca Lesco.
+   Arquivos licenciados em shared/fonts/. Caminho relativo a ESTE arquivo,
+   portanto funciona tanto em file:// quanto servido por HTTP.
+   --------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Neue Machina';
+  src: url('../shared/fonts/PPNeueMachina-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'Neue Machina';
+  src: url('../shared/fonts/PPNeueMachina-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'Object Sans';
+  src: url('../shared/fonts/PPObjectSans-Thin.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'Object Sans';
+  src: url('../shared/fonts/PPObjectSans-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}

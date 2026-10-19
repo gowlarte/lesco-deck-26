@@ -1,0 +1,190 @@
+/* ---------------------------------------------------------------------------
+   Carrossel de divulgação — Instagram, 1080 × 1350
+
+   Mesma tinta e mesmas fontes do deck: as medidas é que mudam, porque aqui
+   o quadro é vertical e pequeno, visto no celular. Tudo em px absolutos,
+   como no palco da apresentação.
+
+   A página tem dois modos:
+     revisão   todos os quadros empilhados, para conferir rolando a tela
+     captura   ?n=3 mostra só o quadro 3, encostado no canto, para o Chrome
+               fotografar numa janela de 1080 × 1350
+   --------------------------------------------------------------------------- */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ink-900);
+  font-family: var(--font-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- modo revisão -------------------------------------------------------- */
+
+body.revisao { padding: 60px 0; }
+
+body.revisao .quadro { margin: 0 auto 60px; }
+
+.etiqueta {
+  width: 1080px;
+  margin: 0 auto 14px;
+  color: var(--ink-400);
+  font-size: 22px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+body.captura .etiqueta { display: none; }
+
+/* ---- modo captura -------------------------------------------------------- */
+
+body.captura .quadro { display: none; }
+body.captura .quadro.alvo { display: block; }
+
+/* ---- o quadro ------------------------------------------------------------ */
+
+.quadro {
+  position: relative;
+  width: 1080px;
+  height: 1350px;
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--text-body);
+}
+
+.quadro--escuro { background: var(--ink-900); color: var(--on-dark-body); }
+
+.quadro__foto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--focal, 50% 50%);
+}
+
+/* Véu por cima da foto: sem ele o texto branco some no céu claro. */
+.quadro__veu {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom,
+              rgba(16, 15, 14, 0.50) 0%,
+              rgba(16, 15, 14, 0.18) 38%,
+              rgba(16, 15, 14, 0.72) 78%,
+              rgba(16, 15, 14, 0.90) 100%);
+}
+
+.quadro__conteudo {
+  position: absolute;
+  inset: 0;
+  padding: 84px;
+  display: flex;
+  flex-direction: column;
+}
+
+.empurra { flex: 1; }
+
+/* ---- tipografia ---------------------------------------------------------- */
+
+.olho {
+  font-size: 25px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.olho::before {
+  content: '';
+  width: 46px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+.sobre-foto .olho { color: var(--on-dark-muted); }
+
+.titulo {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 104px;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--text-strong);
+  margin: 30px 0 0;
+}
+
+.sobre-foto .titulo,
+.quadro--escuro .titulo { color: var(--on-dark-strong); }
+
+.titulo--medio { font-size: 78px; }
+
+.legenda {
+  font-size: 34px;
+  line-height: 1.45;
+  color: var(--text-muted);
+  margin: 30px 0 0;
+  max-width: 800px;
+}
+
+.sobre-foto .legenda,
+.quadro--escuro .legenda { color: var(--on-dark-body); }
+
+/* ---- lista de tópicos (quadro 2) ----------------------------------------- */
+
+.topicos { margin: 56px 0 0; padding: 0; list-style: none; }
+
+.topicos li {
+  font-size: 36px;
+  line-height: 1.35;
+  color: var(--text-body);
+  padding: 30px 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.topicos li:last-child { border-bottom: 1px solid var(--hairline); }
+
+/* ---- rodapé e marca ------------------------------------------------------ */
+
+.rodape {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.marca { height: 46px; width: auto; opacity: 0.92; }
+
+.arrasta {
+  font-size: 26px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--on-dark-muted);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.arrasta::after { content: '›'; font-size: 40px; line-height: 0.6; }
+
+/* ---- chamada final ------------------------------------------------------- */
+
+.quando {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 86px;
+  line-height: 1.1;
+  color: var(--on-dark-strong);
+  margin: 30px 0 0;
+}
+
+/* O que ainda falta o Matheus preencher fica marcado na tela, para não ser
+   postado sem querer. */
+.vago {
+  color: var(--accent);
+  border-bottom: 3px dashed var(--accent-deep);
+  padding-bottom: 6px;
+}

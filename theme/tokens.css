@@ -1,0 +1,89 @@
+/* ---------------------------------------------------------------------------
+   Lesco — tema de apresentação (variante NEUTRA)
+
+   Derivado do design system em _ds/, com uma diferença deliberada: aqui o
+   verde da marca NÃO é cor de fundo. Os neutros quentes conduzem a leitura
+   e o verde aparece só em acentos — numeração, filetes, barra de progresso
+   e um destaque por slide. Assim as fotos de obra ficam com o protagonismo.
+
+   Tudo é declarado em px absolutos porque o palco tem tamanho fixo de
+   1920 × 1080 e é escalado inteiro por transform (ver engine/stage.css).
+   --------------------------------------------------------------------------- */
+
+:root {
+  /* ---- Tinta / neutros quentes -------------------------------------- */
+  --ink-900: #1a1a1a;   /* texto principal, fundo dos slides escuros */
+  --ink-800: #262523;
+  --ink-700: #38352f;   /* corpo de texto */
+  --ink-600: #4a463f;
+  --ink-500: #6c675e;   /* texto secundário, eyebrows */
+  --ink-400: #8f897d;
+  --ink-300: #b6b0a4;   /* texto secundário sobre fundo escuro */
+  --ink-200: #d8d2c6;   /* filetes (hairlines) */
+  --ink-100: #e8e2d6;
+
+  /* ---- Papel / superfícies ------------------------------------------ */
+  --paper:       #f4efe6;   /* fundo padrão dos slides */
+  --paper-soft:  #faf6ee;
+  --surface:     #ffffff;
+  --surface-sunk:#ece5d8;   /* cards sobre papel */
+  --surface-dark:#221f1c;   /* cards sobre grafite */
+
+  /* ---- Acento da marca (sage) — uso parcimonioso --------------------- */
+  --accent:       #94a291;
+  --accent-soft:  #c0c9bf;
+  --accent-deep:  #5f6c5c;
+  --accent-wash:  #e6ede4;
+
+  /* ---- Papéis semânticos -------------------------------------------- */
+  --text-strong:  var(--ink-900);
+  --text-body:    var(--ink-700);
+  --text-muted:   var(--ink-500);
+  --hairline:     var(--ink-200);
+
+  /* Invertidos: usados quando o slide está em tom grafite */
+  --on-dark-strong: #f7f3ea;
+  --on-dark-body:   #d5cfc3;
+  --on-dark-muted:  #8f897d;
+  --on-dark-hair:   #3a3733;
+
+  /* ---- Tipografia ---------------------------------------------------- */
+  --font-display: 'Neue Machina', 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-text:    'Object Sans', 'Manrope', ui-sans-serif, system-ui, sans-serif;
+
+  /* Escala em px do palco 1920×1080 */
+  --fs-hero:    124px;
+  --fs-title:   78px;
+  --fs-h2:      68px;
+  --fs-h3:      58px;
+  --fs-lead:    36px;
+  --fs-body:    34px;
+  --fs-sub:     32px;
+  --fs-meta:    30px;
+  --fs-label:   28px;
+  --fs-eyebrow: 26px;
+  --fs-numeral: 200px;   /* número gigante das aberturas de capítulo */
+  --fs-stat:    132px;   /* número dos cards de métrica */
+
+  --track-eyebrow: 0.32em;
+  --track-label:   0.14em;
+  --track-title:   0.16em;
+
+  /* ---- Layout -------------------------------------------------------- */
+  --pad-x: 120px;        /* margem lateral padrão do slide */
+  --pad-y: 104px;
+  --pad-y-tight: 88px;
+
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  /* ---- Movimento ----------------------------------------------------- */
+  --ease-out:      cubic-bezier(0.16, 1, 0.30, 1);
+  --ease-standard: cubic-bezier(0.40, 0, 0.20, 1);
+  --dur-fast:  180ms;
+  --dur-base:  420ms;
+  --dur-slow:  720ms;
+  --dur-scene: 900ms;    /* transição entre slides */
+  --stagger:   55ms;     /* passo da revelação escalonada */
+}
