@@ -98,7 +98,10 @@
         layout: 'index',
         label: 'Agenda',
         notes: 'Roteiro. Seis blocos. Avisar que os números da operação começam no bloco 02 — o 01 é só para situar quem nunca ouviu falar da empresa.',
-        title: 'What this\ncovers',
+        /* Uma linha, e não duas: com seis itens a lista encostava na borda
+           de baixo, e a segunda linha do título custava 89 px que a lista
+           precisava mais do que ele. */
+        title: 'What this covers',
         /* A numeração 01–06 é automática no layout; a tag da direita carrega
            o número que resume cada bloco, para o sumário já adiantar algo. */
         items: [

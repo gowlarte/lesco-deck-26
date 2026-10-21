@@ -1055,6 +1055,24 @@
 }
 
 /* =====================================================================
+   Sumário com seis itens
+
+   O layout `index` foi desenhado para cinco. Com seis, cada item custando
+   119 px, a lista terminava a 1 px da borda de baixo — 102 px além da
+   margem — e o slide ficava sem pé.
+
+   O intervalo de cada item cai de 11 para 7 (o título já entra em uma
+   linha só, no deck.js, o que devolve outros 89 px). A lista passa a
+   terminar em 942, com 34 px até a margem.
+
+   A regra vive AQUI, e não em engine/layouts.css, porque `.l-index--denso`
+   é compartilhado: mexer lá mudaria o sumário da live técnica junto, que
+   ninguém pediu para mexer.
+   ===================================================================== */
+
+.l-index--denso .l-index__item { padding: 7px 0; }
+
+/* =====================================================================
    Trava de senha
 
    Enquanto .trancado está no body, o palco e o cromo somem — não é só
