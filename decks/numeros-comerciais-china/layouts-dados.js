@@ -538,10 +538,13 @@
     render: function (s) {
       var fotos = lista(s.fotos);
 
-      function tira() {
+      /* A segunda cópia leva uma classe própria. Ela existe só para emendar
+         o laço na tela; na exportação em PDF ela some, porque lá nada anda
+         e o que fica é uma tira estática — ver dados.css. */
+      function tira(copia) {
         var t = document.createDocumentFragment();
         fotos.forEach(function (f) {
-          t.appendChild(h('figure', { class: 'marquee__item' }, [
+          t.appendChild(h('figure', { class: 'marquee__item' + (copia ? ' marquee__item--copia' : '') }, [
             h('div', { class: 'marquee__moldura' }, [
               h('img', { src: f.src, alt: f.alt || f.label || '' })
             ]),
@@ -558,8 +561,8 @@
         class: 'marquee__trilho',
         style: '--seg:' + (s.segundos || 46) + 's'
       });
-      trilho.appendChild(tira());
-      trilho.appendChild(tira());   /* a segunda cópia é a emenda do laço */
+      trilho.appendChild(tira(false));
+      trilho.appendChild(tira(true));   /* a emenda do laço */
 
       return h('div', { class: 'l-marquee' }, [
         h('div', { class: 'l-marquee__texto pad' }, [

@@ -44,12 +44,44 @@ function findChrome() {
   return null;
 }
 
-/* Lê decks/decks.js sem precisar de navegador. */
+/* Lê decks/decks.js sem precisar de navegador.
+
+   Devolve sempre { id, antes }, mesmo quando o registro traz só o nome da
+   pasta: uma apresentação pode declarar arquivos que precisam ser lidos
+   antes do deck.js (ver o comentário em decks/decks.js). */
 function listDecks() {
   const src = fs.readFileSync(path.join(ROOT, 'decks', 'decks.js'), 'utf8');
   const sandbox = {};
   new Function('window', src)(sandbox);
-  return sandbox.DECKS || [];
+  return (sandbox.DECKS || []).map(e =>
+    typeof e === 'string' ? { id: e, antes: [] } : { id: e.id, antes: e.antes || [] }
+  );
+}
+
+/* Roda os arquivos da apresentação num objeto `window` de mentira e devolve
+   o window.DECK que eles definiram.
+
+   As dependências entram primeiro, na ordem declarada. Sem isso, um deck.js
+   que lê window.DADOS — como o de números, que não tem um número escrito
+   dentro dele — estoura aqui com "Cannot read properties of undefined", e a
+   exportação morre antes de abrir o navegador. */
+function lerDeck(entrada) {
+  const pasta = path.join(ROOT, 'decks', entrada.id);
+  const sandbox = {};
+
+  for (const arquivo of entrada.antes.concat('deck.js')) {
+    const caminho = path.join(pasta, arquivo);
+    if (!fs.existsSync(caminho)) {
+      throw new Error('decks/' + entrada.id + '/' + arquivo + ' não existe (declarado em decks/decks.js)');
+    }
+    try {
+      new Function('window', fs.readFileSync(caminho, 'utf8'))(sandbox);
+    } catch (e) {
+      throw new Error('erro ao ler decks/' + entrada.id + '/' + arquivo + ': ' + e.message);
+    }
+  }
+
+  return sandbox.DECK;
 }
 
 function waitForServer(port, tries = 40) {
@@ -79,22 +111,30 @@ async function exportDeck(id, onStep) {
   }
 
   const decks = listDecks();
-  id = id || decks[0];
+  if (!decks.length) throw new Error('Nenhuma apresentação registrada em decks/decks.js.');
 
-  if (!id) throw new Error('Nenhuma apresentação registrada em decks/decks.js.');
+  id = id || decks[0].id;
+
+  const entrada = decks.find(d => d.id === id) || { id, antes: [] };
 
   if (!fs.existsSync(path.join(ROOT, 'decks', id, 'index.html'))) {
-    throw new Error('Não achei decks/' + id + '/index.html (registradas: ' + decks.join(', ') + ')');
+    throw new Error('Não achei decks/' + id + '/index.html (registradas: ' +
+                    decks.map(d => d.id).join(', ') + ')');
   }
 
-  /* Nome do arquivo: o título do deck, sem acento nem pontuação. */
-  const deckSrc = fs.readFileSync(path.join(ROOT, 'decks', id, 'deck.js'), 'utf8');
-  const sandbox = {};
-  new Function('window', deckSrc)(sandbox);
+  const deck = lerDeck(entrada);
 
-  const title = (sandbox.DECK && sandbox.DECK.title) || id;
-  const slides = sandbox.DECK ? sandbox.DECK.slides.length : 0;
-  const fileName = title.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w\s-]/g, '').trim() + '.pdf';
+  const title = (deck && deck.title) || id;
+  const slides = deck ? deck.slides.length : 0;
+
+  /* Nome do arquivo: o título do deck, sem acento nem pontuação. O colapso
+     de espaço no fim é porque tirar o "&" de "Commercial & Marketing" deixa
+     dois espaços seguidos. */
+  const fileName = title
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim() + '.pdf';
 
   const outDir = path.join(ROOT, 'export');
   fs.mkdirSync(outDir, { recursive: true });

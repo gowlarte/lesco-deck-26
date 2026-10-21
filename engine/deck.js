@@ -128,7 +128,14 @@
 
      Sem isto o navegador embute cada foto na resolução original: as fotos de
      obra têm até 5760 px e o PDF passa de 190 MB, o que não serve para
-     mandar para ninguém revisar. */
+     mandar para ninguém revisar.
+
+     TODA imagem passa pelo canvas, mesmo a que já é pequena o bastante e não
+     precisa encolher. O motivo é o formato, não o tamanho: desde que as
+     fotos viraram WebP, pular essa volta fazia o Chrome embutir o WebP como
+     imagem crua no PDF — e o arquivo da live saltou de 37 MB para 93 MB sem
+     uma foto sequer ter mudado de resolução. O canvas devolve JPEG, que o
+     PDF guarda comprimido. */
   function shrinkForExport() {
     var imgs = Array.prototype.slice.call(document.querySelectorAll('.slide img'));
 
@@ -138,8 +145,9 @@
         var h = img.naturalHeight;
         if (!w || !h) return resolve();
 
+        /* Nunca aumenta: `ratio` é 1 para quem já cabe, e aí o canvas só
+           troca o formato. */
         var ratio = Math.min(1, EXPORT_MAX_EDGE / Math.max(w, h));
-        if (ratio === 1) return resolve();
 
         var canvas = document.createElement('canvas');
         canvas.width = Math.round(w * ratio);

@@ -1162,5 +1162,42 @@ body.trancado .loader { display: none !important; }
    página. Os gráficos foram desenhados para que isso baste: a largura da
    barra, a altura da coluna, o dasharray do arco e o preenchimento do
    estado estão no próprio elemento, não na animação. A animação só revela
-   o que já está lá. Nenhuma regra a mais é necessária aqui.
+   o que já está lá.
+
+   A tira de fotos é a única exceção, e por um motivo que custou caro
+   achar: o trilho tem 6920 px de largura em fluxo, e ao paginar o Chrome
+   encolhia TODAS as páginas do PDF a dois terços para fazer esses 6920 px
+   caberem — mesmo com `overflow: hidden` por cima dele. O slide saía em
+   66,7% da folha, com o resto preto. O `overflow: hidden` esconde, mas
+   não some com a largura.
+
+   A correção também é a melhor resposta de desenho: no papel nada anda,
+   então a tira vira uma tira estática. A segunda cópia — que só existe
+   para emendar o laço — sai, e as fotos restantes dividem a largura da
+   página. O PDF ganha um contato de todas as obras de uma vez, e nada
+   mais passa de 1920 px.
    ===================================================================== */
+
+.is-export .marquee__item--copia { display: none; }
+
+/* Na tela a tira sangra pelos dois lados de propósito — é o que diz que ela
+   continua. Parada no papel, a sangria vira corte acidental, então ela se
+   recolhe para dentro da margem do slide. */
+.is-export .marquee { padding: 0 var(--pad-x); }
+
+.is-export .marquee__trilho {
+  width: 100%;
+  gap: 26px;
+  animation: none !important;
+}
+
+.is-export .marquee__item {
+  width: auto;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.is-export .marquee__moldura { height: 330px; }
+
+.is-export .marquee__label { font-size: 24px; }
+.is-export .marquee__apoio { font-size: 20px; }

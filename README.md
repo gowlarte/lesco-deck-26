@@ -115,10 +115,32 @@ versão paginada numa aba e chama a impressão — aí é você que escolhe
 
 Para só conferir na tela, sem gerar arquivo, acrescente `?export` ao endereço.
 
-As fotos entram no PDF reduzidas a 1800 px. Sem isso o Chrome embute os
-originais de obra e o arquivo passa de 190 MB, o que não serve para mandar
-para ninguém; com a redução fica em torno de 16 MB, com resolução de sobra
-para conferir informação.
+As fotos entram no PDF reduzidas a 1800 px e **reconvertidas para JPEG** —
+inclusive as que já eram pequenas e não precisavam encolher. A reconversão é
+pelo formato, não pelo tamanho: desde que as fotos do projeto viraram WebP,
+pular essa volta fazia o Chrome embutir o WebP cru e o PDF da live saltava de
+37 MB para 93 MB sem uma foto ter mudado de resolução.
+
+### Duas armadilhas da paginação
+
+**1. Nada pode ser mais largo que o slide — nem o que está escondido.**
+A tira de fotos do deck de números tem 6920 px de trilho, com `overflow:
+hidden` por cima. Na tela isso é invisível; ao paginar, o Chrome **conta essa
+largura mesmo assim** e encolhe *todas* as páginas do PDF para fazê-la caber.
+O sintoma é inconfundível: o slide sai a 66,7% da folha, encostado no canto
+superior esquerdo, com o resto preto. Se isso aparecer, procure o elemento
+largo — não é o `@page` nem o papel, que continuam corretos.
+
+A tira resolve isso virando estática em `.is-export` (ver `dados.css`): a
+segunda cópia some e as fotos dividem a largura da página. No papel nada anda
+mesmo, então não se perde nada.
+
+**2. Um `deck.js` que depende de outro arquivo precisa declarar isso.**
+`tools/export-pdf.js` roda o `deck.js` num sandbox para ler título e contagem
+de slides. Se ele depender de `dados.js`, a dependência tem que estar em
+`antes`, no `decks/decks.js` — senão a exportação morre com "Cannot read
+properties of undefined" **antes de abrir o navegador**, e o botão do menu cai
+no diálogo de impressão do Chrome, que gera um PDF com o papel errado.
 
 ---
 
