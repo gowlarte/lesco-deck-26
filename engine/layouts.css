@@ -948,6 +948,11 @@
   min-height: 0;
 }
 
+/* Dois cards dividem a largura inteira. Testei prendê-los à largura de
+   dois cards do padrão de três, encostados à esquerda: sobrava um vão de
+   580 px à direita que lia como slide inacabado, não como respiro. */
+.l-cards__grid--dois { grid-template-columns: repeat(2, 1fr); gap: 56px; }
+
 .l-cards__grid--quatro { grid-template-columns: repeat(4, 1fr); gap: 34px; }
 .l-cards__grid--quatro .card { padding: 34px; gap: 20px; }
 

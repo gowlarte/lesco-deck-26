@@ -652,11 +652,14 @@
     render: function (s) {
       var itens = toArray(s.items);
 
-      /* Três cards é o desenho padrão. Quatro e cinco ainda cabem numa linha
-         só, com o card mais estreito e a folga menor — ver layouts.css.
+      /* Três cards é o desenho padrão. Dois, quatro e cinco também cabem
+         numa linha só — com o card mais largo ou mais estreito, conforme o
+         caso, em layouts.css. Sem a variante de dois, o par ficaria preso
+         em duas das três colunas do padrão, com um vão vazio à direita.
          Seis já não é card, é lista: use `checklist`. */
       var grid = h('div', {
         class: 'l-cards__grid' +
+               (itens.length === 2 ? ' l-cards__grid--dois' : '') +
                (itens.length === 4 ? ' l-cards__grid--quatro' : '') +
                (itens.length === 5 ? ' l-cards__grid--cinco' : '')
       });

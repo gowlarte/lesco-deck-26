@@ -155,10 +155,10 @@
       {
         layout: 'cards',
         label: 'Beyond WPC',
-        notes: 'O ponto do slide: a Lesco deixou de ser uma empresa de um material só. Geo é pedra flexível mineral, Zhú é bambu maciço — duas matérias-primas que não têm nada a ver com WPC, cada uma com catálogo próprio lançado em 2026. Echo está em desenvolvimento; se perguntarem o que é, a resposta honesta é que ainda não foi lançada. Não prometer data.',
+        notes: 'O ponto do slide: a Lesco deixou de ser uma empresa de um material só. Geo é pedra flexível mineral, Zhú é bambu maciço — duas matérias-primas que não têm nada a ver com WPC, cada uma com catálogo próprio lançado em 2026. A Echo fica fora do deck por ora, a pedido: se alguém perguntar o que vem depois, a resposta é que há linha em desenvolvimento, sem nome nem data.',
         eyebrow: '01 · The company',
-        title: 'And three more\nmaterials',
-        sub: 'The portfolio stopped being one material. Two new lines launched in 2026, a third in development.',
+        title: 'And two more\nmaterials',
+        sub: 'The portfolio stopped being one material. Two new lines, each with its own catalogue, launched in 2026.',
         items: [
           {
             label: 'Geo',
@@ -171,13 +171,6 @@
             text: 'Solid bamboo panels, ceilings, baffles and decking. Indoor and outdoor finishes.',
             src: 'img/zhu-bambu.webp',
             alt: 'Painel acústico de bambu maciço da linha Zhú'
-          },
-          {
-            /* Sem `src` de propósito, e sem moldura: a linha ainda não tem
-               produto para mostrar, e um quadro vazio só chamava atenção
-               para o buraco. O card fica no texto. */
-            label: 'Echo',
-            text: 'In development. Not yet launched.'
           }
         ]
       },
