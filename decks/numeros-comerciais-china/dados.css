@@ -1055,21 +1055,6 @@
 }
 
 /* =====================================================================
-   Card sem imagem — a linha que ainda não saiu
-
-   O renderizador de `cards` não desenha nada quando o item vem sem `src`,
-   então a moldura fica literalmente vazia e o seletor :empty a pega. Em
-   vez de um buraco, ela vira um contorno tracejado: lê como lugar
-   reservado, que é exatamente o estado da Echo.
-   ===================================================================== */
-
-.l-cards .card__figure:empty {
-  border: 1.5px dashed var(--traco);
-  border-radius: var(--radius-md);
-  opacity: 0.5;
-}
-
-/* =====================================================================
    Trava de senha
 
    Enquanto .trancado está no body, o palco e o cromo somem — não é só

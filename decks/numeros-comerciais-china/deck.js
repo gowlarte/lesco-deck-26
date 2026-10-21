@@ -143,12 +143,7 @@
           { label: 'Brise',    text: 'Sun-shading slats, 25 × 25 up to 250 × 50 mm.',   src: IMG + 'tec/brise-200x50.webp', alt: 'Perfil de brise 200 × 50 mm' },
           { label: 'Panel',    text: 'Façade and ceiling cladding, 119 to 260 mm.',      src: IMG + 'tec/panel-119x12.webp', alt: 'Perfil de painel 119 × 12 mm' },
           { label: 'Deck',     text: 'Decking boards on clip fixing, 97 to 150 mm.',     src: IMG + 'tec/deck-150x22.webp',  alt: 'Perfil de régua de deck 150 × 22 mm' },
-          /* Render 3D do Shield não existe no projeto: no catálogo ele é PNG
-             com transparência, que não sai por extração simples. Fica a
-             amostra do acabamento escovado, que é material de catálogo
-             também. Trocar por `img/shield-perfil.webp` quando o render
-             aparecer — é só soltar o arquivo e mudar esta linha. */
-          { label: 'Shield',   text: 'Cladding boards, 124 × 15.5 up to 219 × 38.5 mm.', src: 'img/shield-escovado.webp',    alt: 'Acabamento escovado da linha Shield' },
+          { label: 'Shield',   text: 'Cladding boards, 124 × 15.5 up to 219 × 38.5 mm.', src: 'img/shield-perfil.webp',      alt: 'Perfil de revestimento Shield, com o encaixe macho-fêmea e o canal da presilha' },
           { label: 'Muxarabi', text: 'Modular lattice in 50, 100 and 150 mm.',           src: IMG + 'tec/muxarabi-100.webp', alt: 'Módulo de muxarabi 100 mm' }
         ]
       },
@@ -178,8 +173,9 @@
             alt: 'Painel acústico de bambu maciço da linha Zhú'
           },
           {
-            /* Sem `src` de propósito: a moldura vazia é estilizada em
-               dados.css para ler como linha que ainda não saiu. */
+            /* Sem `src` de propósito, e sem moldura: a linha ainda não tem
+               produto para mostrar, e um quadro vazio só chamava atenção
+               para o buraco. O card fica no texto. */
             label: 'Echo',
             text: 'In development. Not yet launched.'
           }
