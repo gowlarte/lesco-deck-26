@@ -203,8 +203,11 @@
 
 .l-barras { display: flex; flex-direction: column; }
 
+/* O subtítulo precisa de folga embaixo, não só em cima: colado na primeira
+   barra ele deixa de ser subtítulo e vira legenda da barra. 52 px é a mesma
+   folga que `pilha` e `cards` já usavam — os layouts que ninguém reclamou. */
 .l-barras .title { margin-bottom: 22px; }
-.l-barras .sub { margin-bottom: 18px; }
+.l-barras .sub { margin-bottom: 52px; }
 
 .barras {
   flex: 1;
@@ -221,7 +224,15 @@
    e a nota embaixo. No modo denso o apoio vai para o lado do rótulo, e a
    linha volta a ter a altura do próprio trilho. O teto confortável aqui é
    doze barras; acima disso, dividir em dois slides. */
-.barras--denso { gap: 28px; }
+/* A folga que o subtítulo ganhou sai daqui.
+
+   A conta, medida com dez barras: cada linha tem 42 px e a caixa da lista
+   tem 636. Com intervalo de 18 e o rodapé em 44, a lista pede 626 e sobram
+   10 px. Isso importa porque `.barras` centraliza: se a lista pedir MAIS do
+   que a caixa, o excedente vaza metade para cima, come a margem do
+   subtítulo e o problema volta sozinho. Antes de acrescentar uma barra
+   aqui, refaça a conta. */
+.barras--denso { gap: 18px; padding-bottom: 44px; }
 
 .barras--denso .barra__rotulo {
   flex-direction: row;
@@ -400,7 +411,7 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 60px;
-  margin-bottom: 28px;
+  margin-bottom: 52px;   /* mesma folga de .l-barras .sub */
 }
 
 .l-colunas .title { margin-bottom: 14px; }
@@ -527,26 +538,30 @@
 
 .l-rosca { display: flex; flex-direction: column; }
 
-.l-rosca__cabeca { margin-bottom: 38px; }
+.l-rosca__cabeca { margin-bottom: 52px; }   /* mesma folga de .l-barras .sub */
 .l-rosca .title { margin-bottom: 14px; }
 
 .l-rosca__corpo {
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: 430px 1fr;
+  grid-template-columns: 460px 1fr;
   align-items: center;
-  gap: 92px;
+  gap: 80px;
   padding-bottom: 56px;
 }
 
-.rosca__disco { position: relative; width: 430px; height: 430px; }
+.rosca__disco { position: relative; width: 460px; height: 460px; }
 
 .rosca__svg { width: 100%; height: 100%; transform: rotate(-90deg); }
 
+/* O traço define o buraco, e o buraco é o que o número tem para ocupar.
+   Com 46 de traço num viewBox de 320, o raio interno é 128 - 23 = 105, o
+   que dá 302 px de buraco no disco de 460. Engrossar o anel aperta o
+   número; ver o orçamento de largura em .rosca__centro. */
 .rosca__arco {
   fill: none;
-  stroke-width: 54;
+  stroke-width: 46;
   stroke-dasharray: var(--len) var(--resto);
 }
 
@@ -556,9 +571,24 @@
 .rosca__arco--t4 { stroke: var(--f2); }
 .rosca__arco--t5 { stroke: var(--f1); }
 
+/* O miolo é uma caixa com largura declarada, e não `inset: 0`, justamente
+   para não poder invadir o anel.
+
+   O ORÇAMENTO DE LARGURA, para quem for mexer no corpo do número: o buraco
+   tem 302 px de diâmetro, mas o bloco de texto não é um ponto no centro —
+   ele tem altura, e nas bordas de cima e de baixo a corda do círculo é mais
+   estreita que o diâmetro. Com as duas linhas somando 85 px de altura, a
+   largura utilizável cai para 2·√(151² − 42,5²) ≈ 290 px.
+
+   "US$ 3.3M" a 54 px ocupa 268 px, então sobram 22. Um número que passe de
+   nove caracteres não cabe mais: ou diminui o corpo, ou o rótulo do centro
+   passa a carregar a moeda ("3.3M" em cima, "US$ · 135 contracts" embaixo). */
 .rosca__centro {
   position: absolute;
-  inset: 0;
+  top: 50%;
+  left: 50%;
+  width: 290px;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -570,13 +600,13 @@
 .rosca__centro-valor {
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: 68px;
+  font-size: 54px;
   line-height: 1;
   color: var(--text-strong);
 }
 
 .rosca__centro-label {
-  font-size: 24px;
+  font-size: 23px;
   letter-spacing: var(--track-label);
   text-transform: uppercase;
   color: var(--text-muted);
@@ -692,7 +722,7 @@
 
 .mapa__painel .eyebrow { margin-bottom: 24px; }
 .mapa__painel .title { margin-bottom: 14px; }
-.mapa__painel .sub { margin-bottom: 30px; font-size: 29px; }
+.mapa__painel .sub { margin-bottom: 44px; font-size: 29px; }
 
 .mapa__destaques {
   display: flex;
@@ -1022,6 +1052,21 @@
 
   .slide.is-current .rosca__arco { stroke-dasharray: var(--len) var(--resto); }
   .slide.is-current .marquee__trilho { animation: none !important; }
+}
+
+/* =====================================================================
+   Card sem imagem — a linha que ainda não saiu
+
+   O renderizador de `cards` não desenha nada quando o item vem sem `src`,
+   então a moldura fica literalmente vazia e o seletor :empty a pega. Em
+   vez de um buraco, ela vira um contorno tracejado: lê como lugar
+   reservado, que é exatamente o estado da Echo.
+   ===================================================================== */
+
+.l-cards .card__figure:empty {
+  border: 1.5px dashed var(--traco);
+  border-radius: var(--radius-md);
+  opacity: 0.5;
 }
 
 /* =====================================================================

@@ -951,6 +951,11 @@
 .l-cards__grid--quatro { grid-template-columns: repeat(4, 1fr); gap: 34px; }
 .l-cards__grid--quatro .card { padding: 34px; gap: 20px; }
 
+.l-cards__grid--cinco { grid-template-columns: repeat(5, 1fr); gap: 24px; }
+.l-cards__grid--cinco .card { padding: 26px; gap: 16px; }
+.l-cards__grid--cinco .card__label { font-size: 34px; }
+.l-cards__grid--cinco .card__text { font-size: 24px; }
+
 .card {
   background: var(--surface-sunk);
   border-radius: var(--radius-lg);

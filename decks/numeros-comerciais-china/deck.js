@@ -102,7 +102,7 @@
         /* A numeração 01–06 é automática no layout; a tag da direita carrega
            o número que resume cada bloco, para o sumário já adiantar algo. */
         items: [
-          { name: 'The company',  apoio: 'What Lesco makes, and for whom',      tag: 'Four systems' },
+          { name: 'The company',  apoio: 'What Lesco makes, and for whom',      tag: 'Three materials' },
           { name: 'Demand',       apoio: 'Everything that came in, by channel', tag: mil(D.demanda.total) + ' requests' },
           { name: 'Conversion',   apoio: 'From quotation to signed contract',   tag: usd(D.vendas25.brl) },
           { name: 'The customer', apoio: 'Who buys, and how they found us',     tag: D.perfil.length + ' profiles' },
@@ -123,7 +123,7 @@
         title: 'Architecture\nmade for\ntomorrow',
         /* Texto curto por necessidade: a coluna do layout half comporta
            seis linhas de lead antes de empurrar a foto para fora do slide. */
-        text: 'Architectural cladding made from wood-composite profiles: sun-shading brises, façade and ceiling panels, decking and modular lattice. Specified by architects, installed by certified crews.',
+        text: 'Architectural cladding in wood-composite, mineral stone and solid bamboo: brises, façade and ceiling panels, decking and lattice. Specified by architects, installed by certified crews.',
         destaques: ['Itajaí · SC', 'São Paulo · SP'],
         media: {
           src: IMG + 'ala/abertura.webp',
@@ -134,16 +134,55 @@
 
       {
         layout: 'cards',
-        label: 'Product systems',
-        notes: 'As quatro linhas. Os renders saem do catálogo técnico, com as medidas reais de perfil. Se perguntarem por acabamento: Tasmania Oak, Red Cedar e Ipê, fosco ou escovado.',
+        label: 'WPC systems',
+        notes: 'As cinco linhas em WPC, com as medidas reais do catálogo 2025. Muxarabi fica por último de propósito. Se perguntarem por acabamento: Ipê, Oak, Red Cedar, Teak, Walnut, Weatherwood, Black e Lily White, escovado ou texturizado. Existe ainda a linha Line no catálogo, que ficou fora por caber mal em cinco cards — se virar assunto, está na página 38.',
         eyebrow: '01 · The company',
-        title: 'Four systems,\none material',
-        sub: 'Every project in this deck is one of these four, or a combination of them.',
+        title: 'Five systems\nin wood-composite',
+        sub: 'WPC is 55% wood flour and 35% HDPE — termite-proof, hydrophobic, mould-resistant, ten-year warranty.',
         items: [
-          { label: 'Brise',    text: 'Sun-shading slats, 25 × 25 up to 250 × 50 mm.', src: IMG + 'tec/brise-200x50.webp', alt: 'Perfil de brise 200 × 50 mm' },
-          { label: 'Panel',    text: 'Façade and ceiling cladding, 119 × 12 mm.',     src: IMG + 'tec/panel-119x12.webp', alt: 'Perfil de painel 119 × 12 mm' },
-          { label: 'Deck',     text: 'Decking boards on clip fixing, 97 to 150 mm.',  src: IMG + 'tec/deck-150x22.webp',  alt: 'Perfil de régua de deck 150 × 22 mm' },
-          { label: 'Muxarabi', text: 'Modular lattice in 50, 100 and 150 mm.',        src: IMG + 'tec/muxarabi-100.webp', alt: 'Módulo de muxarabi 100 mm' }
+          { label: 'Brise',    text: 'Sun-shading slats, 25 × 25 up to 250 × 50 mm.',   src: IMG + 'tec/brise-200x50.webp', alt: 'Perfil de brise 200 × 50 mm' },
+          { label: 'Panel',    text: 'Façade and ceiling cladding, 119 to 260 mm.',      src: IMG + 'tec/panel-119x12.webp', alt: 'Perfil de painel 119 × 12 mm' },
+          { label: 'Deck',     text: 'Decking boards on clip fixing, 97 to 150 mm.',     src: IMG + 'tec/deck-150x22.webp',  alt: 'Perfil de régua de deck 150 × 22 mm' },
+          /* Render 3D do Shield não existe no projeto: no catálogo ele é PNG
+             com transparência, que não sai por extração simples. Fica a
+             amostra do acabamento escovado, que é material de catálogo
+             também. Trocar por `img/shield-perfil.webp` quando o render
+             aparecer — é só soltar o arquivo e mudar esta linha. */
+          { label: 'Shield',   text: 'Cladding boards, 124 × 15.5 up to 219 × 38.5 mm.', src: 'img/shield-escovado.webp',    alt: 'Acabamento escovado da linha Shield' },
+          { label: 'Muxarabi', text: 'Modular lattice in 50, 100 and 150 mm.',           src: IMG + 'tec/muxarabi-100.webp', alt: 'Módulo de muxarabi 100 mm' }
+        ]
+      },
+
+      /* A linha que conta a expansão: o portfólio deixou de ser só WPC.
+         Geo e Zhú têm catálogo fechado (2026) e entram com material e
+         aplicação; Echo entra só pelo nome, porque ainda não tem catálogo
+         e não há o que afirmar sobre ela sem inventar. */
+      {
+        layout: 'cards',
+        label: 'Beyond WPC',
+        notes: 'O ponto do slide: a Lesco deixou de ser uma empresa de um material só. Geo é pedra flexível mineral, Zhú é bambu maciço — duas matérias-primas que não têm nada a ver com WPC, cada uma com catálogo próprio lançado em 2026. Echo está em desenvolvimento; se perguntarem o que é, a resposta honesta é que ainda não foi lançada. Não prometer data.',
+        eyebrow: '01 · The company',
+        title: 'And three more\nmaterials',
+        sub: 'The portfolio stopped being one material. Two new lines launched in 2026, a third in development.',
+        items: [
+          {
+            label: 'Geo',
+            text: 'Flexible mineral stone, 2 to 10 mm. Façades, curved surfaces and interiors. Ten-year warranty.',
+            src: 'img/geo-pedra.webp',
+            alt: 'Textura de pedra da linha Geo'
+          },
+          {
+            label: 'Zhú',
+            text: 'Solid bamboo panels, ceilings, baffles and decking. Indoor and outdoor finishes.',
+            src: 'img/zhu-bambu.webp',
+            alt: 'Painel acústico de bambu maciço da linha Zhú'
+          },
+          {
+            /* Sem `src` de propósito: a moldura vazia é estilizada em
+               dados.css para ler como linha que ainda não saiu. */
+            label: 'Echo',
+            text: 'In development. Not yet launched.'
+          }
         ]
       },
 

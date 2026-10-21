@@ -652,9 +652,13 @@
     render: function (s) {
       var itens = toArray(s.items);
 
-      /* Quatro etapas cabem numa linha só; mais que isso não é card, é lista. */
+      /* Três cards é o desenho padrão. Quatro e cinco ainda cabem numa linha
+         só, com o card mais estreito e a folga menor — ver layouts.css.
+         Seis já não é card, é lista: use `checklist`. */
       var grid = h('div', {
-        class: 'l-cards__grid' + (itens.length === 4 ? ' l-cards__grid--quatro' : '')
+        class: 'l-cards__grid' +
+               (itens.length === 4 ? ' l-cards__grid--quatro' : '') +
+               (itens.length === 5 ? ' l-cards__grid--cinco' : '')
       });
 
       itens.forEach(function (item) {
