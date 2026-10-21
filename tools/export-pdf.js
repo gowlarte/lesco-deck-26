@@ -152,6 +152,16 @@ async function exportDeck(id, onStep) {
   const profile = path.join(os.tmpdir(), 'lesco-export-profile');
   fs.rmSync(profile, { recursive: true, force: true });
 
+  /* Apaga o PDF anterior ANTES de chamar o Chrome.
+
+     Não é limpeza: é a única forma de saber se a exportação funcionou. Se o
+     arquivo continuar lá — porque alguém está com ele aberto no leitor de
+     PDF, e aí o Windows barra a escrita — o Chrome falha em silêncio e
+     ainda sai com código 0. Sem isto, o passo seguinte media o arquivo
+     velho e anunciava "Pronto" com o tamanho dele; foi assim que um PDF de
+     ontem passou por recém-gerado. */
+  fs.rmSync(outFile, { force: true });
+
   try {
     await waitForServer(PORT);
     step('Renderizando ' + slides + ' slides');
@@ -169,6 +179,13 @@ async function exportDeck(id, onStep) {
         'http://127.0.0.1:' + PORT + '/decks/' + id + '/index.html?export'
       ], { maxBuffer: 1 << 24 }, (err) => (err ? reject(err) : resolve()));
     });
+
+    if (!fs.existsSync(outFile)) {
+      throw new Error(
+        'o Chrome saiu sem gravar o PDF. A causa quase sempre é o arquivo ' +
+        'anterior estar aberto em algum leitor — feche export/' + fileName + ' e rode de novo.'
+      );
+    }
 
     return { file: outFile, fileName, title, slides, bytes: fs.statSync(outFile).size };
   } finally {

@@ -135,7 +135,15 @@ A tira resolve isso virando estática em `.is-export` (ver `dados.css`): a
 segunda cópia some e as fotos dividem a largura da página. No papel nada anda
 mesmo, então não se perde nada.
 
-**2. Um `deck.js` que depende de outro arquivo precisa declarar isso.**
+**2. Feche o PDF antes de exportar de novo.**
+O Chrome não sobrescreve um arquivo que outro programa está segurando — e
+quando isso acontece ele **sai em silêncio, com código 0**. O script
+apagava nada e media o arquivo que já estava lá, então anunciava "Pronto"
+com o tamanho do PDF velho. Hoje ele apaga o anterior antes de chamar o
+Chrome e confere se o novo existe; se não existir, avisa e diz o motivo
+provável. Se der esse erro, feche o PDF no leitor e rode de novo.
+
+**3. Um `deck.js` que depende de outro arquivo precisa declarar isso.**
 `tools/export-pdf.js` roda o `deck.js` num sandbox para ler título e contagem
 de slides. Se ele depender de `dados.js`, a dependência tem que estar em
 `antes`, no `decks/decks.js` — senão a exportação morre com "Cannot read
