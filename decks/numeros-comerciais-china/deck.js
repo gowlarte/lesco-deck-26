@@ -178,6 +178,38 @@
         ]
       },
 
+      /* As duas linhas novas em obra. Uma folha para cada, com três
+         aplicações que cobrem o que o catálogo promete — dizer "serve para
+         fachada, interior e forro" é barato; mostrar é que sustenta.
+         As fotos saíram dos catálogos de 2026 de cada linha. */
+      {
+        layout: 'duo',
+        label: 'Geo applied',
+        notes: 'Geo em obra. Da esquerda para a direita: parede interna em textura de travertino, fachada residencial e fachada institucional. O argumento forte aqui é a superfície curva — nenhuma pedra natural faz a curva do pilar sem corte especial, e a Geo faz porque é flexível. Medidas até 3000 × 1200 mm, espessura de 2 a 10 mm, 10 anos de garantia, prazo de 90 a 120 dias.',
+        eyebrow: '01 · The company',
+        title: 'Geo in place',
+        sub: 'Façades, walls, pillars, curved surfaces, interiors and ceilings — sheets up to 3000 × 1200 mm, 2 to 10 mm thick.',
+        media: [
+          { src: 'img/geo-interior.webp',      alt: 'Parede interna revestida em textura de travertino da linha Geo', focal: '50% 50%' },
+          { src: 'img/geo-residencia.webp',    alt: 'Fachada residencial revestida em pedra flexível Geo',            focal: '50% 52%' },
+          { src: 'img/geo-institucional.webp', alt: 'Fachada institucional em placas de pedra flexível Geo',          focal: '50% 46%' }
+        ]
+      },
+
+      {
+        layout: 'duo',
+        label: 'Zhú applied',
+        notes: 'Zhú em obra. Da esquerda para a direita: fachada de resort, forro e parede internos com ripado, e sala de jantar residencial. Vale citar que a mesma linha cobre fachada e acústica — o painel acústico leva camada cruzada com base em PET preto ou suporte de alumínio. Acabamento em óleo de madeira para interno e externo, verniz UV só para interno.',
+        eyebrow: '01 · The company',
+        title: 'Zhú in place',
+        sub: 'Walls, façades, ceilings and decking in solid bamboo — wood oil for indoor and outdoor, UV varnish for indoor.',
+        media: [
+          { src: 'img/zhu-resort.webp',   alt: 'Fachada de resort com ripado de bambu maciço da linha Zhú', focal: '50% 48%' },
+          { src: 'img/zhu-forro.webp',    alt: 'Forro e paredes internas em ripado de bambu, com luz natural', focal: '50% 50%' },
+          { src: 'img/zhu-interior.webp', alt: 'Sala de jantar com parede em ripado de bambu maciço',        focal: '50% 46%' }
+        ]
+      },
+
       {
         layout: 'marquee',
         label: 'Projects — marquee',
