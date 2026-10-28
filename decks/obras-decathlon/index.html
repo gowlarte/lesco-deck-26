@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Obras Decathlon · Sistema de instalação · Lesco</title>
+
+<!--
+  Este arquivo é só a moldura. Todo o conteúdo da apresentação está em
+  deck.js, ao lado. Os desenhos vetoriais e as animações ficam em
+  animacoes.js, que entra DEPOIS de engine/layouts.js e ANTES de deck.js.
+-->
+
+<link rel="icon" href="../../shared/brand/symbol.png">
+<link rel="stylesheet" href="../../theme/fonts.css">
+<link rel="stylesheet" href="../../theme/tokens.css">
+<link rel="stylesheet" href="../../engine/stage.css">
+<link rel="stylesheet" href="../../engine/layouts.css">
+<link rel="stylesheet" href="../../engine/transitions.css">
+<link rel="stylesheet" href="animacoes.css">
+</head>
+
+<body>
+
+  <!-- Palco 1920 × 1080. Os slides e a tela de anotação entram aqui. -->
+  <div class="deck-viewport">
+    <div class="stage">
+      <canvas class="inkboard" width="1920" height="1080"></canvas>
+    </div>
+  </div>
+
+  <!-- Cromo: progresso, contador, cronômetro e setas -->
+  <div class="chrome">
+    <button class="chrome__nav chrome__nav--prev" aria-label="Slide anterior">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M15 18 9 12l6-6"/>
+      </svg>
+    </button>
+
+    <button class="chrome__nav chrome__nav--next" aria-label="Próximo slide">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m9 18 6-6-6-6"/>
+      </svg>
+    </button>
+
+    <button class="chrome__menu" aria-label="Abrir controles">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h16"/>
+      </svg>
+    </button>
+
+    <div class="chrome__drawing">Anotando</div>
+
+    <div class="chrome__timer" data-running="false" title="Clique para iniciar ou pausar (T inicia, Shift+T zera)">00:00</div>
+
+    <div class="chrome__counter">
+      <b data-counter-now>01</b>
+      <span>/</span>
+      <span data-counter-total>00</span>
+    </div>
+
+    <div class="chrome__progress">
+      <div class="chrome__progress-bar"></div>
+    </div>
+  </div>
+
+  <!-- Painel do apresentador (tecla N) -->
+  <div class="presenter">
+    <div>
+      <div class="presenter__eyebrow">Notas</div>
+      <div class="presenter__notes"></div>
+    </div>
+    <div class="presenter__next">
+      <div class="presenter__next-num"></div>
+      <div class="presenter__next-label"></div>
+    </div>
+  </div>
+
+  <!-- Menu de controles (tecla M ou o botão no canto) -->
+  <div class="menu-scrim" data-menu-close></div>
+
+  <aside class="menu">
+    <div class="menu__head">
+      <span class="menu__title">Controles</span>
+      <button class="menu__close" data-menu-close aria-label="Fechar">&times;</button>
+    </div>
+
+    <section class="menu__block">
+      <div class="menu__label">Cronômetro</div>
+      <div class="menu__timer" data-menu-timer data-running="false">00:00</div>
+      <div class="menu__row">
+        <button class="menu__btn" data-action="timer-toggle">Iniciar</button>
+        <button class="menu__btn" data-action="timer-reset">Zerar</button>
+      </div>
+    </section>
+
+    <section class="menu__block">
+      <div class="menu__label">Anotar por cima do slide</div>
+      <div class="menu__row">
+        <button class="menu__btn" data-action="draw-toggle">Ativar</button>
+        <button class="menu__btn" data-action="draw-undo">Desfazer</button>
+        <button class="menu__btn" data-action="draw-clear">Limpar</button>
+      </div>
+      <div class="menu__swatches">
+        <button class="menu__swatch" data-ink="#bd8571" style="background:#bd8571" aria-label="Argila"></button>
+        <button class="menu__swatch" data-ink="#94a291" style="background:#94a291" aria-label="Verde"></button>
+        <button class="menu__swatch" data-ink="#f4efe6" style="background:#f4efe6" aria-label="Claro"></button>
+        <button class="menu__swatch" data-ink="#1a1a1a" style="background:#1a1a1a" aria-label="Grafite"></button>
+      </div>
+    </section>
+
+    <section class="menu__block">
+      <div class="menu__label">Exibição</div>
+      <div class="menu__row">
+        <button class="menu__btn" data-action="notes">Notas</button>
+        <button class="menu__btn" data-action="grid">Grade</button>
+        <button class="menu__btn" data-action="black">Tela preta</button>
+        <button class="menu__btn" data-action="fullscreen">Tela cheia</button>
+        <button class="menu__btn" data-action="help">Atalhos</button>
+      </div>
+    </section>
+
+    <section class="menu__block">
+      <div class="menu__label">Revisão</div>
+      <div class="menu__row">
+        <button class="menu__btn" data-action="export">Exportar PDF</button>
+      </div>
+      <div class="menu__hint" data-export-hint>Um slide por página, com o número no canto.</div>
+    </section>
+
+    <section class="menu__block menu__block--grow">
+      <div class="menu__label">Ir para o slide</div>
+      <input class="menu__search" type="text" placeholder="Buscar por nome ou número" data-menu-search>
+      <div class="menu__list" data-menu-list></div>
+    </section>
+  </aside>
+
+  <!-- Grade de slides (tecla G) -->
+  <div class="overview">
+    <div class="overview__head">
+      <div class="overview__title"></div>
+      <div class="overview__hint">Clique para ir · G ou Esc para fechar</div>
+    </div>
+    <div class="overview__grid"></div>
+  </div>
+
+  <!-- Ajuda (tecla ?) -->
+  <div class="help">
+    <div class="help__card">
+      <h2 class="help__title">Atalhos</h2>
+      <div class="help__row"><span class="help__keys">← →</span><span class="help__desc">Navegar entre slides</span></div>
+      <div class="help__row"><span class="help__keys">Espaço</span><span class="help__desc">Avançar</span></div>
+      <div class="help__row"><span class="help__keys">Nº + Enter</span><span class="help__desc">Pular para um slide</span></div>
+      <div class="help__row"><span class="help__keys">M</span><span class="help__desc">Menu de controles</span></div>
+      <div class="help__row"><span class="help__keys">G</span><span class="help__desc">Grade com todos os slides</span></div>
+      <div class="help__row"><span class="help__keys">N</span><span class="help__desc">Notas do apresentador</span></div>
+      <div class="help__row"><span class="help__keys">D</span><span class="help__desc">Anotar por cima do slide</span></div>
+      <div class="help__row"><span class="help__keys">Ctrl+Z</span><span class="help__desc">Desfazer o último traço</span></div>
+      <div class="help__row"><span class="help__keys">B</span><span class="help__desc">Tela preta</span></div>
+      <div class="help__row"><span class="help__keys">F</span><span class="help__desc">Tela cheia</span></div>
+      <div class="help__row"><span class="help__keys">T · Shift+T</span><span class="help__desc">Cronômetro: inicia e pausa · zera</span></div>
+      <div class="help__row"><span class="help__keys">Home · End</span><span class="help__desc">Primeiro e último slide</span></div>
+      <div class="help__row"><span class="help__keys">Esc</span><span class="help__desc">Fechar o que estiver aberto</span></div>
+    </div>
+  </div>
+
+  <!-- Carregamento inicial -->
+  <div class="loader">
+    <div class="loader__title">Preparando a apresentação</div>
+    <div class="loader__track"><div class="loader__bar"></div></div>
+  </div>
+
+  <script src="../../engine/layouts.js"></script>
+  <script src="animacoes.js"></script>
+  <script src="deck.js"></script>
+  <script src="../../engine/deck.js"></script>
+
+</body>
+</html>

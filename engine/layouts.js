@@ -674,7 +674,7 @@
         ]));
       });
 
-      return h('div', { class: 'l-cards pad pad--tight' }, [
+      return h('div', { class: 'l-cards pad pad--tight' + (s.fotos ? ' l-cards--fotos' : '') }, [
         eyebrow(s.eyebrow),
         title(s.title, 'md'),
         s.sub ? h('p', { class: 'sub', html: s.sub, anim: true }) : null,

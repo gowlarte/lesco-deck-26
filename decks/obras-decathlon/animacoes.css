@@ -1,0 +1,575 @@
+/* ---------------------------------------------------------------------------
+   ESTILO DOS DESENHOS E ANIMAÇÕES · OBRAS DECATHLON
+
+   O que está aqui mora SÓ nesta apresentação. engine/layouts.css e
+   engine/stage.css são compartilhados com as outras: uma regra ajustada lá
+   para resolver um slide daqui mudaria a live técnica e o deck de números
+   junto, sem ninguém ter pedido.
+
+   Duas regras para quem for escrever as próximas animações:
+
+   1. Ancore em `.slide.is-current`. O motor põe essa classe ao chegar no
+      slide e tira ao sair, então a animação começa sozinha na entrada e
+      recomeça do zero toda vez que se volta ao slide — sem uma linha de JS.
+
+   2. Escreva o par em `.is-export`. Na exportação em PDF não existe
+      .is-current — todos os slides ficam visíveis de uma vez — e animação
+      nenhuma roda. Sem essa regra o desenho sai no papel no primeiro
+      quadro, que normalmente é o estado fechado.
+
+   Nada pode ser mais largo que o slide, nem escondido por overflow: na
+   paginação o Chrome conta a largura mesmo assim e encolhe todas as páginas
+   do PDF para fazer caber (ver README, "Duas armadilhas da paginação").
+   --------------------------------------------------------------------------- */
+
+
+/* ===========================================================================
+   LAYOUT `camadas` · slide 06
+   O título em cima, o desenho ocupando todo o resto.
+   ======================================================================== */
+
+.l-camadas {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 26px;
+}
+
+/* Eyebrow à esquerda, produto à direita, na mesma linha de base — é o que
+   o blueprint pede no alto do slide. */
+.l-camadas__topo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+.l-camadas__texto .eyebrow { margin-bottom: 18px; }
+.l-camadas__texto .title   { margin: 0; }
+
+.l-camadas__produto {
+  flex: none;
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+
+/* ---- Barra de composição -------------------------------------------------
+   Uma barra 100% repartida, no pé do slide, com o rótulo dentro do próprio
+   pedaço. `flex-grow` faz a divisão: a largura de cada faixa é a
+   porcentagem que ela declara, sem nenhuma conta de pixel. */
+
+.l-camadas__composicao {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.composicao__barra {
+  display: flex;
+  gap: 8px;
+  height: 26px;
+}
+
+/* Nada de padding aqui: ele viraria largura fixa que o flex-grow não divide,
+   e a barra deixaria de bater com as porcentagens. Medido, com 28 px de
+   cada lado ela saía 52,8 / 34,8 / 12,3 em vez de 55 / 35 / 10. */
+.composicao__faixa {
+  flex-basis: 0;
+  min-width: 0;
+  border-radius: 3px;
+}
+
+.composicao__legenda {
+  display: flex;
+  justify-content: space-between;
+  gap: 48px;
+}
+
+.composicao__item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.composicao__cor {
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  flex: none;
+}
+
+.composicao__rotulo {
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.l-camadas__palco {
+  position: relative;
+  min-height: 0;
+}
+
+.l-camadas__palco > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+
+/* ===========================================================================
+   A ABERTURA
+
+   O slide abre com a peça FECHADA e ela se separa sozinha: `both` segura o
+   quadro inicial durante o atraso, então o primeiro que se vê é o bloco
+   inteiro, como ele chega na obra.
+
+   O grupo de fora (.cam) carrega a abertura; o de dentro (.cam__peca)
+   carrega o destaque do mouse. Separados de propósito: uma animação CSS
+   trava a propriedade que ela anima, e com os dois no mesmo elemento o
+   destaque nunca apareceria.
+   ======================================================================== */
+
+.camadas .cam { transform: translate(0, 0); }
+
+.slide.is-current .camadas .cam {
+  animation: cam-abre 1000ms var(--ease-out) both;
+  animation-delay: calc(420ms + var(--i) * 130ms);
+}
+
+@keyframes cam-abre {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(var(--dx, 0px), var(--dy, 0px)); }
+}
+
+/* A sombra não se mexe: ela é do bloco no chão, não de uma camada. */
+.camadas .cam--sombra { animation: none !important; }
+
+
+/* ===========================================================================
+   OS BALÕES E AS BOLINHAS
+
+   Entram depois que as peças param de andar. `backwards` em vez de `both`:
+   com `both` a animação continuaria mandando na opacidade depois de
+   terminar, e o apagar das outras camadas não teria efeito nenhum.
+   ======================================================================== */
+
+.slide.is-current .camadas .cam__topico {
+  animation: cam-ui 460ms var(--ease-out) backwards;
+  animation-delay: calc(1220ms + var(--i) * 90ms);
+}
+
+@keyframes cam-ui {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Em repouso só as bolinhas aparecem. O quadro entra quando o ponteiro
+   encosta na bolinha — e some quando sai. Fechado ele é transparente ao
+   ponteiro, senão um retângulo invisível de 430 px ficaria cobrindo as
+   peças que ele deveria explicar. */
+.camadas .cam__balao {
+  opacity: 0;
+  transform: scale(0.94);
+  pointer-events: none;
+  transition: opacity 170ms var(--ease-out), transform 220ms var(--ease-out);
+}
+
+.camadas[data-balao="1"] [data-camada="1"] .cam__balao,
+.camadas[data-balao="2"] [data-camada="2"] .cam__balao,
+.camadas[data-balao="3"] [data-camada="3"] .cam__balao,
+.camadas[data-balao="4"] [data-camada="4"] .cam__balao {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+/* A cor de cada quadro e de cada bolinha vem do próprio tópico, escrita no
+   elemento em animacoes.js: é ela que amarra o número ao texto, agora que
+   não há fio ligando os dois. Aqui fica só o que é igual para todos.
+
+   O quadro é chapado, sem contorno: a cor já separa ele do papel, e um
+   filete em volta só acrescentaria enfeite. O respiro interno está em
+   PAD_BALAO, em animacoes.js. */
+.camadas .cam__balao rect { stroke: none; }
+
+.camadas .cam__balao-nome {
+  font-family: var(--font-text);
+  font-size: 36px;
+  font-weight: 600;
+}
+
+.camadas .cam__balao-texto {
+  font-family: var(--font-text);
+  font-size: 32px;
+}
+
+.camadas .cam__num circle { stroke: none; }
+
+.camadas .cam__num text {
+  font-family: var(--font-display);
+  font-size: 40px;
+  text-anchor: middle;
+}
+
+
+/* ===========================================================================
+   A INTERAÇÃO
+
+   O ponteiro NÃO enxerga o alfa de um <image> — o navegador testa pela caixa
+   do elemento —, então quem recebe o mouse é o <polygon> com a silhueta da
+   peça, não a imagem. O porquê e as medidas estão em animacoes.js.
+
+   Passar o mouse não acende a camada: APAGA as outras. Assim o slide
+   projetado, sem ninguém apontando nada, já mostra as quatro de uma vez.
+
+   A peça do topo e a lateral do mesmo material dividem o mesmo
+   `data-camada`, e por isso acendem juntas sem nenhuma regra a mais.
+   ======================================================================== */
+
+/* As imagens saem do hit-test, senão os polígonos não servem para nada: a
+   caixa do PNG de cima continuaria capturando o desenho inteiro. Medido —
+   sem esta linha a camada 1 ficava com cinco vezes a área das outras três
+   somadas, porque o filme transparente é o último a ser pintado. */
+.camadas image { pointer-events: none; }
+
+.camadas .cam__alvo {
+  fill: transparent;
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.camadas .cam__num { cursor: pointer; }
+
+.camadas .cam,
+.camadas .cam__topico { transition: opacity 240ms var(--ease-standard); }
+
+.camadas .cam__peca   { transition: transform 260ms var(--ease-out); }
+
+/* Com uma camada em foco, tudo recua — inclusive a sombra. */
+.camadas[data-foco] .cam,
+.camadas[data-foco] .cam__topico { opacity: 0.16; }
+
+/* …e só a camada apontada volta. Opacidade não bloqueia o ponteiro, então
+   as peças apagadas continuam clicáveis: dá para ir direto de uma para a
+   outra sem passar pelo vazio. */
+.camadas[data-foco="1"] [data-camada="1"],
+.camadas[data-foco="2"] [data-camada="2"],
+.camadas[data-foco="3"] [data-camada="3"],
+.camadas[data-foco="4"] [data-camada="4"] { opacity: 1; }
+
+/* O empurrãozinho: a peça em foco anda mais um tico na direção em que se
+   abriu. Os valores vêm de --hx/--hy, calculados em animacoes.js. */
+.camadas[data-foco="1"] .cam[data-camada="1"] .cam__peca,
+.camadas[data-foco="2"] .cam[data-camada="2"] .cam__peca,
+.camadas[data-foco="3"] .cam[data-camada="3"] .cam__peca,
+.camadas[data-foco="4"] .cam[data-camada="4"] .cam__peca {
+  transform: translate(var(--hx, 0px), var(--hy, 0px));
+}
+
+/* A bolinha em foco cresce um pouco — é o retorno que diz "é esta".
+   `fill-box` é obrigatório: sem ele o padrão do SVG mede o transform a
+   partir da origem do viewBox, e a bolinha sairia voando em vez de crescer
+   no lugar. */
+.camadas .cam__num {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 200ms var(--ease-out);
+}
+
+.camadas[data-foco="1"] .cam__topico[data-camada="1"] .cam__num,
+.camadas[data-foco="2"] .cam__topico[data-camada="2"] .cam__num,
+.camadas[data-foco="3"] .cam__topico[data-camada="3"] .cam__num,
+.camadas[data-foco="4"] .cam__topico[data-camada="4"] .cam__num {
+  transform: scale(1.12);
+}
+
+
+/* ---- Exportação e menos movimento ---------------------------------------
+   No papel nada roda e ninguém aponta. Se os quadros dependessem do mouse
+   também lá, o PDF sairia com quatro bolinhas numeradas e nenhum texto
+   explicando o que é cada camada — então na exportação eles aparecem todos,
+   de uma vez, como no print. */
+
+.is-export .camadas .cam,
+.is-export .camadas .cam__topico,
+.is-export .camadas .cam__peca,
+.is-export .camadas .cam__balao {
+  animation: none;
+  transition: none;
+  opacity: 1;
+}
+
+.is-export .camadas .cam {
+  transform: translate(var(--dx, 0px), var(--dy, 0px));
+}
+
+.is-export .camadas .cam__balao { transform: scale(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .slide.is-current .camadas .cam,
+  .slide.is-current .camadas .cam__topico {
+    animation: none;
+  }
+
+  .slide.is-current .camadas .cam {
+    transform: translate(var(--dx, 0px), var(--dy, 0px));
+  }
+
+  .camadas .cam__peca { transition: none; }
+}
+
+
+/* ===========================================================================
+   LAYOUT `prancha` · slide 09
+
+   O painel é 525 x 4180: uma peça de 1 para 8. Numa tela 16:9 ele só cabe
+   em pé, estreito — e é assim mesmo que um alçado de fachada se desenha.
+   A terceira coluna, com os perfis ampliados, é o que dá largura à figura.
+   ======================================================================== */
+
+.l-prancha {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+  gap: 90px;
+}
+
+/* O SVG preenche a coluna por `inset`, não por flex: como item de flex ele
+   negociava o próprio tamanho com a proporção do viewBox e acabava em 254
+   de largura numa coluna de 454. */
+.l-prancha__figura {
+  position: relative;
+  min-height: 0;
+}
+
+.l-prancha__figura > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.l-prancha__texto {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.l-prancha__texto .eyebrow { margin-bottom: 30px; }
+.l-prancha__texto .title   { margin-bottom: 30px; line-height: 1.16; }
+.l-prancha__texto .lead    { max-width: 26em; }
+
+.l-prancha__nota {
+  margin-top: 26px;
+  max-width: 34em;
+  font-size: var(--fs-meta);
+  color: var(--text-muted);
+  max-width: 24em;
+}
+
+
+/* ---- O desenho ----------------------------------------------------------
+   Traço e chapado, sem cota e sem rótulo: tudo o que era texto na prancha
+   foi para a coluna ao lado. O brise é claro e a cremalheira é grafite —
+   madeira e metal se separam pelo tom, não por legenda. */
+
+.prancha .pr__area {
+  fill: none;
+  stroke: var(--ink-300);
+  stroke-width: 9;
+}
+
+/* Chapado, sem contorno: com traço em volta cada brise virava duas linhas e
+   a coluna lia como umas dez ripas finas em vez das seis que são. */
+.prancha .pr__brise {
+  fill: var(--ink-200);
+  stroke: none;
+}
+
+.prancha .pr__crem,
+.prancha .pr__perfil {
+  fill: var(--ink-700);
+}
+
+.prancha .pr__recorte { fill: var(--paper); }
+
+.prancha .pr__furo { fill: var(--paper); }
+
+
+/* ---- O quantitativo -----------------------------------------------------
+   A tabela da prancha, rediagramada: item à esquerda, quantidade à direita,
+   filete entre as linhas. Sem grade e sem moldura, como o resto do deck. */
+
+.quantitativo { margin-top: 30px; }
+
+.quantitativo__titulo {
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.quantitativo__linha {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.quantitativo__item {
+  font-size: var(--fs-sub);
+  color: var(--text-body);
+}
+
+.quantitativo__qtd {
+  font-family: var(--font-display);
+  font-size: var(--fs-sub);
+  color: var(--text-strong);
+  font-variant-numeric: tabular-nums;
+  flex: none;
+}
+
+
+/* ===========================================================================
+   O ENCAIXE · slide 07
+
+   A barra entra, os seis brises descem em cascata e assentam. Mesma regra
+   dos outros desenhos: ancorado em `.slide.is-current`, então recomeça toda
+   vez que se volta ao slide, e com o par em `.is-export` para o PDF sair com
+   a peça montada em vez do primeiro quadro, que é o vazio.
+   ======================================================================== */
+
+.montagem .mont__chapa { fill: var(--ink-700); }
+.montagem .mont__dente { fill: var(--ink-600); }
+.montagem .mont__peca  { fill: var(--surface-sunk); stroke: var(--ink-300); stroke-width: 2; }
+
+.slide.is-current .montagem .mont__barra {
+  animation: mont-barra 620ms var(--ease-out) both;
+  animation-delay: 300ms;
+}
+
+@keyframes mont-barra {
+  from { opacity: 0; transform: translateY(-26px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.montagem .mont__brise { transform: translateY(-150px); }
+
+.slide.is-current .montagem .mont__brise {
+  animation: mont-brise 560ms var(--ease-out) both;
+  animation-delay: calc(820ms + var(--i) * 150ms);
+}
+
+@keyframes mont-brise {
+  from { opacity: 0; transform: translateY(-150px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* No papel e para quem pediu menos movimento: a peça montada, parada. */
+.is-export .montagem .mont__barra,
+.is-export .montagem .mont__brise {
+  animation: none;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide.is-current .montagem .mont__barra,
+  .slide.is-current .montagem .mont__brise {
+    animation: none;
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ===========================================================================
+   LAYOUT `capa` · slide 01
+   A arte sangra o slide inteiro; o rótulo entra por cima, na tipografia do
+   deck. O creme de fundo é o mesmo da arte, para a borda não piscar branco
+   enquanto o SVG carrega.
+   ======================================================================== */
+
+.l-capa { background: #efdcc5; }
+
+.l-capa__arte { position: absolute; inset: 0; }
+
+.l-capa__arte img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 84 px, e não os 120 da margem padrão: é onde começam o filete e os logos
+   dentro da arte, medidos na conversão. */
+.l-capa__rotulo {
+  position: absolute;
+  left: 84px;
+  bottom: 54px;
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: #5d4f3e;
+}
+
+
+/* ===========================================================================
+   ESCOAMENTO NA FACE INFERIOR · slide 13
+
+   O brise claro, o arremate e a face escuros, e entre eles a folga — que é
+   o assunto, e por isso é a única coisa em papel limpo no meio do desenho.
+   A gota desce, atravessa a folga e some.
+   ======================================================================== */
+
+.escoamento .esc__brise {
+  fill: var(--surface-sunk);
+  stroke: var(--ink-300);
+  stroke-width: 1.6;
+}
+
+.escoamento .esc__arremate { fill: var(--ink-700); }
+.escoamento .esc__face     { fill: var(--ink-200); }
+
+.escoamento .esc__filete {
+  stroke: var(--ink-400);
+  stroke-width: 1.2;
+  stroke-dasharray: 5 4;
+}
+
+.escoamento .esc__gota {
+  fill: var(--accent-deep);
+  opacity: 0;
+}
+
+.slide.is-current .escoamento .esc__gota {
+  animation: esc-gota 2200ms var(--ease-standard) backwards;
+  animation-delay: calc(700ms + var(--i) * 380ms);
+}
+
+/* Desce pelo brise, atravessa a folga e some ao passar da face. */
+@keyframes esc-gota {
+  0%   { opacity: 0; transform: translateY(0); }
+  12%  { opacity: 1; }
+  70%  { opacity: 1; transform: translateY(110px); }
+  100% { opacity: 0; transform: translateY(132px); }
+}
+
+/* No papel a gota não existe: ela é movimento, não informação. O desenho
+   sai com a peça, a folga e a face, que é o que a cota pede. */
+.is-export .escoamento .esc__gota { animation: none; opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .slide.is-current .escoamento .esc__gota { animation: none; opacity: 0; }
+}

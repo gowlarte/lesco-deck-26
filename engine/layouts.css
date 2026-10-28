@@ -1003,6 +1003,17 @@
   object-fit: contain;
 }
 
+/* `fotos: true` — fotos de obra, não recorte de produto. Todas no mesmo
+   quadro 4:3, cortadas para preencher, e encostadas no pé do card: assim a
+   linha de baixo fica alinhada mesmo com textos de tamanhos diferentes. */
+.l-cards--fotos .card__figure { align-items: flex-end; }
+.l-cards--fotos .card__figure img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-md, 8px);
+}
+
 /* =====================================================================
    13 · outro — encerramento
    ===================================================================== */
