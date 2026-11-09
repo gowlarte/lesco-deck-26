@@ -6,6 +6,7 @@
 
      1 · o layout `frase`, declarado em layout-frase.js
      2 · o `checklist` em tom escuro, que o motor não previa
+     3 · o realce por cor dentro do rodapé do `split`
 
    (Este arquivo chamava-se frase.css enquanto só fazia a primeira coisa.)
    ======================================================================== */
@@ -109,3 +110,42 @@ body.is-export .l-frase__fonte {
 [data-tone="ink"] .l-checklist__text   { color: var(--on-dark-body); }
 [data-tone="ink"] .l-checklist__rotulo { color: var(--on-dark-strong); }
 [data-tone="ink"] .l-checklist__nota   { color: var(--on-dark-muted); }
+
+
+/* =====================================================================
+   3 · DESTAQUE DENTRO DO RODAPÉ DO `split`
+
+   Usado num trecho só, no rodapé de "Mais dado não é mais decisão": o
+   exemplo de dado que de fato responde a uma pergunta — onde está o
+   pedido, quando ele embarca. É a frase que impede o slide de parecer
+   contradizer "Produto e fornecimento", e por isso precisa saltar do
+   cinza do rodapé.
+
+   Quem cria o <strong> é local.js, lendo os dois asteriscos de cada lado
+   do trecho no deck.js. Aqui só se desenha o que ele criou.
+
+   SOBRE O PESO 700
+
+   Não existe arquivo de 700 neste projeto: a PPObjectSans vem em Thin
+   (200) e Regular (400), e só. O 700 abaixo é, portanto, negrito
+   sintético — o navegador engrossando o traço por conta própria.
+
+   Isso costuma ser razão para não fazer, e foi testado antes de entrar:
+   nos 26 px deste rodapé o resultado sai limpo, sem borrão nos vazios das
+   letras, e bem mais pesado do que o Regular. As alternativas medidas no
+   mesmo teste (-webkit-text-stroke de 0.3 a 0.7 px) ficaram ou fracas
+   demais ou irregulares nas curvas.
+
+   A cor continua junto, e não é enfeite: é a garantia. Se algum dia a
+   exportação em PDF não sintetizar o peso, o trecho ainda sai mais escuro
+   que o resto do rodapé e o destaque não se perde.
+
+   Se um arquivo PPObjectSans-Bold aparecer em shared/fonts/, basta
+   declará-lo em theme/fonts.css com font-weight 700: esta regra passa a
+   usar o desenho de verdade sem precisar mudar.
+   ===================================================================== */
+
+.l-split__note strong {
+  font-weight: 700;
+  color: var(--text-strong);
+}

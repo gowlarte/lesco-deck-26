@@ -37,6 +37,19 @@
    cada material. Pode fazer isso porque a marca já traz as pessoas, e é por
    isso que a nota do slide avisa contra copiar a tática sem a imagem.
 
+   Dali saiu também "Mais dado não é mais decisão", o slide seguinte.
+   "Conteúdo não é isca" terminava devolvendo a pergunta para dentro de casa
+   — onde a Lesco ainda troca material por cadastro — e a pergunta ficava
+   sem resposta. O slide novo responde, e responde sem falar da Arkos: diz
+   por que o formulário é mau negócio mesmo sem concorrente nenhum na
+   frente. O argumento é emprestado de uma publicação sobre tratamento de
+   dados no mundo fitness, e a referência está nas notas do slide.
+
+   A ressalva importante está no `note` dele, e é o que impede o deck de se
+   contradizer: "Produto e fornecimento" PEDE mais dado de pedido e de
+   envio. Não é o contrário disto. Lá falta dado que responde a uma
+   pergunta nossa; aqui sobra dado que não responde a nenhuma.
+
    2 · A ARKOS TAMBÉM VENDE QUASE SÓ MADEIRA
 
    O documento trata a estética única como problema exclusivo da Lesco. Não é:
@@ -132,11 +145,12 @@
    está inteiro. O que resta é conferência, não montagem.
 
      · Capa — a data está escrita no eyebrow. Confira antes de apresentar.
-     · Slide 08 — a publicação da Arkos aparece de lado, na foto da visita.
-       Se alguém conseguir um exemplar, vale uma foto da capa aberta.
-     · Slide 15 — o projeto de showroom da Bruna não tem imagem aqui. Se ela
-       aparecer, o slide vira `duo`: projeto proposto ao lado do espaço atual,
-       que é uma comparação melhor do que a foto sozinha.
+     · "Estratégia editorial" — a publicação da Arkos aparece de lado, na
+       foto da visita. Se alguém conseguir um exemplar, vale uma foto da
+       capa aberta.
+     · "Showroom atual" — o projeto da Bruna não tem imagem aqui. Se ela
+       aparecer, o slide vira `duo`: projeto proposto ao lado do espaço
+       atual, que é uma comparação melhor do que a foto sozinha.
 
    TRÊS FOTOS DO ESCRITÓRIO FICARAM DE FORA, de propósito:
 
@@ -211,10 +225,12 @@ window.DECK = {
        01 · A VISITA À ARKOS
 
        O ato mais longo do deck, de propósito: é o único que traz material
-       novo para a diretoria. Os cinco slides seguintes ao capítulo seguem
-       a ordem do diagnóstico — o que vimos, como eles sustentam a posição,
+       novo para a diretoria. Os slides seguintes ao capítulo seguem a
+       ordem do diagnóstico — o que vimos, como eles sustentam a posição,
        de onde vem a percepção de luxo, o que o showroom resolve antes do
-       produto, e o modelo editorial que organiza a jornada do cliente.
+       produto, o modelo editorial que organiza a jornada do cliente e o
+       que esse modelo cobra do nosso jeito de tratar dado. Fecha na frase
+       que a Arkos usa contra nós, e no que ela significa.
        =================================================================== */
 
     {
@@ -328,6 +344,49 @@ window.DECK = {
         ['A pergunta que fica', 'Onde a Lesco ainda troca material por cadastro']
       ],
       note: 'Cuidado ao copiar: eles podem se dar a esse luxo porque a marca já traz as pessoas. Tirar o formulário sem construir a imagem só tira o cadastro — não traz o cliente.'
+    },
+
+    {
+      /* A resposta que faltava ao slide anterior.
+
+         "Conteúdo não é isca" termina com uma pergunta apontada para
+         dentro de casa — onde a Lesco ainda troca material por cadastro —
+         e até aqui ela ficava no ar. Este slide responde, e responde sem
+         falar da Arkos: o problema não é a tática deles ser melhor, é a
+         nossa não se sustentar nem no papel.
+
+         O raciocínio veio de uma publicação sobre dados no mundo fitness,
+         trazida por quem fez a visita (está nas notas, com a referência).
+         Vale aqui porque o erro é o mesmo em qualquer setor: medir muito
+         e decidir igual. As três linhas são, na ordem, o problema
+         matemático, o problema psicológico e a saída.
+
+         CUIDADO AO EDITAR: isto NÃO contradiz "Produto e fornecimento",
+         que pede justamente mais dado de pedido e de envio. A distinção
+         está na linha do `note` e é ela que mantém o deck coerente — lá
+         falta dado que responde a uma pergunta nossa, aqui sobra dado que
+         não responde a nenhuma. O trecho em destaque no `note` é essa
+         distinção, e é por isso que ela vai realçada: os dois asteriscos
+         de cada lado são a marca que local.js lê depois de o motor montar
+         o slide. O realce é por cor, não por peso — está em local.css, com
+         o motivo. Se essa linha sair, o deck passa a dizer
+         duas coisas opostas sobre dado com poucos slides de distância, e
+         é o tipo de brecha que alguém na sala usa para engavetar as duas.
+
+         `split` de novo, logo depois de outro `split`, de propósito: os
+         dois slides são a mesma conversa, e a forma repetida diz isso. */
+      layout: 'split',
+      label: 'Mais dado não é mais decisão',
+      notes: 'O slide anterior deixou a pergunta no ar; este responde. O argumento é de uma publicação sobre tratamento de dados no mundo fitness, e serve aqui pelo mesmo motivo: mais dado não vira mais decisão, porque o ruído cresce mais rápido que o sinal. Se puxarem o assunto, a referência é a lei da variedade requisitada, de Ashby — o que varia se enfrenta com variedade, não com um índice fixo. Variar não é doença, é variação. E cuidado para o slide não virar desculpa: ele não diz que dado não serve, diz que dado sem pergunta não serve. A cobrança de dado de pedido e envio, em "Produto e fornecimento", continua de pé.',
+      eyebrow: 'Sobre tratamento de dados',
+      title: 'Mais dado\nnão é mais\ndecisão',
+      text: 'Coletar mais não é saber mais. A cada cadastro a mais, o ruído cresce mais rápido do que a informação que presta — e a decisão continua exatamente onde estava.',
+      rows: [
+        ['A conta não fecha',    'O ruído cresce mais rápido que o sinal'],
+        ['A meta engana',        'Um mês fraco vira problema, e pode ser apenas variação'],
+        ['O que de fato vale',   'O dado que responde a uma pergunta nossa']
+      ],
+      note: 'A diferença está na pergunta. **Onde está o pedido e quando ele embarca** é dado que falta. Cadastro colhido sem pergunta por trás é dado que sobra.'
     },
 
     {
@@ -480,8 +539,6 @@ window.DECK = {
     },
 
     {
-      layout: 'half',
-      label: 'Showroom atual',
       /* Cuidado com este slide na sala: o que ele diz é que a PREMISSA
          mudou, não que o trabalho tenha sido mal feito. O projeto da Bruna
          foi desenhado sob medida para esta sala, e a sala vai mudar — é só
