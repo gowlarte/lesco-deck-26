@@ -20,5 +20,6 @@
 window.DECKS = [
   'instalacao-de-estruturas',
   'obras-decathlon',
+  'showroom-e-posicionamento',
   { id: 'numeros-comerciais-china', antes: ['dados.js'] }
 ];

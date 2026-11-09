@@ -1,0 +1,111 @@
+/* ===========================================================================
+   ESTILOS PRÓPRIOS · SHOWROOM E POSICIONAMENTO
+
+   O que esta apresentação acrescenta ao motor, e só ela. engine/layouts.css
+   continua como está, e as outras apresentações não sabem que isto existe.
+
+     1 · o layout `frase`, declarado em layout-frase.js
+     2 · o `checklist` em tom escuro, que o motor não previa
+
+   (Este arquivo chamava-se frase.css enquanto só fazia a primeira coisa.)
+   ======================================================================== */
+
+
+/* =====================================================================
+   1 · LAYOUT `frase`
+   ===================================================================== */
+
+/* Preto de verdade, e não o grafite --ink-900 do resto do deck. A diferença
+   é de propósito: este é o único slide que não pertence à apresentação, é
+   uma frase da concorrente citada dentro dela. O corte de tom marca isso
+   sem precisar de nenhuma etiqueta na tela.
+
+   Para devolvê-lo ao grafite da marca, troque por var(--ink-900). */
+.slide[data-tone="ink"] .l-frase {
+  background: #000;
+}
+
+.l-frase {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 72px;
+  padding: 120px 150px;
+
+  /* Quatro vezes o passo padrão (55 ms). As linhas chegam uma de cada vez,
+     em ritmo de fala — quem apresenta lê junto com a tela. No passo normal
+     elas apareciam quase juntas, que é o certo para um slide de conteúdo e
+     errado para uma frase que precisa ser ouvida. */
+  --stagger: 220ms;
+}
+
+.l-frase__texto {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  text-align: center;
+  max-width: 1620px;
+}
+
+.l-frase__linha {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 76px;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--on-dark-strong);
+
+  /* A frase é longa e as quebras estão escritas à mão no deck.js, nos
+     pontos em que a fala respira. Se o corpo mudar e alguma linha passar
+     da caixa, ela quebra sozinha em vez de vazar para fora do slide. */
+  text-wrap: balance;
+}
+
+/* Crédito opcional, miúdo e discreto. Fica desligado por padrão: quem diz
+   de quem é a frase é o apresentador, e o slide seguinte traz a análise. */
+.l-frase__fonte {
+  font-size: var(--fs-label);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--on-dark-muted);
+  text-align: center;
+}
+
+/* Na exportação em PDF nada anima: as linhas precisam nascer visíveis, ou
+   a página sai preta e vazia. O motor já cuida disso para [data-anim] em
+   geral, mas a regra abaixo é a garantia — esta é a única página do PDF
+   que não tem mais nada para mostrar se a frase não aparecer. */
+body.is-export .l-frase__linha,
+body.is-export .l-frase__fonte {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+
+
+/* =====================================================================
+   2 · `checklist` EM TOM ESCURO
+
+   O motor já escurece eyebrow, título, lead, sub, destaques e passos
+   quando o slide é `tone: 'ink'` — mas nunca precisou fazer isso com o
+   `checklist`, porque até aqui nenhum deck tinha usado um escuro. Sem as
+   regras abaixo o slide sai com o texto em grafite sobre grafite: some.
+
+   É usado num slide só, "O que também está no radar", que fecha o deck em
+   tom trocado para dizer que aquilo ali não é showroom.
+
+   Isto é lacuna do motor, não desta apresentação. Se um dia outro deck
+   precisar de um checklist escuro, o lugar certo destas cinco regras é
+   engine/layouts.css, ao lado das de `passos` — e aí este bloco sai daqui.
+   ===================================================================== */
+
+[data-tone="ink"] .l-checklist__item   { border-color: var(--on-dark-hair); }
+[data-tone="ink"] .l-checklist__num    { color: var(--accent-soft); }
+[data-tone="ink"] .l-checklist__text   { color: var(--on-dark-body); }
+[data-tone="ink"] .l-checklist__rotulo { color: var(--on-dark-strong); }
+[data-tone="ink"] .l-checklist__nota   { color: var(--on-dark-muted); }
