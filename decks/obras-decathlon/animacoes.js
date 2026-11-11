@@ -772,10 +772,11 @@
      ModularKit, o filete e a marca Decathlon. Original em
      _source/originais/decathlon/CAPA.pdf.
 
-     A arte é 2676 x 1608 (1,66) e o palco é 1920 x 1080 (1,78), então ela
-     entra por `object-fit: cover` — o corte de 37 px cai em cima e embaixo,
-     onde só há creme. O mais baixo dos elementos, a marca Decathlon, para a
-     136 unidades da borda de baixo: folga de sobra.
+     ELA ENTRA EMBUTIDA, não como <img>, e isso não é detalhe: como imagem
+     a capa saía borrada no PDF. O porquê, com os números, está no cabeçalho
+     de capa.js — em resumo, a exportação rasterizava a arte em 250 x 150 e
+     o slide ampliava 7,7x. Embutida, a exportação não a enxerga e o Chrome
+     a imprime como vetor.
 
      O único texto da capa não veio no SVG — o conversor descarta texto de
      propósito, porque fonte embutida vira glifo sem letra. Ele é reposto
@@ -787,10 +788,28 @@
     transition: 'curtain',
     tone: 'paper',
     render: function (s) {
+      var arte = h('div', { class: 'l-capa__arte' });
+      var a = global.CAPA_ARTE;
+
+      if (a) {
+        /* `slice` faz aqui o que `object-fit: cover` fazia na imagem: a arte
+           é 2676 x 1608 (1,66) e o palco é 1920 x 1080 (1,78), então ela
+           preenche a largura e perde 37 px em cima e embaixo — onde só há
+           creme. O elemento mais baixo, a marca Decathlon, para a 136
+           unidades da borda: folga de sobra. */
+        arte.innerHTML =
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + a.viewBox + '"' +
+          ' preserveAspectRatio="xMidYMid slice" role="img"' +
+          ' aria-label="' + escapar(s.alt || '') + '">' + a.corpo + '</svg>';
+      } else {
+        arte.appendChild(h('div', { class: 'frame__note' }, [
+          h('span', { class: 'frame__note-tag', text: 'Capa a inserir' }),
+          h('span', { class: 'frame__note-text', text: 'capa.js não carregou' })
+        ]));
+      }
+
       return h('div', { class: 'l-capa' }, [
-        h('div', { class: 'l-capa__arte' }, [
-          h('img', { src: s.arte, alt: s.alt || '' })
-        ]),
+        arte,
         s.eyebrow
           ? h('div', { class: 'l-capa__rotulo', text: s.eyebrow, anim: true })
           : null

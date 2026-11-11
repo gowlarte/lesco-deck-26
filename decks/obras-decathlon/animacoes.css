@@ -505,11 +505,13 @@
 
 .l-capa__arte { position: absolute; inset: 0; }
 
-.l-capa__arte img {
+/* SVG embutido, não <img>: é o que faz a capa sair vetorial no PDF. Quem
+   recorta é o `preserveAspectRatio="xMidYMid slice"` do próprio SVG, posto
+   em animacoes.js — o equivalente ao `object-fit: cover` que a imagem usava. */
+.l-capa__arte > svg {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
 }
 
 /* 84 px, e não os 120 da margem padrão: é onde começam o filete e os logos

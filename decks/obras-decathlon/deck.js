@@ -70,14 +70,17 @@ window.DECK = {
 
     {
       /* A capa veio pronta da Lesco, em PDF vetorial (original em
-         _source/originais/decathlon/CAPA.pdf), convertida para SVG. Ela já
-         traz os logos, o filete e a marca Decathlon — o único texto é o
-         rótulo abaixo, reposto na tipografia do deck. */
+         _source/originais/decathlon/CAPA.pdf). Ela já traz os logos, o
+         filete e a marca Decathlon — o único texto é o rótulo abaixo,
+         reposto na tipografia do deck.
+
+         O desenho em si mora em capa.js, embutido no documento em vez de
+         entrar como imagem: é o que o faz sair vetorial no PDF. O porquê,
+         com os números, está no cabeçalho daquele arquivo. */
       layout: 'capa',
       label: 'Capa',
       notes: 'Abertura. O objetivo do encontro é alinhar como funciona o sistema de instalação Lesco + ModularKit, para que todas as obras tenham o mesmo padrão de qualidade.',
       eyebrow: 'Apresentação técnica',
-      arte: 'img/capa.svg',
       alt: 'Capa Lesco + ModularKit para as obras Decathlon'
     },
 
