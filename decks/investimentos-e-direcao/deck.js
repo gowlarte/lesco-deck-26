@@ -180,6 +180,27 @@
          --------------------------------------------------------------- */
 
       {
+        layout: 'chapter',
+        label: '01 · Arkos',
+        notes:
+          'A capa do primeiro bloco. Dizer de saída que ele NÃO pede dinheiro: pede contexto e uma data.\n\n' +
+          'A Arkos abre a apresentação de propósito. É ela que explica por que o rebrand e a embalagem são ' +
+          'urgentes — sem este bloco, os dois viram gasto; com ele, viram resposta.\n\n' +
+          'PEDIR UMA DATA, e é o único pedido do bloco: uma reunião só sobre o novo showroom (conceito de ' +
+          'galeria, com câmaras sensoriais que também servem de sala de reunião) e sobre a definição de ' +
+          'posicionamento. Sair daqui com a data marcada.\n\n' +
+          'SE PERGUNTAREM DO FORNECEDOR DE WPC: é o gargalo da estética. Enquanto ele não melhorar, bambu e ' +
+          'pedra flexível continuam no portfólio sem chegar na obra.\n\n' +
+          'Para fechar o bloco, antes de virar para o INPI: rebrand e embalagem são as respostas que dependem ' +
+          'só da gente, e ficam prontas para o começo de 2027.\n\n' +
+          'O número 01 é o mesmo da pauta.',
+        num: '01',
+        eyebrow: 'Pauta, bloco 01',
+        title: 'Arkos',
+        footer: 'Como a concorrência se sustenta e os dois showrooms lado a lado. Este bloco não pede dinheiro: pede uma data.'
+      },
+
+      {
         layout: 'topico',
         label: 'Imagem impecável',
         notes:
@@ -371,35 +392,6 @@
         recado: 'A diferença não está no produto: os dois importam e os dois vendem quase só textura de madeira. Está no que se mostra — e é essa caixa que o kit novo substitui.'
       },
 
-      {
-        layout: 'pontos',
-        label: 'Onde a Lesco está',
-        notes:
-          'Esta é a tela desconfortável, e é de propósito. Não somos vistos como concorrentes à altura — nem pela ' +
-          'Arkos, nem pelos clientes que ela influencia.\n\n' +
-          'PEDIR UMA DATA: este bloco não pede dinheiro, pede agenda. Quero marcar uma reunião só sobre o novo ' +
-          'showroom (conceito de galeria, com câmaras sensoriais que também servem de sala de reunião) e sobre a ' +
-          'definição de posicionamento. Sai daqui com a data.\n\n' +
-          'Se perguntarem do fornecedor de WPC: é o gargalo da estética. Enquanto ele não melhorar, bambu e pedra ' +
-          'flexível continuam no portfólio sem chegar na obra.',
-        eyebrow: 'Arkos',
-        title: 'Onde a Lesco está',
-        items: [
-          {
-            label: 'Percepção',
-            text: 'Não somos vistos como concorrentes à altura, nem pela Arkos nem pelos clientes que ela influencia.'
-          },
-          {
-            label: 'Fornecimento',
-            text: 'A estética fica limitada a quase só madeira, mesmo com bambu e pedra flexível no portfólio. O fornecedor de WPC precisa melhorar.'
-          },
-          {
-            label: 'Posicionamento',
-            text: 'O posicionamento atual não condiz com a realidade da empresa.'
-          }
-        ],
-        rodape: 'Rebrand e embalagem são as respostas que dependem só da gente — e ficam prontas para o começo de 2027.'
-      },
 
       /* ===============================================================
          INPI E REBRAND
@@ -427,7 +419,7 @@
            explicação de como o INPI funciona, e explicação virou desenho
            na tela seguinte. */
         layout: 'topico',
-        label: 'Quem deposita primeiro sai na frente',
+        label: 'Quem registra sai na frente',
         notes:
           'O argumento é de corrida, não de risco teórico. No Brasil o direito sobre a marca vem do registro, não ' +
           'do uso: quem deposita primeiro leva.\n\n' +
@@ -437,7 +429,7 @@
           'um nome parecido na mesma classe — e aí a discussão vira processo.\n\n' +
           'A tela seguinte explica como o registro funciona. Esta só diz por que é agora.',
         eyebrow: 'INPI e rebrand',
-        title: 'Quem deposita primeiro\nsai na frente',
+        title: 'Quem registra\nsai na frente',
         text: 'No Brasil o direito sobre a marca vem do registro no INPI. Sem depósito, um concorrente pode registrar esses nomes e nos impedir de usá-los.',
         destaques: ['GEO, ZHÜ e ECHO já estão no mercado']
       },
@@ -650,6 +642,22 @@
          =============================================================== */
 
       {
+        layout: 'chapter',
+        label: '03 · Embalagens',
+        notes:
+          'A capa do bloco do dinheiro mais concreto da reunião: a embalagem é a única frente que já tem ' +
+          'orçamento fechado e data de validade.\n\n' +
+          'Amarrar com o que veio antes: a caixa de papelão que apareceu na tela da mesa de reunião é ' +
+          'exatamente a que o kit novo substitui.\n\n' +
+          'Avisar já que as propostas venceram e precisam ser reconfirmadas — melhor dizer na abertura do que ' +
+          'ser perguntado no meio da conta.',
+        num: '03',
+        eyebrow: 'Pauta, bloco 03',
+        title: 'Embalagens',
+        footer: 'Kit novo contra kit antigo, onde está o custo e o pedido recomendado pela Louise, em dois momentos.'
+      },
+
+      {
         layout: 'colunas',
         label: 'Kit novo × kit antigo',
         notes:
@@ -852,6 +860,21 @@
          =============================================================== */
 
       {
+        layout: 'chapter',
+        label: '04 · Mono: frete',
+        notes:
+          'Muda de empresa: daqui em diante a conversa é sobre a Mono, não sobre a Lesco.\n\n' +
+          'O bloco tem um gargalo só, e ele é medido: a maior parte das perguntas nos anúncios é sobre frete. ' +
+          'Cada uma respondida à mão, e o comprador esperando.\n\n' +
+          'O pedido ao fim é contratar a Tray para conectar a Mono aos marketplaces via API, que é como a ' +
+          'concorrência resolve isso.',
+        num: '04',
+        eyebrow: 'Pauta, bloco 04',
+        title: 'Mono: frete',
+        footer: 'O gargalo do marketplace, o que a concorrência mostra no anúncio e a proposta da Tray.'
+      },
+
+      {
         layout: 'barraspilha',
         label: 'O frete hoje',
         notes:
@@ -962,8 +985,24 @@
          =============================================================== */
 
       {
+        layout: 'chapter',
+        label: '05 · Mono Creators',
+        notes:
+          'O último bloco que pede dinheiro, e o mais aberto dos cinco: a meta de creators por mês e o custo da ' +
+          'landing page ainda estão a definir.\n\n' +
+          'Dizer isso na capa, antes de mostrar o fluxo. O que se pede aqui é a verba de tráfego e o aval para ' +
+          'montar a operação — não um número fechado.',
+        num: '05',
+        eyebrow: 'Pauta, bloco 05',
+        title: 'Mono\nCreators',
+        footer: 'Captação de creators por tráfego pago, com orçamento compartilhado entre as marcas.'
+      },
+
+      {
         layout: 'fluxo',
-        label: 'Mono Creators',
+        /* O label mudou quando a capa do bloco entrou: dois "Mono Creators"
+           seguidos na grade (tecla G) não ajudavam ninguém. */
+        label: 'Como a captação funciona',
         notes:
           'O gargalo é a ENTRADA: captar influenciador manualmente é improdutivo. O tráfego pago resolve volume de ' +
           'interessados; a Inbazz, que já está contratada, resolve a gestão depois que eles entram.\n\n' +
@@ -1012,6 +1051,19 @@
       /* ===============================================================
          FECHAMENTO
          =============================================================== */
+
+      {
+        layout: 'chapter',
+        label: '06 · Fechamento',
+        notes:
+          'Nada de assunto novo daqui para a frente. O fechamento só junta o que já foi pedido bloco a bloco.\n\n' +
+          'Duas telas: o resumo de valores e a lista de decisões, que é marcável na hora. A meta é não sair ' +
+          'daqui com nenhuma frente em aberto.',
+        num: '06',
+        eyebrow: 'Pauta, bloco 06',
+        title: 'Fechamento',
+        footer: 'O resumo de valores e a tela de decisões, para marcar na reunião.'
+      },
 
       {
         layout: 'tabela',

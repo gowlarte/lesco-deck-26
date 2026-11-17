@@ -473,7 +473,11 @@ ranking ao lado.
 
 Apresentação ao Lucas para aprovar investimentos e definir direção em cinco
 frentes: Arkos, INPI e rebrand, embalagens, Mono nos marketplaces e Mono
-Creators. São 27 telas e quinze layouts que as outras apresentações não têm.
+Creators. São 31 telas e quinze layouts que as outras apresentações não têm.
+
+Cada uma das seis frentes abre com uma **capa de bloco** numerada de 01 a 06 —
+os mesmos números da pauta, para quem se perder saber onde está. São o layout
+`chapter` do motor, sem foto de fundo: tipografia sobre grafite.
 
 É também a única apresentação que veste a **identidade de 2027** — paleta,
 marca e peças do manual `LESCO-ID-VISUAL-2027.pdf`. Isso vale só aqui, e a
@@ -482,7 +486,7 @@ razão está mais abaixo.
 ```
 decks/investimentos-e-direcao/
   dados.js       >>> TODOS os números ficam aqui, em centavos <<<
-  deck.js        as 27 telas, sem um número escrito dentro
+  deck.js        as 31 telas, sem um número escrito dentro
   identidade.css a paleta de 2027, só para este deck
   marca.js       o logo novo em vetor, em window.DRAWINGS
   graficos.js    os quinze layouts de gráfico, foto, diagrama e decisão
@@ -622,7 +626,7 @@ eixo até 5 milhões e a coluna mais alta ficava com 59% da área.
 
 ### A tela de decisões
 
-A tela 27 é marcável durante a reunião: clicar num status registra ali mesmo, e
+A tela 31 é marcável durante a reunião: clicar num status registra ali mesmo, e
 clicar de novo no mesmo status desmarca. O motor monta todos os slides uma vez
 só e nunca os remonta, então a marcação **continua lá ao voltar no slide** — e
 sai assim na exportação em PDF, que vira o registro do que foi decidido.
