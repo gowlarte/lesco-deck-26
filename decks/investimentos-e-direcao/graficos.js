@@ -1,7 +1,7 @@
 /* ===========================================================================
    LAYOUTS DE GRÁFICO E DECISÃO
 
-   Onze layouts a mais, só para esta apresentação. Eles entram em
+   Treze layouts a mais, só para esta apresentação. Eles entram em
    window.DeckLayouts ao lado dos treze de engine/layouts.js — o motor não
    sabe a diferença e nada do que já existe muda. Por isso este arquivo é
    carregado DEPOIS de engine/layouts.js e ANTES de deck.js.
@@ -17,6 +17,8 @@
      fluxo         diagrama de fluxo em etapas, com as contas embaixo
      tabela        tabela agrupada por frente
      decisoes      lista de aprovação com seletor de status, marcável na reunião
+     confronto     duas fotos lado a lado, cada uma com a sua etiqueta
+     marca         o logo de hoje e o de 2027, um ao lado do outro
 
    O DESENHO
      Tudo é traço e preenchimento chapado sobre o papel quente. Sem grade de
@@ -136,6 +138,17 @@
     return 'g-tom g-tom--' + (tom || 3) + (papel ? ' g-tom--' + papel : '');
   }
 
+  /* O destaque de uma barra não é só o rótulo mais escuro: a barra troca a
+     tinta cinza pela terracota da marca, porque é ela a informação que a tela
+     existe para apontar. Quem declarou `papel` na mão manda nele. */
+  var PAPEL_DESTAQUE = ['proposta', 'proposta-clara', 'proposta-palida'];
+
+  function papelDe(g, destacado, j) {
+    if (g.papel) return g.papel;
+    if (!destacado) return null;
+    return PAPEL_DESTAQUE[Math.min(j || 0, PAPEL_DESTAQUE.length - 1)];
+  }
+
 
   /* =====================================================================
      01 · pontos — texto em N pontos numerados
@@ -246,7 +259,7 @@
           ]),
           h('div', { class: 'barra__trilho' }, [
             h('div', {
-              class: 'barra__fill ' + tinta(item.tom || 3, item.papel),
+              class: 'barra__fill ' + tinta(item.tom || 3, papelDe(item, item.destaque, 0)),
               style: '--alvo:' + ((item.valor / max) * 100).toFixed(2) + '%'
             })
           ]),
@@ -310,7 +323,7 @@
           var dentro = total ? (g.valor / total) * 100 : 0;
 
           trilho.appendChild(h('div', {
-            class: 'pilha__parte ' + tinta(g.tom, g.papel),
+            class: 'pilha__parte ' + tinta(g.tom, papelDe(g, item.destaque, j)),
             style: 'width:' + dentro.toFixed(3) + '%; --j:' + j,
             title: g.rotulo
           }, [
@@ -677,14 +690,16 @@
 
         svg.appendChild(svgEl('path', {
           d: d,
-          class: 'linhas__linha linhas__linha--t' + (serie.tom || Math.min(k + 1, 5)),
+          class: 'linhas__linha linhas__linha--t' + (serie.tom || Math.min(k + 1, 5)) +
+                 (serie.destaque ? ' linhas__linha--destaque' : ''),
           style: '--k:' + k
         }));
 
         pontos.forEach(function (v, i) {
           svg.appendChild(svgEl('circle', {
             cx: x(i), cy: y(v), r: 7,
-            class: 'linhas__ponto linhas__ponto--t' + (serie.tom || Math.min(k + 1, 5)),
+            class: 'linhas__ponto linhas__ponto--t' + (serie.tom || Math.min(k + 1, 5)) +
+                   (serie.destaque ? ' linhas__ponto--destaque' : ''),
             style: '--k:' + k + '; --i:' + i
           }));
         });
@@ -1010,4 +1025,125 @@
     }
   };
 
+
+  /* =====================================================================
+     12 · confronto — duas fotos lado a lado, cada uma com a sua etiqueta
+
+       { layout: 'confronto', eyebrow, title, sub,
+         lados: [{ nome, apoio, src, alt, focal, texto, nosso }],
+         recado, nota }
+
+     O `duo` do motor já põe duas fotos lado a lado, e serve bem quando as
+     duas são do mesmo assunto. Aqui elas são de assuntos OPOSTOS, e o
+     slide só funciona se der para saber qual é qual sem ninguém narrar.
+     Por isso cada foto desce para uma etiqueta própria — a marca, onde a
+     foto foi feita e a linha que diz o que se está vendo — em vez de um
+     subtítulo único no alto dizendo "à esquerda… à direita…".
+
+     `nosso: true` marca o nosso lado: o filete acima da etiqueta fecha e o
+     nome escurece. É a mesma ideia da regra de cor dos gráficos — o que é
+     da concorrência fica cinza —, e aqui ela também não carrega sozinha a
+     leitura, porque o nome está escrito embaixo de cada foto.
+
+     A moldura é a `.frame` do motor, de propósito: corte, cantos e o
+     assentamento da imagem continuam iguais aos de toda foto do sistema.
+     O que este arquivo acrescenta é só o pé.
+     ===================================================================== */
+
+  L.confronto = {
+    transition: 'stagger',
+    render: function (s) {
+      var grade = h('div', { class: 'confronto' });
+
+      lista(s.lados).forEach(function (lado) {
+        var moldura = h('div', { class: 'frame' }, [
+          h('img', { src: lado.src, alt: lado.alt || '' })
+        ]);
+
+        /* O corte da foto. Todas são verticais de celular ou de campanha, e
+           entram numa moldura deitada: sem isto o corte pega o meio e perde
+           justamente o que interessa. */
+        if (lado.focal) moldura.style.setProperty('--focal', lado.focal);
+
+        grade.appendChild(h('div', {
+          class: 'confronto__lado' + (lado.nosso ? ' confronto__lado--nosso' : ''),
+          anim: 'slide'
+        }, [
+          moldura,
+          h('div', { class: 'confronto__pe' }, [
+            h('div', { class: 'confronto__marca' }, [
+              h('span', { class: 'confronto__nome', text: lado.nome }),
+              lado.apoio ? h('span', { class: 'confronto__onde', text: lado.apoio }) : null
+            ]),
+            lado.texto ? h('p', { class: 'confronto__texto', html: lado.texto }) : null
+          ])
+        ]));
+      });
+
+      return h('div', { class: 'l-confronto pad pad--tight' }, [
+        cabeca(s, 'md'),
+        grade,
+        s.recado ? h('p', { class: 'g-recado', html: s.recado, anim: true }) : null,
+        nota(s.nota)
+      ]);
+    }
+  };
+
+
+  /* =====================================================================
+     13 · marca — o logo de hoje e o de 2027, um ao lado do outro
+
+       { layout: 'marca', eyebrow, title, sub,
+         antes:  { src, alt, etiqueta, apoio },
+         depois: { svg, alt, etiqueta, apoio, assinatura },
+         recado, nota }
+
+     A tela que pede o rebrand mostrando o rebrand. O lado esquerdo é o
+     logo atual, em PNG, porque ele tem degradê e não há o que tingir. O
+     direito é o desenho vetorial do manual (ver marca.js), em terracota
+     sobre o verde escuro — o mesmo par que o manual usa na página do logo.
+
+     Os dois campos têm a mesma altura e a mesma largura de propósito: o
+     que muda entre eles é só o desenho, que é exatamente o que está em
+     discussão.
+     ===================================================================== */
+
+  L.marca = {
+    transition: 'stagger',
+    render: function (s) {
+      function campo(lado, classe) {
+        if (!lado) return null;
+
+        var desenho;
+        if (lado.svg) {
+          var lib = global.DRAWINGS || {};
+          desenho = h('div', { class: 'marca__arte' });
+          desenho.innerHTML = typeof lib[lado.svg] === 'function'
+            ? lib[lado.svg](lado.alt || 'Lesco')
+            : '';
+        } else {
+          desenho = h('div', { class: 'marca__arte' }, [
+            h('img', { src: lado.src, alt: lado.alt || '' })
+          ]);
+        }
+
+        return h('div', { class: 'marca__campo ' + classe, anim: 'slide' }, [
+          h('span', { class: 'marca__etiqueta', text: lado.etiqueta }),
+          desenho,
+          lado.assinatura ? h('span', { class: 'marca__assinatura', text: lado.assinatura }) : null,
+          lado.apoio ? h('p', { class: 'marca__apoio', html: lado.apoio }) : null
+        ]);
+      }
+
+      return h('div', { class: 'l-marca pad pad--tight' }, [
+        cabeca(s, 'md'),
+        h('div', { class: 'marca' }, [
+          campo(s.antes, 'marca__campo--hoje'),
+          campo(s.depois, 'marca__campo--novo')
+        ]),
+        s.recado ? h('p', { class: 'g-recado', html: s.recado, anim: true }) : null,
+        nota(s.nota)
+      ]);
+    }
+  };
 })(window);

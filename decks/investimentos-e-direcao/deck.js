@@ -65,7 +65,8 @@
       return {
         rotulo: p.rotulo + ' · ' + $(p.valor),
         valor: p.valor,
-        tom: i === 0 ? 4 : (i === 1 ? 2 : 1)
+        tom: i === 0 ? 4 : (i === 1 ? 2 : 1),
+        papel: i === 0 ? 'proposta' : (i === 1 ? 'proposta-clara' : 'proposta-palida')
       };
     });
   }
@@ -138,18 +139,18 @@
         notes:
           'Roteiro e relógio. Os tempos são o combinado, não uma promessa: se um bloco esticar, o que cede é o ' +
           'fechamento, porque as decisões já terão sido pedidas bloco a bloco.\n\n' +
-          'A meta é sair da reunião com decisões em todas as frentes.',
+          'A meta é sair da reunião com decisões em todas as frentes. Os tempos somam 60 em ponto: se um bloco estourar, é de outro que sai o minuto.',
         eyebrow: 'Decisões em todas as frentes',
         /* Uma linha, e não duas: com seis blocos a lista encosta na borda de
            baixo, e a segunda linha do título custa os 89 px que faltam. */
         title: 'Cinco frentes em 60 minutos',
         items: [
-          { name: 'Arkos',           apoio: 'Como a concorrência se sustenta, e onde estamos', tag: '8 min' },
-          { name: 'INPI e rebrand',  apoio: 'Registro das marcas e logo novo para 2027',       tag: '15 min' },
-          { name: 'Embalagens',      apoio: 'Kit novo, composição e pedido recomendado',       tag: '8 min' },
-          { name: 'Mono: frete',     apoio: 'O gargalo do marketplace e a proposta Tray',      tag: '10 min' },
-          { name: 'Mono Creators',   apoio: 'Captação de creators por tráfego pago',           tag: '10 min' },
-          { name: 'Fechamento',      apoio: 'Resumo de valores e decisões',                    tag: '7 min' }
+          { name: 'Arkos',           apoio: 'A concorrência, os dois showrooms e onde estamos', tag: '10 min' },
+          { name: 'INPI e rebrand',  apoio: 'Registro das marcas e a marca nova de 2027',       tag: '16 min' },
+          { name: 'Embalagens',      apoio: 'Kit novo, composição e pedido recomendado',        tag: '8 min' },
+          { name: 'Mono: frete',     apoio: 'O gargalo do marketplace e a proposta Tray',       tag: '10 min' },
+          { name: 'Mono Creators',   apoio: 'Captação de creators por tráfego pago',            tag: '9 min' },
+          { name: 'Fechamento',      apoio: 'Resumo de valores e decisões',                     tag: '7 min' }
         ]
       },
 
@@ -188,6 +189,108 @@
             text: 'O mesmo showroom é reaproveitado nas feiras, sem montar material novo a cada evento.'
           }
         ]
+      },
+
+      /* ---------------------------------------------------------------
+         OS DOIS SHOWROOMS
+
+         Três telas dentro do bloco da Arkos. Elas não pedem dinheiro:
+         pedem que a diferença seja VISTA antes de a conversa chegar em
+         marca e em embalagem — é ela que explica a pressa dos dois.
+
+         As fotos vieram do deck do showroom, que já fazia esta
+         comparação na página 16. Ver img/LEIA-ME.md, que diz de onde
+         veio cada uma e por que estas cinco e não outras.
+         --------------------------------------------------------------- */
+
+      {
+        layout: 'photo',
+        label: 'A parede da Arkos',
+        notes:
+          'A frase é deles, em letra de metal na parede do showroom: AMANTES DE BOA ARQUITETURA. Vale ler em voz ' +
+          'alta e ficar calado um segundo.\n\n' +
+          'Reparar no que ela NÃO diz: nada sobre o produto, nada sobre preço, nada sobre prazo. Ela fala de quem é ' +
+          'o cliente. É isso que o showroom inteiro está construindo.\n\n' +
+          'E reparar na mesa: é a mesa de reunião deles, dentro do showroom, sobre o deck que é produto da casa, ' +
+          'debaixo da frase. O cliente senta ali. Guardar esta imagem para a terceira tela do tópico.',
+        eyebrow: 'Os dois showrooms',
+        title: 'A posição deles está\nescrita na parede',
+        src: 'img/arkos/parede.webp',
+        alt: 'Parede de madeira do showroom da Arkos com a frase AMANTES DE BOA ARQUITETURA em letras de metal, e a mesa de reunião sobre o deck',
+        focal: '50% 50%'
+      },
+
+      {
+        layout: 'confronto',
+        label: 'Showroom e escritório',
+        notes:
+          'Cuidado com o tom aqui, porque o mal-entendido é fácil: o escritório não é ruim. É um escritório bom ' +
+          'para o que ele é. O ponto é outro — ele não foi desenhado para receber cliente, e é nele que o cliente ' +
+          'é recebido.\n\n' +
+          'Se vier a pergunta de quanto custa a diferença: não é esta reunião que resolve o showroom. O pedido ' +
+          'deste bloco é uma data para a reunião só sobre isso. O que esta tela sustenta são as duas frentes ' +
+          'seguintes, que dependem só da gente — a marca e a embalagem.\n\n' +
+          'Vale dizer também que o deck de madeira no chão do showroom deles é produto deles, aplicado. O ripado ' +
+          'da nossa divisória também é nosso. A diferença não é ter o produto, é tratá-lo como obra.',
+        eyebrow: 'Os dois showrooms',
+        title: 'Um foi desenhado para receber cliente',
+        lados: [
+          {
+            nome: 'Arkos',
+            apoio: 'Showroom, São Paulo',
+            src: 'img/arkos/showroom.webp',
+            alt: 'Vista ampla do showroom da Arkos, com forro ripado, estante de amostras coloridas e balcão curvo iluminado',
+            focal: '50% 56%',
+            texto: 'Forro ripado, balcão curvo iluminado, as amostras organizadas por cor e plintos de exposição.'
+          },
+          {
+            nome: 'Lesco',
+            apoio: 'Escritório, São Paulo',
+            nosso: true,
+            src: 'img/lesco/armarios.webp',
+            alt: 'Vista larga do escritório da Lesco, com os armários de madeira, as bancadas de trabalho e o arco de folhagem ao fundo',
+            focal: '50% 46%',
+            texto: 'Um escritório bem resolvido para o que é — e não foi desenhado para receber cliente.'
+          }
+        ],
+        nota: 'Fotos da visita ao showroom da Arkos e do escritório da Lesco em São Paulo, as mesmas do deck do showroom.'
+      },
+
+      {
+        layout: 'confronto',
+        label: 'Onde a amostra encontra o cliente',
+        notes:
+          'A tela da página 16 do deck do showroom, trazida para cá. Deixar na tela e ficar calado alguns segundos: ' +
+          'ela dispensa argumento.\n\n' +
+          'É o mesmo momento da conversa dos dois lados — o cliente pede para ver o material. À esquerda, um plinto ' +
+          'desenhado para isso. À direita, a nossa mesa de reunião, com os perfis empilhados e as caixas de papelão ' +
+          'abertas ao lado.\n\n' +
+          'Nenhuma das duas foi escolhida para favorecer ninguém: são o que existe nos dois lugares. Existe uma foto ' +
+          'da mesma sala arrumada, e ela não serve aqui — arrumada, a cena deixa de dizer o que esta tela diz.\n\n' +
+          'A CAIXA É A DOBRADIÇA DO DECK: é exatamente ela que o kit novo substitui. Se o Lucas perguntar quanto ' +
+          'custa trocar, a resposta inteira está no bloco de embalagens, com o preço por kit e o pedido fechado.',
+        eyebrow: 'Os dois showrooms',
+        title: 'Onde a amostra encontra o cliente',
+        lados: [
+          {
+            nome: 'Arkos',
+            apoio: 'Expositor no showroom',
+            src: 'img/arkos/amostras.webp',
+            alt: 'Plinto de exposição da Arkos com perfis de fachada em pé e as letras ARKOS recortadas contra a janela',
+            focal: '50% 56%',
+            texto: 'Um plinto desenhado para isso, com os perfis em pé e a marca recortada contra a cidade.'
+          },
+          {
+            nome: 'Lesco',
+            apoio: 'Mesa de reunião',
+            nosso: true,
+            src: 'img/lesco/mesa-amostras.webp',
+            alt: 'Mesa do escritório da Lesco com perfis de WPC empilhados e caixas de papelão abertas ao lado',
+            focal: '50% 58%',
+            texto: 'Os perfis empilhados na mesa e as caixas de papelão abertas ao lado.'
+          }
+        ],
+        recado: 'A diferença não está no produto: os dois importam e os dois vendem quase só textura de madeira. Está no que se mostra — e é essa caixa que o kit novo substitui.'
       },
 
       {
@@ -274,7 +377,8 @@
         sub: 'Mista e nominativa custam o mesmo. Juntos, economizam ' + $c(economia) + '.',
         legenda: [
           { rotulo: 'Assessoria', tom: 4 },
-          { rotulo: 'Taxas do INPI', tom: 2 }
+          { rotulo: 'Taxas do INPI', tom: 2 },
+          { rotulo: 'O que se recomenda fechar', papel: 'proposta' }
         ],
         items: [linhasMista, comBambu, lescoNom, juntos, N.custoPacote('juntos-bambu')].map(function (p) {
           return {
@@ -296,6 +400,85 @@
           N.inpi.condicoes.descontoAVista + '% de desconto; taxas do INPI à vista. As taxas podem cair ' +
           N.inpi.condicoes.reducaoTitular + '% se o titular for CPF, MEI, ME ou EPP. ' +
           'A proposta venceu em ' + N.inpi.condicoes.validade + ' e os valores precisam ser reconfirmados.'
+      },
+
+      /* ---------------------------------------------------------------
+         A MARCA, ANTES DO PEDIDO
+
+         Duas telas que o PRD não previa, e que entram porque o manual de
+         2027 ficou pronto: a marca nova e a marca aplicada. Elas vêm
+         ANTES do slide que pede a aprovação do rebrand, de propósito —
+         é mais fácil decidir vendo do que lendo a descrição.
+
+         As imagens são do próprio manual (ver img/LEIA-ME.md). As peças
+         da segunda tela são estudos da identidade, não são as embalagens
+         que a 46 orçou — o rodapé diz isso na tela, porque a confusão
+         entre as duas coisas custaria caro no bloco seguinte.
+         --------------------------------------------------------------- */
+
+      {
+        layout: 'marca',
+        label: 'A marca nova',
+        notes:
+          'Ficar calado um segundo depois de trocar o slide. A comparação é o argumento.\n\n' +
+          'O que mudou não é só o desenho: o logo de hoje é uma palavra com um degradê, e o de 2027 é uma marca — ' +
+          'tem símbolo, tem cor própria e tem uma frase que diz o que a empresa faz.\n\n' +
+          'A cor é terracota, e o fundo verde escuro é o par que o próprio manual usa. Os dois saem da mesma paleta, ' +
+          'e é a paleta que está vestindo esta apresentação inteira: se ele reparar que o deck mudou de cor, foi ' +
+          'de propósito — é a identidade nova aplicada.\n\n' +
+          'Se perguntarem quem fez: o manual é o LESCO-ID-VISUAL-2027. O desenho que está nesta tela saiu direto ' +
+          'do arquivo, em vetor — não é foto de tela.',
+        eyebrow: 'INPI e rebrand',
+        title: 'A marca nova',
+        sub: 'O logo de hoje e o de 2027, na mesma largura.',
+        antes: {
+          src: '../../shared/brand/logo-dark.png',
+          alt: 'Logo atual da Lesco: a palavra LESCO com um traço em degradê',
+          etiqueta: 'Hoje',
+          apoio: 'Uma palavra e um degradê. Sem símbolo, sem cor própria.'
+        },
+        depois: {
+          svg: 'marca-lesco',
+          alt: 'Marca nova da Lesco, de 2027',
+          etiqueta: '2027',
+          assinatura: 'Arquitetura feita para o amanhã.',
+          apoio: 'Símbolo, cor própria e uma frase que diz o que a empresa faz.'
+        },
+        nota: 'Marca, paleta e tipografia do manual LESCO-ID-VISUAL-2027. O desenho vem do vetor do próprio arquivo.'
+      },
+
+      {
+        layout: 'duo',
+        label: 'A identidade aplicada',
+        notes:
+          'O que a aprovação do rebrand produz, em peça. Dois estudos do manual: a pasta de documentação técnica e ' +
+          'a caixa.\n\n' +
+          'ATENÇÃO AO MAL-ENTENDIDO, e é melhor dizer antes que ele pergunte: estas peças são estudos da ' +
+          'identidade, NÃO são as embalagens que a 46 orçou. A caixa da foto não é a caixa de ' +
+          $(N.componente('caixaGrande').centavos) + ' do bloco seguinte. O que esta tela mostra é a linguagem; ' +
+          'o que o bloco de embalagens mostra é o custo.\n\n' +
+          'A ligação entre as duas coisas é direta: aprovar o rebrand agora é o que permite mandar imprimir a ' +
+          'embalagem nova já com a identidade certa, em vez de imprimir duas vezes.',
+        eyebrow: 'INPI e rebrand',
+        title: 'A identidade aplicada',
+        /* Duas fotos, e não três: as peças do manual são todas deitadas, e
+           num grid de três colunas o corte vira retrato e desmonta a
+           composição — a frase da caixa ficava cortada no meio. */
+        sub: 'Estudos do manual — não são as embalagens que a 46 orçou.',
+        media: [
+          {
+            src: 'img/id/pasta.webp',
+            alt: 'Pastas de documentação técnica da Lesco em areia e verde escuro, com a marca nova em recorte',
+            focal: '50% 50%'
+          },
+          {
+            src: 'img/id/caixa-nova.webp',
+            alt: 'Caixa de papelão em azul claro com a marca nova em terracota e a frase arquitetura feita para o amanhã',
+            /* Puxado para a esquerda: no centro, o corte come o A de
+               ARQUITETURA na lateral da caixa. */
+            focal: '34% 50%'
+          }
+        ]
       },
 
       {
@@ -402,8 +585,8 @@
         sub: 'A caixa grande é o maior custo do kit.',
         dentro: true,
         legenda: [
-          { rotulo: 'Caixa grande · ' + $(N.componente('caixaGrande').centavos), tom: 4 },
-          { rotulo: 'Caixa de linha · ' + $(N.componente('caixaLinha').centavos) + ' cada', tom: 2 }
+          { rotulo: 'Caixa grande · ' + $(N.componente('caixaGrande').centavos), tom: 4, papel: 'proposta' },
+          { rotulo: 'Caixa de linha · ' + $(N.componente('caixaLinha').centavos) + ' cada', tom: 2, papel: 'proposta-clara' }
         ],
         items: [
           {
@@ -450,6 +633,9 @@
           return {
             nome: linha.item,
             tom: i + 1,
+            /* A caixa grande é a linha que decide o pedido: é ela que pesa
+               no kit e é dela que sai a conta da tela seguinte. */
+            destaque: linha.item === 'Caixa grande',
             pontos: N.embalagens.faixas.map(function (f) { return linha.precos[f]; }),
             fim: N.deltaPct(N.quedaVolume(linha).pct)
           };
@@ -493,15 +679,19 @@
         sub: 'Pedido: aprovar o orçamento das embalagens novas, começando pelo lote menor.',
         unidade: 'Investimento por momento',
         legenda: [
-          { rotulo: 'Caixas', tom: 4 },
-          { rotulo: 'Envelopes e caixas de linha', tom: 2 }
+          { rotulo: 'Caixas', tom: 4, papel: 'proposta' },
+          { rotulo: 'Envelopes e caixas de linha', tom: 2, papel: 'proposta-clara' }
         ],
         items: momentos.map(function (m) {
           return {
             label: m.momento,
             apoio: m.momento === imediato.momento ? 'Pedir agora' : 'Programado',
             segmentos: m.linhas.map(function (l, i) {
-              return { rotulo: l.item + ' · ' + $(l.total), valor: l.total, tom: i === 0 ? 4 : 2 };
+              return {
+                rotulo: l.item + ' · ' + $(l.total), valor: l.total,
+                tom: i === 0 ? 4 : 2,
+                papel: i === 0 ? 'proposta' : 'proposta-clara'
+              };
             }),
             mostra: $(m.total)
           };
@@ -553,7 +743,7 @@
         title: 'O frete hoje',
         sub: 'Perguntas nos anúncios da Mono no Mercado Livre, no ' + N.mono.periodoPerguntas + '.',
         legenda: [
-          { rotulo: 'Perguntas sobre frete', tom: 5 },
+          { rotulo: 'Perguntas sobre frete', tom: 5, papel: 'problema' },
           { rotulo: 'Outras perguntas', tom: 1 }
         ],
         items: N.mono.perguntasML.map(function (a) {
@@ -561,7 +751,7 @@
             label: a.anuncio,
             apoio: (a.frete + a.outras) + ' perguntas no total',
             segmentos: [
-              { rotulo: 'Frete · ' + a.frete, valor: a.frete, tom: 5 },
+              { rotulo: 'Frete · ' + a.frete, valor: a.frete, tom: 5, papel: 'problema' },
               { rotulo: 'Outras · ' + a.outras, valor: a.outras, tom: 1 }
             ],
             mostra: a.frete + ' de ' + (a.frete + a.outras)

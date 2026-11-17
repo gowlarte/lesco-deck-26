@@ -1,0 +1,66 @@
+/* ===========================================================================
+   A IDENTIDADE DE 2027
+
+   Os números saíram do próprio manual (_source/uploads/LESCO-ID-VISUAL-2027.pdf):
+   a paleta é a grade da página 7, lida direto dos vetores da página, e o papel
+   e a tinta vêm da página do logo. Nada aqui foi amostrado de screenshot.
+
+   ESTE ARQUIVO VALE SÓ PARA ESTA APRESENTAÇÃO
+     Ele entra depois de theme/tokens.css e redefine os tokens que mudam. Os
+     outros decks continuam com o tema neutro de sempre, porque cada deck é uma
+     página HTML própria e carrega as suas folhas. Para devolver este deck ao
+     tema antigo, basta tirar a linha do <link> em index.html — nenhum outro
+     arquivo sabe que esta folha existe.
+
+   POR QUE A IDENTIDADE NOVA NUMA REUNIÃO QUE AINDA VAI APROVÁ-LA
+     Porque é mais honesto mostrar do que descrever. A tela do logo pede uma
+     decisão sobre o rebrand; o deck inteiro vestido com ele é a resposta à
+     pergunta "como isso fica". Se a decisão for não, a volta é uma linha.
+   ======================================================================== */
+
+:root {
+  /* ---- A paleta do manual, como está lá --------------------------------
+     Quatro famílias em quatro degraus: escuro, base, claro e pálido. A
+     segunda coluna é a base de cada família, e a terracota é a cor do logo.
+     ---------------------------------------------------------------------- */
+  --verde-escuro: #4b534b;  --verde: #96a595;  --verde-claro: #c0c9bf;  --verde-palido: #d8e2d7;
+  --terra-escuro: #5d392a;  --terra: #ba7154;  --terra-claro: #d6aa98;  --terra-palido: #efbeaa;
+  --azul-escuro:  #2c516a;  --azul:  #728ea0;  --azul-claro:  #aabbc6;  --azul-palido:  #c0d3df;
+  --areia-escuro: #5d4f3e;  --areia: #ba9e7b;  --areia-claro: #d6c5b0;  --areia-palido: #efdcc5;
+
+  /* ---- Papel e tinta ---------------------------------------------------
+     O papel do manual é mais claro e mais quente que o papel neutro do tema
+     (#f4efe6); a tinta é cinza puro, e não o quase-preto quente de antes.
+     ---------------------------------------------------------------------- */
+  --paper:        #fffbf3;
+  --paper-soft:   #fffdf8;
+  --surface:      #ffffff;
+  --surface-sunk: #f4ece0;
+  --surface-dark: #262626;
+
+  --ink-900: #303030;   /* tinta do manual */
+  --ink-800: #3b3a38;
+  --ink-700: #4a4845;   /* corpo de texto */
+  --ink-600: #5c5955;
+  --ink-500: #76726c;   /* texto secundário, eyebrows */
+  --ink-400: #96918a;
+  --ink-300: #bab5ad;
+  --ink-200: #dbd5ca;   /* filetes */
+  --ink-100: #ece6da;
+
+  /* ---- O acento deixa de ser o sage e passa a ser a terracota ----------
+     É a cor do logo, e é ela que o motor usa na numeração, nos filetes e na
+     barra de progresso. O verde continua na paleta, mas como família de
+     apoio nos gráficos — não como a cor da marca.
+     ---------------------------------------------------------------------- */
+  --accent:      var(--terra);
+  --accent-soft: var(--terra-claro);
+  --accent-deep: var(--terra-escuro);
+  --accent-wash: var(--terra-palido);
+
+  /* Sobre fundo grafite */
+  --on-dark-strong: #fffbf3;
+  --on-dark-body:   #d9d4cb;
+  --on-dark-muted:  #96918a;
+  --on-dark-hair:   #403e3b;
+}

@@ -7,20 +7,26 @@
    também os gráficos.
 
    A REGRA DE COR
-     A base é monocromática: as partes de um gráfico se separam pela
-     OPACIDADE da mesma tinta, em cinco degraus (--f1 a --f5), mais o
-     contorno puro para o que está pendente. Sobre essa base, e só nos
-     gráficos que comparam proposta com situação atual, o PRD pede o verde
-     da marca para a proposta e cinza para o que é atual ou antigo.
+     A base continua monocromática: as partes de um mesmo conjunto se separam
+     pela OPACIDADE da mesma tinta, em cinco degraus (--f1 a --f5). O que
+     mudou é que agora existe cor de marca por cima dessa base, e ela carrega
+     significado fixo — a mesma cor quer dizer a mesma coisa em todo o deck:
 
-     Os dois papéis estão longe um do outro também em CLARIDADE — o verde é
-     o tom escuro da marca, o cinza do atual é um dos degraus claros. É isso
-     que mantém o gráfico legível em projetor desbotado, em preto e branco e
-     para quem não distingue as duas cores: a cor reforça a leitura, nunca é
-     a única coisa que a carrega.
+       terracota  o que se PROPÕE, o que se pede para aprovar
+       cinza      o que já existe hoje, a concorrência, o contexto
+       verde      o GANHO: economia, o que a decisão devolve
+       azul       o PROBLEMA medido: o gargalo que o gráfico mostra
+       areia      quarta categoria, quando um gráfico precisa de quatro
 
-     Para voltar ao monocromático puro, troque as duas linhas de --proposta
-     por var(--f5) e var(--f4). Nada mais no deck precisa mudar.
+     As cinco são as famílias do manual de 2027 (ver identidade.css), e cada
+     papel usa o degrau da família que fica longe dos outros em CLARIDADE,
+     não só em matiz. É isso que mantém o gráfico legível em projetor
+     desbotado, em preto e branco e para quem não distingue as cores: a cor
+     reforça a leitura, nunca é a única coisa que a carrega. Todo pedaço
+     colorido tem rótulo escrito do lado.
+
+     Para voltar ao monocromático puro, troque as linhas de --proposta,
+     --ganho e --problema por var(--f5) e var(--f3). Nada mais precisa mudar.
 
    O EIXO COMEÇA EM ZERO
      Toda barra e toda coluna nasce da linha de base. Nenhum layout aqui
@@ -28,21 +34,29 @@
    --------------------------------------------------------------------------- */
 
 :root {
-  /* Degraus de preenchimento — do chapado ao quase vazio. */
-  --f5: rgba(26, 26, 26, 0.92);
-  --f4: rgba(26, 26, 26, 0.68);
-  --f3: rgba(26, 26, 26, 0.46);
-  --f2: rgba(26, 26, 26, 0.26);
-  --f1: rgba(26, 26, 26, 0.12);
-  --f0: rgba(26, 26, 26, 0.045);
+  /* Degraus de preenchimento — do chapado ao quase vazio.
+     A tinta é a do manual de 2027 (#303030), e não o quase-preto de antes. */
+  --f5: rgba(48, 48, 48, 0.92);
+  --f4: rgba(48, 48, 48, 0.66);
+  --f3: rgba(48, 48, 48, 0.44);
+  --f2: rgba(48, 48, 48, 0.24);
+  --f1: rgba(48, 48, 48, 0.11);
+  --f0: rgba(48, 48, 48, 0.04);
 
-  --traco:  rgba(26, 26, 26, 0.30);   /* contorno dos gráficos  */
-  --trilho: rgba(26, 26, 26, 0.07);   /* fundo de barra vazia   */
+  --traco:  rgba(48, 48, 48, 0.28);   /* contorno dos gráficos  */
+  --trilho: rgba(48, 48, 48, 0.07);   /* fundo de barra vazia   */
 
-  /* Os dois papéis da comparação. */
-  --proposta:       var(--accent-deep);   /* o que se propõe  */
-  --proposta-clara: var(--accent);        /* segunda parte da proposta */
-  --atual:          var(--f2);            /* o que já existe  */
+  /* Os papéis da leitura. Cada um é uma família do manual. */
+  --proposta:        var(--terra);          /* o que se propõe            */
+  --proposta-clara:  var(--terra-claro);    /* segunda parte da proposta  */
+  --proposta-palida: var(--terra-palido);   /* terceira parte             */
+  --atual:           var(--f2);             /* o que já existe            */
+  --ganho:           var(--verde-escuro);   /* economia, o que se devolve */
+  --ganho-claro:     var(--verde);
+  --problema:        var(--azul-escuro);    /* o gargalo medido           */
+  --problema-claro:  var(--azul-claro);
+  --apoio:           var(--areia);          /* quarta categoria           */
+  --apoio-claro:     var(--areia-claro);
 }
 
 /* Números de gráfico são sempre tabulares: coluna de valores que não dança
@@ -136,6 +150,13 @@
 .g-tom--atual          { background: var(--atual); }
 .g-tom--proposta       { background: var(--proposta); }
 .g-tom--proposta-clara { background: var(--proposta-clara); }
+.g-tom--proposta-palida { background: var(--proposta-palida); }
+.g-tom--ganho          { background: var(--ganho); }
+.g-tom--ganho-claro    { background: var(--ganho-claro); }
+.g-tom--problema       { background: var(--problema); }
+.g-tom--problema-claro { background: var(--problema-claro); }
+.g-tom--apoio          { background: var(--apoio); }
+.g-tom--apoio-claro    { background: var(--apoio-claro); }
 
 /* Pendente: contorno sem preenchimento. */
 .g-tom--pendente {
@@ -451,7 +472,12 @@
 /* Sobre os tons claros a inscrição precisa de tinta escura. */
 .g-tom--1 .pilha__dentro,
 .g-tom--2 .pilha__dentro,
-.g-tom--atual .pilha__dentro { color: var(--text-strong); }
+.g-tom--atual .pilha__dentro,
+.g-tom--proposta-clara .pilha__dentro,
+.g-tom--proposta-palida .pilha__dentro,
+.g-tom--problema-claro .pilha__dentro,
+.g-tom--ganho-claro .pilha__dentro,
+.g-tom--apoio-claro .pilha__dentro { color: var(--text-strong); }
 
 .pilha__valor {
   font-family: var(--font-display);
@@ -727,6 +753,17 @@
 .linhas__ponto--t4 { stroke: var(--f3); }
 .linhas__ponto--t5 { stroke: var(--f2); }
 
+/* A linha que a tela existe para apontar. Mais grossa, inteira e em
+   terracota: a cor marca qual é, a espessura garante que ela continue
+   marcada em preto e branco. */
+.linhas__linha--destaque {
+  stroke: var(--proposta);
+  stroke-width: 4.5;
+  stroke-dasharray: none;
+}
+
+.linhas__ponto--destaque { stroke: var(--proposta); }
+
 /* Fio que liga o ponto final ao rótulo quando ele precisou ser afastado. */
 .linhas__fio { fill: none; stroke: var(--ink-300); stroke-width: 1; }
 
@@ -735,7 +772,7 @@
 .linhas__fim-nome { fill: var(--text-strong); font-size: 25px; }
 
 .linhas__fim-queda {
-  fill: var(--accent-deep);
+  fill: var(--text-muted);
   font-size: 25px;
   font-variant-numeric: tabular-nums;
 }
@@ -1205,4 +1242,175 @@
   clip-path: none !important;
   opacity: 1 !important;
   transform: none !important;
+}
+
+
+/* =====================================================================
+   confronto — duas fotos lado a lado, cada uma com a sua etiqueta
+
+   A foto ocupa o que sobrar da altura e a etiqueta fica presa embaixo
+   dela. Sem o `min-height: 0` nas duas alturas, a imagem absoluta dentro
+   da moldura não tem contra quem medir e o bloco estoura o slide — é a
+   mesma armadilha dos gráficos de coluna.
+   ===================================================================== */
+
+.l-confronto { display: flex; flex-direction: column; }
+
+.l-confronto .g-cabeca { margin-bottom: 38px; }
+
+.confronto {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 44px;
+  min-height: 0;
+}
+
+.confronto__lado {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.confronto__lado .frame { flex: 1; min-height: 0; }
+
+/* O pé é o que faz o slide dispensar narração: quem olha sabe de quem é
+   cada foto sem o apresentador precisar dizer "à esquerda…". */
+.confronto__pe {
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 2px solid var(--f2);
+}
+
+/* O nosso lado fecha o filete e escurece o nome. A concorrência fica
+   cinza, como nos gráficos — e, como lá, a cor só reforça: o nome está
+   escrito embaixo de cada foto. */
+.confronto__lado--nosso .confronto__pe { border-top-color: var(--f5); }
+
+.confronto__marca {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.confronto__nome {
+  font-size: 34px;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.confronto__lado--nosso .confronto__nome { color: var(--ink-900); }
+
+.confronto__onde {
+  font-size: 24px;
+  letter-spacing: 0.02em;
+  color: var(--ink-400);
+}
+
+.confronto__texto {
+  margin: 14px 0 0;
+  font-size: 27px;
+  line-height: 1.46;
+  color: var(--text-body);
+  max-width: 46ch;
+}
+
+
+/* =====================================================================
+   marca — o logo de hoje e o de 2027, lado a lado
+
+   Dois campos do mesmo tamanho: o que muda entre eles é só o desenho,
+   que é o que está em discussão. O da direita é terracota sobre verde
+   escuro, como o manual apresenta a marca.
+   ===================================================================== */
+
+.l-marca { display: flex; flex-direction: column; }
+
+.l-marca .g-cabeca { margin-bottom: 38px; }
+
+.marca {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  min-height: 0;
+}
+
+.marca__campo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 34px;
+  padding: 54px 60px;
+  min-height: 0;
+  border-radius: var(--radius-md);
+}
+
+.marca__campo--hoje { background: var(--surface-sunk); color: var(--ink-900); }
+.marca__campo--novo { background: var(--verde-escuro); color: var(--terra); }
+
+.marca__etiqueta {
+  font-size: 24px;
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.marca__campo--novo .marca__etiqueta { color: var(--terra-claro); }
+
+/* A arte manda na altura: o SVG tem proporção fixa e a largura é que se
+   ajusta, para a marca nunca sair esticada. */
+.marca__arte {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.marca__arte svg,
+.marca__arte img { width: 100%; height: auto; display: block; }
+
+.marca__assinatura {
+  font-family: var(--font-text);
+  font-size: 25px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--terra-claro);
+}
+
+.marca__apoio {
+  margin: 0;
+  font-size: 26px;
+  line-height: 1.45;
+  text-align: center;
+  color: var(--text-muted);
+  max-width: 44ch;
+}
+
+.marca__campo--novo .marca__apoio { color: var(--on-dark-body); }
+
+
+/* =====================================================================
+   A marca na capa
+
+   O motor põe na capa o PNG do logo antigo (engine/layouts.js, função
+   `logo`). Este deck veste a identidade de 2027, então a capa precisa da
+   marca nova — e trocar isso no motor mudaria as outras apresentações.
+   A saída é substituir só o conteúdo da imagem, aqui, pelo SVG da marca.
+
+   A cor vem embutida no arquivo (e não de currentColor) porque um <img>
+   não herda cor de CSS. Se a paleta mudar, é img/marca-lesco-terracota.svg
+   que se regera — o SVG com currentColor continua em img/marca-lesco.svg,
+   para quem precisar tingir.
+   ===================================================================== */
+
+.l-cover .brand-mark,
+.l-outro .brand-mark {
+  content: url('img/marca-lesco-terracota.svg');
+  height: 54px;
+  width: auto;
 }

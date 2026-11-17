@@ -473,14 +473,22 @@ ranking ao lado.
 
 Apresentação ao Lucas para aprovar investimentos e definir direção em cinco
 frentes: Arkos, INPI e rebrand, embalagens, Mono nos marketplaces e Mono
-Creators. São 17 telas e onze layouts que as outras apresentações não têm.
+Creators. São 22 telas e treze layouts que as outras apresentações não têm.
+
+É também a única apresentação que veste a **identidade de 2027** — paleta,
+marca e peças do manual `LESCO-ID-VISUAL-2027.pdf`. Isso vale só aqui, e a
+razão está mais abaixo.
 
 ```
 decks/investimentos-e-direcao/
   dados.js       >>> TODOS os números ficam aqui, em centavos <<<
-  deck.js        as 17 telas, sem um número escrito dentro
-  graficos.js    os onze layouts de gráfico, diagrama e decisão
+  deck.js        as 22 telas, sem um número escrito dentro
+  identidade.css a paleta de 2027, só para este deck
+  marca.js       o logo novo em vetor, em window.DRAWINGS
+  graficos.js    os treze layouts de gráfico, foto, diagrama e decisão
   graficos.css   o estilo deles
+  img/           as fotos dos dois showrooms e as peças da identidade
+                 (ver img/LEIA-ME.md: de onde veio cada uma e por quê)
 ```
 
 **Para corrigir um valor, mexa em `dados.js` e em mais nada.** O `deck.js` só
@@ -524,22 +532,68 @@ classe num pacote muda o total do composto junto, que é o ponto.
 | `fluxo` | Diagrama de etapas, com as contas penduradas num orçamento |
 | `tabela` | Tabela agrupada por frente |
 | `decisoes` | Lista de aprovação com seletor de status, marcável na reunião |
+| `confronto` | Duas fotos lado a lado, cada uma com a sua etiqueta |
+| `marca` | O logo de hoje e o de 2027, um ao lado do outro |
+
+### A identidade de 2027
+
+`identidade.css` traz a paleta do manual, lida direto dos vetores da página 7 —
+quatro famílias em quatro degraus:
+
+| Família | Escuro | Base | Claro | Pálido |
+|---|---|---|---|---|
+| verde | `#4b534b` | `#96a595` | `#c0c9bf` | `#d8e2d7` |
+| terracota | `#5d392a` | `#ba7154` | `#d6aa98` | `#efbeaa` |
+| azul | `#2c516a` | `#728ea0` | `#aabbc6` | `#c0d3df` |
+| areia | `#5d4f3e` | `#ba9e7b` | `#d6c5b0` | `#efdcc5` |
+
+Papel `#fffbf3`, tinta `#303030`, e o acento da marca deixa de ser o sage e
+passa a ser a terracota, que é a cor do logo. A tipografia já era a do manual:
+PP Neue Machina e PP Object Sans estão em `shared/fonts/` desde o começo.
+
+**Vale só para esta apresentação.** O arquivo entra depois de `theme/tokens.css`
+e redefine os tokens que mudam; como cada deck é uma página HTML própria, os
+outros continuam com o tema neutro. Para devolver este ao tema antigo, tire a
+linha do `<link>` em `index.html` — nenhum outro arquivo sabe que a folha
+existe.
+
+O logo novo está **em vetor**: o manual carrega o desenho em vetor dentro do
+PDF, e os caminhos foram convertidos de operadores de página para SVG. Ele vive
+em `marca.js`, dentro de `window.DRAWINGS`, que é o registro que o motor
+consulta quando um slide pede `media: { svg: 'marca-lesco' }`. É embutido, e não
+carregado por `fetch`, porque o deck abre em `file://`.
+
+Por que vestir a identidade numa reunião que ainda vai aprová-la: porque é mais
+honesto mostrar do que descrever. A tela 10 pede a decisão sobre o rebrand, e o
+deck inteiro vestido é a resposta à pergunta "como isso fica".
 
 ### A cor nos gráficos
 
-A base é a mesma do deck de números: as partes se separam pela **opacidade** da
-mesma tinta, em cinco degraus (`--f1` a `--f5`). Sobre essa base, e só nos
-gráficos que comparam proposta com situação atual, o que é **proposta** leva o
-verde da marca e o que é **atual ou antigo** fica cinza.
+A base continua monocromática: as partes de um mesmo conjunto se separam pela
+**opacidade** da mesma tinta, em cinco degraus (`--f1` a `--f5`). O que mudou é
+que agora existe cor de marca por cima dessa base, e ela carrega significado
+fixo — a mesma cor quer dizer a mesma coisa no deck inteiro:
 
-Os dois papéis estão longe um do outro também em **claridade** — o verde é o tom
-escuro da marca, o cinza do atual é um dos degraus claros. É isso que mantém o
-gráfico legível em projetor desbotado, em preto e branco e para quem não
-distingue as duas cores: a cor reforça a leitura, nunca é a única coisa que a
-carrega.
+| Cor | Significa |
+|---|---|
+| terracota | o que se **propõe**, o que se pede para aprovar |
+| cinza | o que já existe hoje, a concorrência, o contexto |
+| verde | o **ganho**: economia, o que a decisão devolve |
+| azul | o **problema** medido: o gargalo que o gráfico mostra |
+| areia | quarta categoria, quando um gráfico precisa de quatro |
 
-Para voltar ao monocromático puro, troque as duas linhas de `--proposta` em
-`graficos.css` por `var(--f5)` e `var(--f4)`. Nada mais no deck muda.
+Cada papel usa o degrau da família que fica longe dos outros em **claridade**,
+não só em matiz. É isso que mantém o gráfico legível em projetor desbotado, em
+preto e branco e para quem não distingue as cores: a cor reforça a leitura,
+nunca é a única coisa que a carrega — todo pedaço colorido tem rótulo escrito do
+lado, e nos gráficos onde a cor aponta a recomendação a legenda diz isso com
+todas as letras.
+
+Marcar `destaque: true` num item de `barras` ou `barraspilha` (ou numa série de
+`linhas`) já troca a tinta cinza pela terracota — não é preciso declarar cor
+nenhuma na mão. Para voltar ao monocromático puro, troque as linhas de
+`--proposta`, `--ganho` e `--problema` em `graficos.css` por `var(--f5)` e
+`var(--f3)`. Nada mais no deck muda.
 
 ### Eixo começa em zero, sempre
 
@@ -551,7 +605,7 @@ eixo até 5 milhões e a coluna mais alta ficava com 59% da área.
 
 ### A tela de decisões
 
-A tela 17 é marcável durante a reunião: clicar num status registra ali mesmo, e
+A tela 22 é marcável durante a reunião: clicar num status registra ali mesmo, e
 clicar de novo no mesmo status desmarca. O motor monta todos os slides uma vez
 só e nunca os remonta, então a marcação **continua lá ao voltar no slide** — e
 sai assim na exportação em PDF, que vira o registro do que foi decidido.
