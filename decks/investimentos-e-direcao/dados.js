@@ -98,6 +98,30 @@ window.NUMEROS = (function () {
       taxaPorPedido: 88000
     },
 
+    /* O que cada classe do INPI cobre, NAS PALAVRAS DA PROPOSTA da
+       Registre.se. Não é a definição oficial da classificação de Nice:
+       é o recorte que interessa a esta reunião, e é por isso que está
+       escrito aqui e não deduzido em algum lugar do deck. */
+    classes: [
+      { numero: 19, nome: 'Revestimentos',           apoio: 'O produto que sai da fábrica' },
+      { numero: 20, nome: 'Bambu semitrabalhado',    apoio: 'Só a linha ZHÜ', opcional: true },
+      { numero: 35, nome: 'Comércio e importação',   apoio: 'A operação de venda' },
+      { numero: 42, nome: 'Projetos de arquitetura', apoio: 'O serviço técnico' }
+    ],
+
+    /* Os dois formatos de registro. O desenho de cada um está em
+       graficos.js: uma barra é o nome, um quadrado é o símbolo. */
+    formatos: {
+      nominativa: {
+        nome: 'Nominativa',
+        protege: 'Só o nome. Vale com qualquer logo — inclusive o novo.'
+      },
+      mista: {
+        nome: 'Mista',
+        protege: 'O nome e o desenho, juntos. Troque o desenho e a proteção envelhece.'
+      }
+    },
+
     /* Condições comerciais, para o rodapé da tela. */
     condicoes: {
       parcelasAssessoria: 10,
@@ -193,6 +217,32 @@ window.NUMEROS = (function () {
       assessoria: assessoria,
       taxas: taxas,
       total: assessoria + taxas
+    };
+  }
+
+  /* A matriz marca × classe, montada a partir dos PEDIDOS — e não digitada.
+     Cada cruzamento preenchido é um pedido, e um pedido é uma taxa: é por
+     isso que o diagrama consegue dizer "uma taxa por classe" sem escrever
+     a frase. Acrescentar uma classe num pacote lá em cima acrescenta um
+     quadrado aqui, e muda o total da tela do custo junto. */
+  function matrizINPI(id) {
+    var pedidos = pedidosDe(pacote(id || 'juntos-bambu'));
+    var ordem = [];
+    var porMarca = {};
+
+    pedidos.forEach(function (p) {
+      if (!porMarca[p.marca]) {
+        porMarca[p.marca] = { marca: p.marca, celulas: {} };
+        ordem.push(porMarca[p.marca]);
+      }
+      porMarca[p.marca].celulas[p.classe] = p.formato;
+    });
+
+    return {
+      classes: inpi.classes,
+      marcas: ordem,
+      pedidos: pedidos.length,
+      taxaPorPedido: inpi.regra.taxaPorPedido
     };
   }
 
@@ -632,6 +682,7 @@ window.NUMEROS = (function () {
     custoPacote: custoPacote,
     economiaJunto: economiaJunto,
     adicionalBambu: adicionalBambu,
+    matrizINPI: matrizINPI,
 
     /* embalagens */
     componente: componente,

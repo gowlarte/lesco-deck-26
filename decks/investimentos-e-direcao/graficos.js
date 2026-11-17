@@ -1,7 +1,7 @@
 /* ===========================================================================
    LAYOUTS DE GRÁFICO E DECISÃO
 
-   Quatorze layouts a mais, só para esta apresentação. Eles entram em
+   Quinze layouts a mais, só para esta apresentação. Eles entram em
    window.DeckLayouts ao lado dos treze de engine/layouts.js — o motor não
    sabe a diferença e nada do que já existe muda. Por isso este arquivo é
    carregado DEPOIS de engine/layouts.js e ANTES de deck.js.
@@ -20,6 +20,7 @@
      confronto     duas fotos lado a lado, cada uma com a sua etiqueta
      marca         o logo de hoje e o de 2027, um ao lado do outro
      topico        um assunto por tela, com ou sem foto
+     matriz        o diagrama de marca × classe do INPI
 
    O DESENHO
      Tudo é traço e preenchimento chapado sobre o papel quente. Sem grade de
@@ -1218,4 +1219,116 @@
     });
     return faixa;
   }
+
+  /* =====================================================================
+     15 · matriz — o diagrama de marca × classe do INPI
+
+       { layout: 'matriz', eyebrow, title, sub,
+         formatos: [{ chave: 'nominativa', nome, protege }],
+         dados: N.matrizINPI(),
+         nota }
+
+     O infográfico que substitui dois parágrafos. Ele diz três coisas sem
+     escrever nenhuma delas:
+
+       o registro é por CLASSE        — são as colunas
+       cada cruzamento é um PEDIDO    — e um pedido é uma taxa, então dá
+                                        para contar o custo olhando
+       há dois FORMATOS               — e a diferença entre eles é o
+                                        próprio desenho do selo
+
+     O SELO É O ARGUMENTO
+       Uma barra é o nome. Um quadrado é o símbolo. Nominativa tem só a
+       barra; mista tem o quadrado grudado nela. Quem olha entende, sem
+       legenda, por que trocar o logo envelhece um registro misto e não
+       mexe num nominativo — que é exatamente a pergunta que vem na sala.
+
+     A matriz não é digitada: vem de N.matrizINPI(), que a monta a partir
+     dos pedidos dos pacotes em dados.js. Acrescentar uma classe lá muda o
+     diagrama e o total da tela do custo ao mesmo tempo.
+     ===================================================================== */
+
+  /* Uma barra é o nome; um quadrado é o símbolo. É só isso. */
+  function selo(formato) {
+    var ns = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('viewBox', '0 0 64 24');
+    svg.setAttribute('class', 'selo selo--' + formato);
+    svg.setAttribute('aria-hidden', 'true');
+
+    function peca(x, y, largura, altura) {
+      var r = document.createElementNS(ns, 'rect');
+      r.setAttribute('x', x); r.setAttribute('y', y);
+      r.setAttribute('width', largura); r.setAttribute('height', altura);
+      r.setAttribute('rx', '2');
+      svg.appendChild(r);
+    }
+
+    if (formato === 'mista') {
+      peca(0, 0, 24, 24);     /* o símbolo */
+      peca(32, 6, 32, 12);    /* o nome    */
+    } else {
+      peca(0, 6, 64, 12);     /* só o nome */
+    }
+    return svg;
+  }
+
+  L.matriz = {
+    transition: 'stagger',
+    render: function (s) {
+      var d = s.dados || { classes: [], marcas: [] };
+
+      /* ---- a faixa que explica os dois selos ---------------------- */
+      var faixa = h('div', { class: 'formatos' });
+      lista(s.formatos).forEach(function (f, i) {
+        var cartao = h('div', { class: 'formato', style: '--k:' + i, anim: 'slide' }, [
+          h('div', { class: 'formato__selo' }),
+          h('div', { class: 'formato__corpo' }, [
+            h('span', { class: 'formato__nome', text: f.nome }),
+            h('p', { class: 'formato__texto', html: f.protege })
+          ])
+        ]);
+        cartao.querySelector('.formato__selo').appendChild(selo(f.chave));
+        faixa.appendChild(cartao);
+      });
+
+      /* ---- a matriz ------------------------------------------------ */
+      var grade = h('div', {
+        class: 'matriz',
+        style: '--colunas:' + d.classes.length
+      });
+
+      grade.appendChild(h('div', { class: 'matriz__canto', text: 'Marca', anim: true }));
+      d.classes.forEach(function (c) {
+        grade.appendChild(h('div', {
+          class: 'matriz__titulo' + (c.opcional ? ' matriz__titulo--opcional' : ''),
+          anim: true
+        }, [
+          h('span', { class: 'matriz__classe', text: String(c.numero) }),
+          h('span', { class: 'matriz__nome', text: c.nome }),
+          c.apoio ? h('span', { class: 'matriz__apoio', text: c.apoio }) : null
+        ]));
+      });
+
+      d.marcas.forEach(function (linha, k) {
+        grade.appendChild(h('div', { class: 'matriz__marca', style: '--k:' + k, anim: 'slide', text: linha.marca }));
+        d.classes.forEach(function (c) {
+          var formato = linha.celulas[c.numero];
+          var celula = h('div', {
+            class: 'matriz__celula' + (formato ? '' : ' matriz__celula--vazia'),
+            style: '--k:' + k
+          });
+          if (formato) celula.appendChild(selo(formato));
+          grade.appendChild(celula);
+        });
+      });
+
+      return h('div', { class: 'l-matriz pad pad--tight' }, [
+        cabeca(s, 'md'),
+        faixa,
+        grade,
+        nota(s.nota)
+      ]);
+    }
+  };
 })(window);

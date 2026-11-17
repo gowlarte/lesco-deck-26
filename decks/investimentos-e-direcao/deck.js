@@ -42,6 +42,10 @@
   var juntos = N.custoPacote('juntos');
   var economia = N.economiaJunto('lesco-nominativa', 'linhas-mista', 'juntos');
 
+  /* A matriz marca × classe do infográfico. Sai dos pedidos dos pacotes:
+     acrescentar uma classe lá muda o desenho e o custo de uma vez. */
+  var matriz = N.matrizINPI();
+
   var momentos = N.momentosPedido();
   var imediato = momentos[0];
   var janeiro = momentos[1];
@@ -404,31 +408,78 @@
          =============================================================== */
 
       {
-        layout: 'pontos',
-        label: 'Por que registrar agora',
+        layout: 'chapter',
+        label: '02 · INPI e rebrand',
         notes:
-          'O argumento é de corrida, não de risco teórico: no Brasil quem deposita primeiro sai na frente. Se um ' +
-          'concorrente registrar GEO, ZHÜ ou ECHO antes, a gente perde o nome que já está no mercado e no material.\n\n' +
-          'Explicar a diferença de formato, porque ela decide o preço: MISTO protege o desenho junto com o nome — é ' +
-          'o que as linhas precisam. NOMINATIVO protege só o nome, com qualquer logo — é o que a Lesco precisa, ' +
-          'justamente porque o logo vai mudar.\n\n' +
-          'Cada classe é um pedido com taxa própria. É daí que vem a conta da próxima tela.',
+          'A capa do bloco. Serve para dar o fôlego entre a Arkos e o dinheiro: a conversa muda de assunto aqui.\n\n' +
+          'O número 02 é o mesmo da pauta — se ele perguntar onde estamos, é só apontar.\n\n' +
+          'Dizer o pedido inteiro de uma vez, antes de abrir os números: registrar GEO, ZHÜ e ECHO, ampliar a ' +
+          'marca Lesco para novas classes e trocar o logo em 2027. As três coisas são uma decisão só.',
+        num: '02',
+        eyebrow: 'Pauta, bloco 02',
+        title: 'INPI\ne rebrand',
+        footer: 'Registrar GEO, ZHÜ e ECHO, ampliar a marca Lesco para novas classes e trocar o logo em 2027.'
+      },
+
+      {
+        /* Era um dos três pontos de uma tela de lista. Virou tela própria
+           porque é o único dos três que é ARGUMENTO — os outros dois eram
+           explicação de como o INPI funciona, e explicação virou desenho
+           na tela seguinte. */
+        layout: 'topico',
+        label: 'Quem deposita primeiro sai na frente',
+        notes:
+          'O argumento é de corrida, não de risco teórico. No Brasil o direito sobre a marca vem do registro, não ' +
+          'do uso: quem deposita primeiro leva.\n\n' +
+          'E os três nomes JÁ ESTÃO no mercado — em catálogo, em amostra, em anúncio. Cada mês sem depósito é um ' +
+          'mês em que um concorrente pode registrar e depois nos proibir de usar o nome que nós divulgamos.\n\n' +
+          'Se perguntarem qual o risco real: não é alguém mal-intencionado. É qualquer um que registre de boa-fé ' +
+          'um nome parecido na mesma classe — e aí a discussão vira processo.\n\n' +
+          'A tela seguinte explica como o registro funciona. Esta só diz por que é agora.',
         eyebrow: 'INPI e rebrand',
-        title: 'Por que registrar agora',
-        items: [
+        title: 'Quem deposita primeiro\nsai na frente',
+        text: 'No Brasil o direito sobre a marca vem do registro no INPI. Sem depósito, um concorrente pode registrar esses nomes e nos impedir de usá-los.',
+        destaques: ['GEO, ZHÜ e ECHO já estão no mercado']
+      },
+
+      {
+        /* O infográfico. Ele substitui dois parágrafos da tela antiga: "uma
+           taxa por classe" e "misto protege o logo, nominativo protege o
+           nome". Nenhuma das duas frases está escrita aqui — as duas estão
+           desenhadas, e é por isso que a tela existe. */
+        layout: 'matriz',
+        label: 'Como o registro funciona',
+        notes:
+          'A tela de entender, antes da tela de pagar. Conduzir pelo desenho, não pelo texto.\n\n' +
+          'PRIMEIRO os dois selos: a barra é o nome, o quadrado é o símbolo. Nominativa tem só a barra. Mista tem ' +
+          'o quadrado grudado nela.\n\n' +
+          'A CONSEQUÊNCIA, que é o motivo de a tela existir: como o registro da Lesco é NOMINATIVO, ele protege o ' +
+          'nome com qualquer logo — inclusive o novo. Trocar o logo não joga fora nada do que já está registrado. ' +
+          'Se alguém perguntar "e o registro do logo antigo?", a resposta está nesta tela.\n\n' +
+          'DEPOIS as colunas: o registro é por classe de produto ou serviço, e cada cruzamento preenchido é um ' +
+          'pedido com taxa própria. Dá para contar os quadrados: ' + matriz.pedidos + ' pedidos a ' +
+          $(N.inpi.regra.taxaPorPedido) + '. É assim que a conta da tela seguinte se forma.\n\n' +
+          'A classe 20, do bambu, está com o filete tracejado porque é opcional — a decisão sobre ela ainda não ' +
+          'foi tomada.',
+        eyebrow: 'INPI e rebrand',
+        title: 'Como o registro funciona',
+        sub: 'Cada cruzamento é um pedido com taxa própria: ' + matriz.pedidos + ' pedidos a ' +
+             $(N.inpi.regra.taxaPorPedido) + '.',
+        formatos: [
           {
-            label: 'Quem deposita primeiro sai na frente',
-            text: 'No Brasil o direito sobre a marca vem do registro no INPI. Sem depósito, um concorrente pode registrar esses nomes e nos impedir de usá-los.'
+            chave: 'nominativa',
+            nome: N.inpi.formatos.nominativa.nome,
+            protege: N.inpi.formatos.nominativa.protege
           },
           {
-            label: 'Uma taxa por classe',
-            text: 'O registro é feito por classe de produto ou serviço. Cada classe é um pedido, com taxa própria.'
-          },
-          {
-            label: 'Misto protege o logo, nominativo protege o nome',
-            text: 'O registro misto protege nome e logo de cada linha. O nominativo protege o nome Lesco com qualquer logo — inclusive o novo.'
+            chave: 'mista',
+            nome: N.inpi.formatos.mista.nome,
+            protege: N.inpi.formatos.mista.protege
           }
-        ]
+        ],
+        dados: matriz,
+        nota: 'A classe 20, do bambu semitrabalhado, é opcional e aparece com o filete tracejado. ' +
+              'Classes e formatos conforme a proposta da Registre.se.'
       },
 
       {

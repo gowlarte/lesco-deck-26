@@ -473,7 +473,7 @@ ranking ao lado.
 
 Apresentação ao Lucas para aprovar investimentos e definir direção em cinco
 frentes: Arkos, INPI e rebrand, embalagens, Mono nos marketplaces e Mono
-Creators. São 25 telas e quatorze layouts que as outras apresentações não têm.
+Creators. São 27 telas e quinze layouts que as outras apresentações não têm.
 
 É também a única apresentação que veste a **identidade de 2027** — paleta,
 marca e peças do manual `LESCO-ID-VISUAL-2027.pdf`. Isso vale só aqui, e a
@@ -482,10 +482,10 @@ razão está mais abaixo.
 ```
 decks/investimentos-e-direcao/
   dados.js       >>> TODOS os números ficam aqui, em centavos <<<
-  deck.js        as 25 telas, sem um número escrito dentro
+  deck.js        as 27 telas, sem um número escrito dentro
   identidade.css a paleta de 2027, só para este deck
   marca.js       o logo novo em vetor, em window.DRAWINGS
-  graficos.js    os quatorze layouts de gráfico, foto, diagrama e decisão
+  graficos.js    os quinze layouts de gráfico, foto, diagrama e decisão
   graficos.css   o estilo deles
   img/           as fotos dos dois showrooms e as peças da identidade
                  (ver img/LEIA-ME.md: de onde veio cada uma e por quê)
@@ -535,6 +535,7 @@ classe num pacote muda o total do composto junto, que é o ponto.
 | `confronto` | Duas fotos lado a lado, cada uma com a sua etiqueta |
 | `marca` | O logo de hoje e o de 2027, um ao lado do outro |
 | `topico` | Um assunto por tela, com ou sem foto |
+| `matriz` | O diagrama de marca × classe do INPI |
 
 ### A identidade de 2027
 
@@ -565,7 +566,8 @@ consulta quando um slide pede `media: { svg: 'marca-lesco' }`. É embutido, e n�
 carregado por `fetch`, porque o deck abre em `file://`.
 
 Por que vestir a identidade numa reunião que ainda vai aprová-la: porque é mais
-honesto mostrar do que descrever. A tela 13 pede a decisão sobre o rebrand, e o
+honesto mostrar do que descrever. A tela 15 mostra a marca nova lado a lado com a
+atual, e o
 deck inteiro vestido é a resposta à pergunta "como isso fica".
 
 ### A cor nos gráficos
@@ -596,6 +598,20 @@ nenhuma na mão. Para voltar ao monocromático puro, troque as linhas de
 `--proposta`, `--ganho` e `--problema` em `graficos.css` por `var(--f5)` e
 `var(--f3)`. Nada mais no deck muda.
 
+### O infográfico do INPI
+
+A tela 13 troca dois parágrafos por um desenho. O selo é o argumento: **uma
+barra é o nome, um quadrado é o símbolo**. Nominativa tem só a barra; mista tem
+o quadrado grudado nela. Quem olha entende, sem legenda, por que trocar o logo
+envelhece um registro misto e não mexe num nominativo — que é exatamente a
+pergunta que vem na sala.
+
+A matriz **não é digitada**: `N.matrizINPI()` a monta a partir dos `pedidos` dos
+pacotes em `dados.js`. Cada cruzamento preenchido é um pedido, e um pedido é uma
+taxa — então o diagrama diz "uma taxa por classe" sem escrever a frase, e dá
+para contar o custo olhando. Acrescentar uma classe num pacote acrescenta um
+selo aqui e muda o total da tela seguinte, de uma vez.
+
 ### Eixo começa em zero, sempre
 
 Toda barra e toda coluna nasce da linha de base. Nenhum layout daqui aceita
@@ -606,7 +622,7 @@ eixo até 5 milhões e a coluna mais alta ficava com 59% da área.
 
 ### A tela de decisões
 
-A tela 25 é marcável durante a reunião: clicar num status registra ali mesmo, e
+A tela 27 é marcável durante a reunião: clicar num status registra ali mesmo, e
 clicar de novo no mesmo status desmarca. O motor monta todos os slides uma vez
 só e nunca os remonta, então a marcação **continua lá ao voltar no slide** — e
 sai assim na exportação em PDF, que vira o registro do que foi decidido.

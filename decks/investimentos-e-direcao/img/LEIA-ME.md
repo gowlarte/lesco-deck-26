@@ -60,10 +60,10 @@ embutidos no próprio arquivo e recortadas com o `ffmpeg`.
 
 | Arquivo | Tela | Qual é a peça |
 |---|---|---|
-| `id/pasta.webp` | 14 · esquerda | as pastas de documentação técnica, em areia e verde escuro |
-| `id/caixa-nova.webp` | 14 · direita | a caixa com a marca nova e a frase da assinatura |
+| `id/pasta.webp` | 16 · esquerda | as pastas de documentação técnica, em areia e verde escuro |
+| `id/caixa-nova.webp` | 16 · direita | a caixa com a marca nova e a frase da assinatura |
 
-**O cuidado que a tela 14 toma na cara:** estas peças são estudos da
+**O cuidado que a tela 16 toma na cara:** estas peças são estudos da
 identidade, **não** são as embalagens que a 46 Indústria Gráfica orçou. A
 caixa da foto não é a caixa de R$ 19,99 do bloco seguinte. O subtítulo da
 tela diz isso, porque confundir as duas coisas custaria caro numa reunião
@@ -84,7 +84,7 @@ vetor dentro do PDF; os caminhos foram convertidos de operadores de página
 para SVG, então é a mesma curva do arquivo original.
 
 - `marca-lesco.svg` — preenchimento em `currentColor`, para tingir pelo CSS.
-  É a versão embutida em `marca.js`, que o motor usa na tela 13.
+  É a versão embutida em `marca.js`, que o motor usa na tela 15.
 - `marca-lesco-terracota.svg` — a mesma coisa com a cor da marca embutida.
   Serve à capa, onde a marca entra como `<img>` e um `<img>` não herda cor.
 
