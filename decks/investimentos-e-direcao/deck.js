@@ -1,6 +1,6 @@
 /* ===========================================================================
    INVESTIMENTOS E DIREÇÃO PARA 2027 · Lesco
-   Apresentação ao Lucas · 17 de novembro de 2026 · 60 minutos
+   Apresentação ao Lucas · 17 de novembro de 2026
 
    Cinco frentes, cada uma terminando num pedido de aprovação: Arkos (o
    contexto que explica a urgência), INPI e rebrand, embalagens, Mono nos
@@ -122,7 +122,7 @@
         layout: 'cover',
         label: 'Capa',
         notes:
-          'Abertura. Cinco frentes, 60 minutos, e a meta é sair daqui com decisão em todas elas.\n\n' +
+          'Abertura. Cinco frentes, e a meta é sair daqui com decisão em todas elas.\n\n' +
           'Dizer logo o formato: cada bloco termina num pedido de aprovação, e no fim tem uma tela só de decisões, ' +
           'que dá para marcar na hora.\n\n' +
           'A Arkos abre a apresentação porque é ela que explica por que o rebrand e a embalagem são urgentes — ' +
@@ -130,32 +130,34 @@
         eyebrow: 'Lesco · Reunião de aprovação',
         title: 'Investimentos\ne direção\npara 2027',
         sub: 'Arkos, INPI e rebrand, embalagens, Mono nos marketplaces e Mono Creators.',
-        footer: '17 de novembro de 2026 · 60 minutos'
+        footer: '17 de novembro de 2026'
       },
 
       {
         layout: 'index',
         label: 'Pauta',
         notes:
-          'Roteiro e relógio. Os tempos são o combinado, não uma promessa: se um bloco esticar, o que cede é o ' +
-          'fechamento, porque as decisões já terão sido pedidas bloco a bloco.\n\n' +
-          'A meta é sair da reunião com decisões em todas as frentes. Os tempos somam 60 em ponto: se um bloco estourar, é de outro que sai o minuto.',
+          'Roteiro. A ordem é que importa: a Arkos abre porque é ela que explica a pressa do rebrand e da ' +
+          'embalagem, e o fechamento não traz assunto novo — só junta o que já foi pedido bloco a bloco.\n\n' +
+          'A meta é sair da reunião com decisões em todas as frentes.',
         eyebrow: 'Decisões em todas as frentes',
-        /* Uma linha, e não duas: com seis blocos a lista encosta na borda de
-           baixo, e a segunda linha do título custa os 89 px que faltam. */
-        title: 'Cinco frentes em 60 minutos',
+        /* UMA LINHA, e não duas. Com seis blocos a lista já encosta na borda
+           de baixo, e a segunda linha do título custa os 89 px que faltam — o
+           apoio do último item sai da tela. O limite prático é por volta de
+           27 caracteres: 'Cinco frentes e o fechamento' tem 28 e quebrou. */
+        title: 'Cinco frentes',
         items: [
-          { name: 'Arkos',           apoio: 'A concorrência, os dois showrooms e onde estamos', tag: '10 min' },
-          { name: 'INPI e rebrand',  apoio: 'Registro das marcas e a marca nova de 2027',       tag: '16 min' },
-          { name: 'Embalagens',      apoio: 'Kit novo, composição e pedido recomendado',        tag: '8 min' },
-          { name: 'Mono: frete',     apoio: 'O gargalo do marketplace e a proposta Tray',       tag: '10 min' },
-          { name: 'Mono Creators',   apoio: 'Captação de creators por tráfego pago',            tag: '9 min' },
-          { name: 'Fechamento',      apoio: 'Resumo de valores e decisões',                     tag: '7 min' }
+          { name: 'Arkos',           apoio: 'A concorrência, os dois showrooms e onde estamos' },
+          { name: 'INPI e rebrand',  apoio: 'Registro das marcas e a marca nova de 2027' },
+          { name: 'Embalagens',      apoio: 'Kit novo, composição e pedido recomendado' },
+          { name: 'Mono: frete',     apoio: 'O gargalo do marketplace e a proposta Tray' },
+          { name: 'Mono Creators',   apoio: 'Captação de creators por tráfego pago' },
+          { name: 'Fechamento',      apoio: 'Resumo de valores e decisões' }
         ]
       },
 
       /* ===============================================================
-         ARKOS · 8 min
+         ARKOS
          O bloco não tem pedido de dinheiro. O que ele pede é uma data.
          =============================================================== */
 
@@ -324,7 +326,7 @@
       },
 
       /* ===============================================================
-         INPI E REBRAND · 15 min
+         INPI E REBRAND
          Pedido: aprovar o registro de GEO, ZHÜ e ECHO, a ampliação da
          marca Lesco para novas categorias e o rebrand com logo novo.
          =============================================================== */
@@ -519,7 +521,7 @@
       },
 
       /* ===============================================================
-         EMBALAGENS · 8 min
+         EMBALAGENS
          Pedido: aprovar o orçamento das embalagens novas, começando com
          um lote menor, no pedido recomendado pela Louise.
          =============================================================== */
@@ -721,7 +723,7 @@
       },
 
       /* ===============================================================
-         MONO: FRETE · 10 min
+         MONO: FRETE
          Pedido: aprovar a contratação da Tray para conectar a Mono aos
          marketplaces via API, como a concorrência faz.
          =============================================================== */
@@ -831,7 +833,7 @@
       },
 
       /* ===============================================================
-         MONO CREATORS · 10 min
+         MONO CREATORS
          Pedido: aprovar a criação das contas de anúncios da Mono e a
          verba de tráfego pago para a campanha de recrutamento.
          =============================================================== */
@@ -885,7 +887,7 @@
       },
 
       /* ===============================================================
-         FECHAMENTO · 7 min
+         FECHAMENTO
          =============================================================== */
 
       {
