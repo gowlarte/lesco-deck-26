@@ -1,0 +1,1208 @@
+/* ---------------------------------------------------------------------------
+   Estilo dos layouts de gráfico e decisão.
+
+   Vale só para esta apresentação: é carregado pelo index.html daqui e por
+   mais ninguém. As cores, a tipografia e o espaçamento vêm todos de
+   theme/tokens.css — nada de valor solto, para que trocar o tema troque
+   também os gráficos.
+
+   A REGRA DE COR
+     A base é monocromática: as partes de um gráfico se separam pela
+     OPACIDADE da mesma tinta, em cinco degraus (--f1 a --f5), mais o
+     contorno puro para o que está pendente. Sobre essa base, e só nos
+     gráficos que comparam proposta com situação atual, o PRD pede o verde
+     da marca para a proposta e cinza para o que é atual ou antigo.
+
+     Os dois papéis estão longe um do outro também em CLARIDADE — o verde é
+     o tom escuro da marca, o cinza do atual é um dos degraus claros. É isso
+     que mantém o gráfico legível em projetor desbotado, em preto e branco e
+     para quem não distingue as duas cores: a cor reforça a leitura, nunca é
+     a única coisa que a carrega.
+
+     Para voltar ao monocromático puro, troque as duas linhas de --proposta
+     por var(--f5) e var(--f4). Nada mais no deck precisa mudar.
+
+   O EIXO COMEÇA EM ZERO
+     Toda barra e toda coluna nasce da linha de base. Nenhum layout aqui
+     aceita outro começo — não há variável para isso, de propósito.
+   --------------------------------------------------------------------------- */
+
+:root {
+  /* Degraus de preenchimento — do chapado ao quase vazio. */
+  --f5: rgba(26, 26, 26, 0.92);
+  --f4: rgba(26, 26, 26, 0.68);
+  --f3: rgba(26, 26, 26, 0.46);
+  --f2: rgba(26, 26, 26, 0.26);
+  --f1: rgba(26, 26, 26, 0.12);
+  --f0: rgba(26, 26, 26, 0.045);
+
+  --traco:  rgba(26, 26, 26, 0.30);   /* contorno dos gráficos  */
+  --trilho: rgba(26, 26, 26, 0.07);   /* fundo de barra vazia   */
+
+  /* Os dois papéis da comparação. */
+  --proposta:       var(--accent-deep);   /* o que se propõe  */
+  --proposta-clara: var(--accent);        /* segunda parte da proposta */
+  --atual:          var(--f2);            /* o que já existe  */
+}
+
+/* Números de gráfico são sempre tabulares: coluna de valores que não dança
+   quando o dígito muda. */
+.barra__valor,
+.pilha__valor,
+.coluna__valor,
+.coluna__delta,
+.cpilha__total,
+.cartao__valor,
+.tabela__valor,
+.decisao__valor,
+.quadro__linha-valor,
+.g-lado__valor,
+.g-tabelinha__linha span:last-child {
+  font-variant-numeric: tabular-nums;
+}
+
+/* =====================================================================
+   Peças compartilhadas
+   ===================================================================== */
+
+/* Rodapé de fonte, validade e ressalva. Miúdo, mas nunca abaixo de 22 px:
+   quem está na sala não precisa ler, e quem perguntar tem a resposta.
+
+   Fica no FLUXO, empurrado para o pé pelo `margin-top: auto` — e não
+   posicionado por cima. Todo layout daqui é uma coluna flex que preenche o
+   slide, então o auto encosta o rodapé embaixo sozinho. Absoluto, ele
+   passava por cima do recado assim que a ressalva crescia para duas linhas,
+   que é exatamente o caso das telas de embalagem. */
+.nota-fonte {
+  margin: 0;
+  margin-top: auto;
+  padding-top: 30px;
+  font-size: 22px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: var(--ink-400);
+}
+
+/* A frase que o gráfico existe para dizer, logo abaixo dele. */
+.g-recado {
+  margin: 34px 0 0;
+  font-size: 30px;
+  line-height: 1.5;
+  color: var(--text-body);
+  max-width: 1500px;
+}
+
+.g-cabeca { display: flex; flex-direction: column; gap: 22px; }
+
+.g-unidade {
+  display: block;
+  margin-bottom: 14px;
+  font-size: 24px;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.g-legenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 36px;
+  align-items: center;
+}
+
+.g-legenda__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 26px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.g-legenda__item i {
+  width: 28px;
+  height: 18px;
+  border-radius: 2px;
+  flex: none;
+}
+
+/* Degraus de tinta, e os dois papéis da comparação. */
+.g-tom--1 { background: var(--f1); }
+.g-tom--2 { background: var(--f2); }
+.g-tom--3 { background: var(--f3); }
+.g-tom--4 { background: var(--f4); }
+.g-tom--5 { background: var(--f5); }
+
+.g-tom--atual          { background: var(--atual); }
+.g-tom--proposta       { background: var(--proposta); }
+.g-tom--proposta-clara { background: var(--proposta-clara); }
+
+/* Pendente: contorno sem preenchimento. */
+.g-tom--pendente {
+  background: var(--f0);
+  box-shadow: inset 0 0 0 2px var(--traco);
+}
+
+/* Número em destaque ao lado de um gráfico. */
+.g-lado {
+  width: 420px;
+  flex: none;
+  padding-left: 56px;
+  border-left: 1px solid var(--hairline);
+  align-self: center;
+}
+
+.g-lado__valor {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 108px;
+  line-height: 1;
+  color: var(--text-strong);
+}
+
+.g-lado__label {
+  margin-top: 18px;
+  font-size: 30px;
+  line-height: 1.4;
+  color: var(--text-body);
+}
+
+.g-lado__apoio {
+  margin: 20px 0 0;
+  font-size: 24px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+/* Tabelinha de apoio ao lado de um gráfico. */
+.g-tabelinha { display: flex; flex-direction: column; }
+
+.g-tabelinha__linha {
+  display: grid;
+  grid-template-columns: var(--grade, 1fr 108px 168px);
+  gap: 16px;
+  align-items: baseline;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--hairline);
+  font-size: 25px;
+  color: var(--text-body);
+}
+
+/* Coluna de número: à direita e tabular, para a vírgula de uma linha cair
+   em cima da vírgula da outra. */
+.g-tabelinha__num { text-align: right; font-variant-numeric: tabular-nums; }
+
+.g-tabelinha__celula { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+.g-tabelinha__num.g-tabelinha__celula { align-items: flex-end; }
+
+.g-tabelinha__texto { line-height: 1.3; }
+
+.g-tabelinha__apoio { font-size: 21px; color: var(--ink-400); }
+
+.g-tabelinha__linha--cabeca {
+  padding-top: 0;
+  padding-bottom: 11px;
+  font-size: 22px;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* =====================================================================
+   01 · pontos
+   ===================================================================== */
+
+.l-pontos { display: flex; flex-direction: column; gap: 26px; }
+.l-pontos .title { margin-bottom: 6px; }
+
+/* O bloco ocupa o que sobra abaixo do título e centraliza as linhas nele.
+   Empilhado no topo, três ou quatro pontos deixavam o terço de baixo do
+   slide vazio — e numa projeção 16:9 isso lê como tela inacabada. O título
+   não se mexe: quem cresce é só o bloco de texto. */
+.pontos {
+  flex: 1;
+  display: grid;
+  align-content: center;
+  gap: 30px 72px;
+  margin-top: 12px;
+}
+
+.pontos--duas { grid-template-columns: 1fr 1fr; }
+
+.ponto { display: grid; grid-template-columns: 76px 1fr; gap: 10px; align-items: start; }
+
+.ponto__num {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 30px;
+  line-height: 1.5;
+  color: var(--accent-deep);
+  font-variant-numeric: tabular-nums;
+}
+
+.ponto__corpo { display: flex; flex-direction: column; gap: 8px; }
+
+.ponto__rotulo {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 28px;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-strong);
+}
+
+.ponto__texto {
+  margin: 0;
+  font-size: 31px;
+  line-height: 1.5;
+  color: var(--text-body);
+}
+
+/* A frase de fecho da tela: o que se faz com o que acabou de ser dito. */
+.l-pontos__rodape {
+  margin: 10px 0 0;
+  padding: 26px 34px;
+  border-left: 3px solid var(--accent);
+  background: var(--surface-sunk);
+  font-size: 30px;
+  line-height: 1.5;
+  color: var(--text-strong);
+}
+
+/* =====================================================================
+   02 · duas
+   ===================================================================== */
+
+.l-duas { display: flex; flex-direction: column; gap: 30px; }
+
+.duas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin-top: 16px;
+}
+
+.duas__col { display: flex; flex-direction: column; gap: 20px; }
+
+.duas__col-olho {
+  font-size: 26px;
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.duas__col-texto {
+  margin: 0;
+  font-size: 32px;
+  line-height: 1.55;
+  color: var(--text-body);
+}
+
+.duas__destaque {
+  display: flex;
+  align-items: baseline;
+  gap: 34px;
+  padding: 30px 38px;
+  background: var(--surface-sunk);
+  border-left: 3px solid var(--accent);
+}
+
+.duas__destaque-label {
+  flex: none;
+  font-size: 24px;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--accent-deep);
+}
+
+.duas__destaque-texto {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.5;
+  color: var(--text-strong);
+}
+
+/* =====================================================================
+   03 · barras — horizontais simples
+   ===================================================================== */
+
+.l-barras { display: flex; flex-direction: column; gap: 26px; }
+
+.barras { display: flex; flex-direction: column; gap: 18px; margin-top: 10px; }
+.barras--denso { gap: 6px; }
+
+.barra {
+  display: grid;
+  grid-template-columns: 430px 1fr 180px;
+  align-items: center;
+  gap: 36px;
+}
+
+.barra__rotulo { display: flex; flex-direction: column; gap: 2px; }
+
+.barra__label { font-size: 28px; color: var(--text-body); }
+
+.barra__apoio { font-size: 22px; color: var(--text-muted); }
+
+.barra__trilho {
+  position: relative;
+  height: 42px;
+  background: var(--trilho);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.barras--denso .barra__trilho { height: 30px; }
+
+/* Na lista densa quem manda na altura da linha não é a barra, é o rótulo:
+   doze faixas de frete com uma delas em duas linhas. Daí a tipografia um
+   degrau menor aqui — e nunca abaixo dos 18 px que o projetor exige. */
+.barras--denso .barra__label { font-size: 26px; }
+.barras--denso .barra__apoio { font-size: 21px; }
+.barras--denso { margin-top: 0; }
+
+.barra__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--alvo, 0%);
+  border-radius: 2px;
+}
+
+.barra--destaque .barra__label { color: var(--text-strong); }
+
+.barra__valor {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 34px;
+  color: var(--text-strong);
+  text-align: right;
+}
+
+.barras--denso .barra__valor { font-size: 30px; }
+
+/* =====================================================================
+   04 · barraspilha — horizontais empilhadas
+   ===================================================================== */
+
+.l-pilhas { display: flex; flex-direction: column; gap: 30px; }
+
+.l-pilhas__cabeca {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+.l-pilhas__corpo { display: flex; align-items: stretch; gap: 56px; }
+
+.l-pilhas__corpo > .pilhas { flex: 1; min-width: 0; }
+
+.pilhas { display: flex; flex-direction: column; gap: 24px; margin-top: 8px; }
+.pilhas--denso { gap: 16px; }
+
+.pilha {
+  display: grid;
+  grid-template-columns: 500px 1fr 210px;
+  align-items: center;
+  gap: 36px;
+}
+
+.l-pilhas--lado .pilha { grid-template-columns: 330px 1fr 200px; }
+
+.pilha__rotulo { display: flex; flex-direction: column; gap: 3px; }
+
+.pilha__label { font-size: 28px; color: var(--text-body); }
+
+.pilha__apoio { font-size: 22px; line-height: 1.35; color: var(--text-muted); }
+
+.pilha--destaque .pilha__label { color: var(--text-strong); }
+
+/* O trilho carrega a largura da barra na escala comum a todas; as partes
+   dentro dele só repartem essa largura. */
+.pilha__trilho {
+  display: flex;
+  width: var(--alvo, 0%);
+  height: 48px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.pilhas--denso .pilha__trilho { height: 42px; }
+
+.pilha__parte {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.pilha__parte + .pilha__parte { box-shadow: inset 2px 0 0 var(--paper); }
+
+.pilha__dentro {
+  font-size: 23px;
+  font-variant-numeric: tabular-nums;
+  color: var(--paper);
+  white-space: nowrap;
+}
+
+/* Sobre os tons claros a inscrição precisa de tinta escura. */
+.g-tom--1 .pilha__dentro,
+.g-tom--2 .pilha__dentro,
+.g-tom--atual .pilha__dentro { color: var(--text-strong); }
+
+.pilha__valor {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 36px;
+  color: var(--text-strong);
+  text-align: right;
+}
+
+/* =====================================================================
+   05 · colunas — verticais agrupadas
+   ===================================================================== */
+
+.l-colunas { display: flex; flex-direction: column; gap: 26px; }
+
+.l-colunas__cabeca {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+.l-colunas__caixa { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+
+.colunas {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 150px;
+  min-height: 0;
+}
+
+.colunas__grupo { display: flex; flex-direction: column; min-height: 0; }
+
+/* A linha do zero corre sob as colunas de cada grupo, e não sob o gráfico
+   inteiro: além de marcar o começo da escala, ela amarra visualmente as
+   colunas que se comparam entre si. */
+.colunas__barras {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 40px;
+  min-height: 0;
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--traco);
+}
+
+.coluna {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  width: 168px;
+  height: 100%;
+}
+
+.coluna__topo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+/* A diferença para o kit antigo fica POR CIMA da coluna, que é onde a
+   comparação acontece. */
+.coluna__delta {
+  font-size: 25px;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--accent-deep);
+  white-space: nowrap;
+}
+
+.coluna__valor {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 34px;
+  color: var(--text-strong);
+}
+
+.coluna__corpo {
+  width: 100%;
+  height: var(--alt, 0%);
+  border-radius: 2px 2px 0 0;
+}
+
+.coluna__label {
+  margin-top: 18px;
+  font-size: 25px;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--text-body);
+}
+
+/* O rótulo do grupo mora abaixo da linha do zero, no fluxo. */
+.colunas__grupo-label {
+  margin-top: 20px;
+  font-size: 26px;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* =====================================================================
+   06 · colunaspilha — verticais empilhadas, com painel ao lado
+   ===================================================================== */
+
+.l-cpilhas { display: flex; flex-direction: column; gap: 26px; }
+
+.l-cpilhas__cabeca {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+.l-cpilhas__corpo { flex: 1; display: flex; gap: 90px; min-height: 0; }
+
+.l-cpilhas__caixa {
+  flex: none;
+  width: 560px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.cpilhas {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 110px;
+  min-height: 0;
+}
+
+.cpilha {
+  display: flex;
+  flex-direction: column;
+  width: 190px;
+  min-height: 0;
+}
+
+.cpilha__caixa {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 0;
+  border-bottom: 1px solid var(--traco);   /* a linha do zero */
+}
+
+.cpilha__total {
+  margin-bottom: 14px;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 36px;
+  color: var(--text-strong);
+  white-space: nowrap;
+}
+
+.cpilha__torre {
+  display: flex;
+  flex-direction: column-reverse;   /* o primeiro segmento é a base */
+  width: 100%;
+  height: var(--alt, 0%);
+  border-radius: 2px 2px 0 0;
+  overflow: hidden;
+}
+
+.cpilha__parte + .cpilha__parte { box-shadow: inset 0 -2px 0 var(--paper); }
+
+.cpilha__rotulo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  margin: 20px -40px 0;   /* o rótulo pode passar da largura da coluna */
+}
+
+.cpilha__label {
+  font-size: 26px;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.cpilha__apoio { font-size: 22px; color: var(--ink-400); }
+
+/* flex-start, e não center: centralizado, um painel mais alto que a área
+   transborda para os DOIS lados e sobe por cima do cabeçalho. Para baixo ele
+   no máximo encosta no recado, que é um estrago visível e corrigível. */
+.cpilhas__painel {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 24px;
+}
+
+.cpilhas__geral {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 30px;
+  padding: 20px 26px;
+  background: var(--surface-sunk);
+  border-left: 3px solid var(--accent);
+}
+
+.cpilhas__geral-label {
+  font-size: 25px;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.cpilhas__geral-valor {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 42px;
+  color: var(--text-strong);
+  font-variant-numeric: tabular-nums;
+}
+
+/* =====================================================================
+   07 · linhas
+   ===================================================================== */
+
+.l-linhas { display: flex; flex-direction: column; gap: 26px; }
+
+.l-linhas__corpo { flex: 1; display: flex; gap: 60px; align-items: flex-start; }
+
+.linhas__caixa { flex: none; }
+
+.linhas__svg { display: block; overflow: visible; }
+
+.linhas__eixo { stroke: var(--traco); stroke-width: 1; }
+
+.linhas__tique { stroke: var(--hairline); stroke-width: 1; }
+
+.linhas__y,
+.linhas__x {
+  font-family: var(--font-text);
+  fill: var(--text-muted);
+  font-size: 24px;
+}
+
+.linhas__x { letter-spacing: 0.02em; }
+
+.linhas__linha {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.linhas__linha--t1 { stroke: var(--f5); }
+.linhas__linha--t2 { stroke: var(--f4); }
+.linhas__linha--t3 { stroke: var(--f3); }
+.linhas__linha--t4 { stroke: var(--f3); stroke-dasharray: 10 8; }
+.linhas__linha--t5 { stroke: var(--f2); stroke-dasharray: 3 7; }
+
+.linhas__ponto { fill: var(--paper); stroke-width: 3; }
+.linhas__ponto--t1 { stroke: var(--f5); }
+.linhas__ponto--t2 { stroke: var(--f4); }
+.linhas__ponto--t3 { stroke: var(--f3); }
+.linhas__ponto--t4 { stroke: var(--f3); }
+.linhas__ponto--t5 { stroke: var(--f2); }
+
+/* Fio que liga o ponto final ao rótulo quando ele precisou ser afastado. */
+.linhas__fio { fill: none; stroke: var(--ink-300); stroke-width: 1; }
+
+.linhas__fim { font-family: var(--font-text); }
+
+.linhas__fim-nome { fill: var(--text-strong); font-size: 25px; }
+
+.linhas__fim-queda {
+  fill: var(--accent-deep);
+  font-size: 25px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Quadro lateral: o que foi cotado numa quantidade só. */
+.quadro {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 32px 34px;
+  background: var(--surface-sunk);
+}
+
+.quadro__titulo {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 26px;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-strong);
+}
+
+.quadro__apoio {
+  margin: 12px 0 8px;
+  font-size: 23px;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.quadro__linha {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.quadro__linha:last-child { border-bottom: 0; }
+
+.quadro__linha-texto { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+.quadro__linha-label { font-size: 25px; line-height: 1.35; color: var(--text-body); }
+
+.quadro__linha-apoio { font-size: 22px; color: var(--text-muted); }
+
+.quadro__linha-valor {
+  flex: none;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 28px;
+  color: var(--text-strong);
+  text-align: right;
+}
+
+/* =====================================================================
+   08 · cartoes
+   ===================================================================== */
+
+.l-cartoes { display: flex; flex-direction: column; gap: 40px; }
+
+.cartoes { display: grid; gap: 56px; margin-top: 20px; }
+.cartoes--dois { grid-template-columns: 1fr 1fr; }
+
+.cartao {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 54px 56px;
+  background: var(--surface-sunk);
+  border-top: 3px solid var(--hairline);
+}
+
+.cartao--destaque { border-top-color: var(--accent-deep); }
+
+.cartao__olho {
+  font-size: 26px;
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.cartao__valor {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 124px;
+  line-height: 1.05;
+  color: var(--text-strong);
+}
+
+.cartao__label { font-size: 32px; line-height: 1.4; color: var(--text-body); }
+
+.cartao__apoio { margin: 10px 0 0; font-size: 26px; line-height: 1.45; color: var(--text-muted); }
+
+/* =====================================================================
+   09 · fluxo
+   ===================================================================== */
+
+.l-fluxo { display: flex; flex-direction: column; gap: 18px; }
+
+.fluxo { display: flex; align-items: stretch; gap: 0; }
+
+.fluxo__etapa {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px 26px;
+  background: var(--surface-sunk);
+  border-top: 3px solid var(--accent);
+}
+
+.fluxo__num {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 26px;
+  color: var(--accent-deep);
+  font-variant-numeric: tabular-nums;
+}
+
+.fluxo__titulo {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-strong);
+}
+
+.fluxo__texto { margin: 0; font-size: 25px; line-height: 1.45; color: var(--text-body); }
+
+.fluxo__seta {
+  flex: none;
+  width: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* A seta é desenhada em CSS: haste de 1 px e uma ponta feita de duas
+   bordas giradas. Sem imagem, continua nítida na exportação. */
+.fluxo__seta-haste {
+  position: relative;
+  display: block;
+  width: 36px;
+  height: 1px;
+  background: var(--traco);
+}
+
+.fluxo__seta-haste::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  width: 11px;
+  height: 11px;
+  border-top: 1px solid var(--traco);
+  border-right: 1px solid var(--traco);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+/* As duas contas de anúncio, penduradas numa verba comum. */
+.contas { display: flex; flex-direction: column; }
+
+.contas__caixas { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+
+.conta {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 22px 26px;
+  border: 1px solid var(--traco);
+}
+
+/* O fio que liga cada caixa à barra de orçamento, logo abaixo. */
+.conta::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -24px;
+  width: 1px;
+  height: 24px;
+  background: var(--traco);
+}
+
+.conta__titulo {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 27px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-strong);
+}
+
+.conta__texto { margin: 0; font-size: 25px; line-height: 1.45; color: var(--text-body); }
+
+.conta__metrica { font-size: 23px; color: var(--text-muted); }
+
+.contas__orcamento {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 26px;
+  margin-top: 24px;
+  padding: 18px 28px;
+  background: var(--surface-sunk);
+  border-left: 3px solid var(--accent);
+}
+
+.contas__orcamento-label {
+  font-size: 25px;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.contas__orcamento-valor {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 36px;
+  color: var(--text-strong);
+  font-variant-numeric: tabular-nums;
+}
+
+.fluxo__rodape {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 56px;
+  padding-top: 18px;
+  border-top: 1px solid var(--hairline);
+}
+
+.fluxo__rodape-item { display: inline-flex; align-items: baseline; gap: 14px; }
+
+.fluxo__rodape-label {
+  font-size: 23px;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.fluxo__rodape-valor { font-size: 26px; color: var(--text-strong); }
+
+/* =====================================================================
+   10 · tabela
+   ===================================================================== */
+
+.l-tabela { display: flex; flex-direction: column; gap: 26px; }
+
+.tabela { display: flex; flex-direction: column; margin-top: 6px; }
+
+/* A coluna de condição é larga de propósito: são dez linhas, e cada uma que
+   quebra em duas empurra a última para fora do slide. O texto que vai nela
+   é escrito curto o bastante para caber numa linha só (ver dados.js). */
+.tabela__linha {
+  display: grid;
+  grid-template-columns: 200px 1fr 250px 620px;
+  gap: 28px;
+  align-items: baseline;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.tabela__linha--cabeca {
+  padding-top: 0;
+  padding-bottom: 14px;
+  border-bottom-color: var(--traco);
+  font-size: 22px;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* A primeira linha de cada frente ganha um respiro acima: é o que separa
+   os grupos sem precisar de uma linha de título só para isso. */
+.tabela__linha--abre:not(:nth-child(2)) { padding-top: 16px; }
+
+.tabela__frente {
+  font-size: 23px;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--accent-deep);
+}
+
+.tabela__item { font-size: 25px; line-height: 1.3; color: var(--text-body); }
+
+.tabela__valor {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 29px;
+  color: var(--text-strong);
+  text-align: right;
+}
+
+.tabela__condicao { font-size: 21px; line-height: 1.35; color: var(--text-muted); }
+
+/* =====================================================================
+   11 · decisoes
+   ===================================================================== */
+
+.l-decisoes { display: flex; flex-direction: column; gap: 26px; }
+
+.decisoes { display: flex; flex-direction: column; margin-top: 6px; }
+
+.decisao {
+  display: grid;
+  grid-template-columns: 62px 1fr 330px 400px;
+  gap: 28px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.decisao__num {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 25px;
+  color: var(--accent-deep);
+  font-variant-numeric: tabular-nums;
+}
+
+.decisao__texto { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+
+.decisao__item { font-size: 27px; line-height: 1.3; color: var(--text-strong); }
+
+.decisao__apoio { font-size: 23px; color: var(--text-muted); }
+
+.decisao__valor {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 29px;
+  color: var(--text-body);
+  text-align: right;
+}
+
+.decisao__seletor { display: flex; gap: 12px; justify-content: flex-end; }
+
+.decisao__opcao {
+  padding: 10px 20px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--font-text);
+  font-size: 23px;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-standard),
+              color var(--dur-fast) var(--ease-standard),
+              background-color var(--dur-fast) var(--ease-standard);
+}
+
+.decisao__opcao:hover { border-color: var(--traco); color: var(--text-body); }
+
+/* Marcado: o status escolhido vira sólido. A linha inteira ganha um fio na
+   esquerda, para o estado ser visível de longe, do fundo da sala. */
+.decisao__opcao[aria-pressed="true"] {
+  background: var(--accent-deep);
+  border-color: var(--accent-deep);
+  color: var(--paper);
+}
+
+.decisao[data-marcado]:not([data-marcado=""]) {
+  box-shadow: inset 3px 0 0 var(--accent);
+  padding-left: 22px;
+  margin-left: -22px;
+}
+
+.decisao[data-marcado="adiar"] { box-shadow: inset 3px 0 0 var(--ink-300); }
+.decisao[data-marcado="adiar"] .decisao__opcao[aria-pressed="true"] {
+  background: var(--ink-500);
+  border-color: var(--ink-500);
+}
+
+.decisao[data-marcado="ajustar"] { box-shadow: inset 3px 0 0 var(--ink-400); }
+.decisao[data-marcado="ajustar"] .decisao__opcao[aria-pressed="true"] {
+  background: var(--ink-600);
+  border-color: var(--ink-600);
+}
+
+/* =====================================================================
+   A ENTRADA DOS GRÁFICOS
+
+   Barra, coluna e linha crescem por clip-path a partir de .slide.is-current,
+   acompanhando a cascata de entrada do motor. clip-path, e não width: a
+   largura final já está no layout, então a grade não se mexe durante a
+   animação e nada reflui.
+   ===================================================================== */
+
+@keyframes creceDireita {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes creceCima {
+  from { clip-path: inset(100% 0 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes pontoEntra {
+  from { opacity: 0; transform: scale(0.4); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.slide.is-current .barra__fill,
+.slide.is-current .pilha__trilho {
+  animation: creceDireita 760ms var(--ease-out) both;
+  animation-delay: calc(240ms + var(--k, 0) * 62ms);
+}
+
+.slide.is-current .coluna__corpo {
+  animation: creceCima 720ms var(--ease-out) both;
+  animation-delay: calc(260ms + var(--k, 0) * 90ms + var(--j, 0) * 70ms);
+}
+
+.slide.is-current .cpilha__torre {
+  animation: creceCima 760ms var(--ease-out) both;
+  animation-delay: calc(260ms + var(--k, 0) * 110ms);
+}
+
+.slide.is-current .linhas__linha {
+  animation: creceDireita 900ms var(--ease-out) both;
+  animation-delay: calc(300ms + var(--k, 0) * 110ms);
+}
+
+.slide.is-current .linhas__ponto {
+  animation: pontoEntra 360ms var(--ease-out) both;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation-delay: calc(420ms + var(--k, 0) * 110ms + var(--i, 0) * 150ms);
+}
+
+/* Quem pediu menos movimento recebe o gráfico pronto, sem crescimento. */
+@media (prefers-reduced-motion: reduce) {
+  .slide.is-current .barra__fill,
+  .slide.is-current .pilha__trilho,
+  .slide.is-current .coluna__corpo,
+  .slide.is-current .cpilha__torre,
+  .slide.is-current .linhas__linha,
+  .slide.is-current .linhas__ponto {
+    animation: none !important;
+    clip-path: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* =====================================================================
+   EXPORTAÇÃO EM PDF
+
+   Nada aqui pode ser mais largo que o slide, nem escondido: o Chrome conta
+   a largura mesmo do que está sob overflow:hidden e encolhe TODAS as
+   páginas para fazer caber. Os gráficos deste deck já nascem contidos, e a
+   animação é desligada para o papel pegar o estado final.
+   ===================================================================== */
+
+.is-export .slide .barra__fill,
+.is-export .slide .pilha__trilho,
+.is-export .slide .coluna__corpo,
+.is-export .slide .cpilha__torre,
+.is-export .slide .linhas__linha,
+.is-export .slide .linhas__ponto {
+  animation: none !important;
+  clip-path: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}

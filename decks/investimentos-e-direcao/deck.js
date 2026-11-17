@@ -1,0 +1,744 @@
+/* ===========================================================================
+   INVESTIMENTOS E DIREÇÃO PARA 2027 · Lesco
+   Apresentação ao Lucas · 17 de novembro de 2026 · 60 minutos
+
+   Cinco frentes, cada uma terminando num pedido de aprovação: Arkos (o
+   contexto que explica a urgência), INPI e rebrand, embalagens, Mono nos
+   marketplaces e Mono Creators. A Arkos abre porque é ela que justifica o
+   rebrand e a embalagem.
+
+   NENHUM NÚMERO ESTÁ ESCRITO AQUI DENTRO
+     Tudo vem de dados.js e é formatado pelos auxiliares de lá — inclusive os
+     números que aparecem no meio de uma frase e os que dão título a um
+     slide. Corrigir um valor é mexer em um arquivo só, e não existe chance
+     de o slide e a fonte divergirem.
+
+   O TEXTO NA TELA É CURTO
+     Uma ideia por tela. O detalhe fica nas `notes`, que só aparecem no painel
+     do apresentador (tecla N) e nunca na projeção.
+
+   LAYOUTS NOVOS
+     pontos, duas, barras, barraspilha, colunas, colunaspilha, linhas,
+     cartoes, fluxo, tabela e decisoes estão em graficos.js, nesta pasta.
+     Os treze do motor continuam valendo.
+   ======================================================================== */
+
+(function () {
+  'use strict';
+
+  var N = window.NUMEROS;
+
+  /* Atalhos de formatação, para o conteúdo abaixo ficar legível. */
+  var $ = N.reais;          /* com centavos: R$ 7.130,00 */
+  var $c = N.reaisCurto;    /* sem o ",00" inútil: R$ 9.380 */
+
+  /* ---------------------------------------------------------------------
+     Pré-cálculos usados em mais de um slide.
+     --------------------------------------------------------------------- */
+
+  var linhasMista = N.custoPacote('linhas-mista');
+  var comBambu = N.custoPacote('linhas-mista-bambu');
+  var lescoNom = N.custoPacote('lesco-nominativa');
+  var juntos = N.custoPacote('juntos');
+  var economia = N.economiaJunto('lesco-nominativa', 'linhas-mista', 'juntos');
+
+  var momentos = N.momentosPedido();
+  var imediato = momentos[0];
+  var janeiro = momentos[1];
+
+  var perguntas = N.perguntas();
+  var tray = N.mono.tray;
+
+  /* Rodapé repetido nas telas de embalagem (8 a 11). Uma variável, e não
+     quatro cópias: a data de validade muda junto nas quatro. */
+  var rodapeEmbalagem =
+    'Preços da 46 Indústria Gráfica na faixa de 1.000 un, com frete até Itajaí e 10% de desconto de primeira compra. ' +
+    'Em quantidades menores o valor deve sair mais alto — a recotação está pendente. ' +
+    'As propostas vencem em ' + N.embalagens.validades[0].vence + ' (nº ' + N.embalagens.validades[0].proposta + ') e ' +
+    N.embalagens.validades[1].vence + ' (nº ' + N.embalagens.validades[1].proposta + '). Kits antigos: orçamento Printi.';
+
+  /* Os segmentos de um kit, já no formato que o gráfico de composição pede.
+     O primeiro componente é a caixa grande e fica chapado; as caixas de
+     linha vêm mais claras, em degraus. */
+  function segmentosDoKit(id) {
+    return N.partesKit(id).map(function (p, i) {
+      return {
+        rotulo: p.rotulo + ' · ' + $(p.valor),
+        valor: p.valor,
+        tom: i === 0 ? 4 : (i === 1 ? 2 : 1)
+      };
+    });
+  }
+
+  /* Uma coluna do gráfico de comparação de kits. */
+  function colunaKit(id, papel) {
+    var k = N.kit(id);
+    var dif = N.diferencaKit(id);
+
+    return {
+      label: k.nome.replace(/^(Antigo|Novo) /, function (m) { return m.trim() + '\n'; }),
+      valor: N.custoKit(id),
+      mostra: $(N.custoKit(id)),
+      delta: dif ? N.deltaReais(dif.centavos) + ' (' + N.deltaPct(dif.pct) + ')' : null,
+      papel: papel
+    };
+  }
+
+  /* A tabela do resumo, agrupada por frente na ordem em que as frentes
+     aparecem na lista — sem repetir o nome da frente a cada linha. */
+  function gruposDoResumo() {
+    var ordem = [];
+    var porFrente = {};
+
+    N.resumo().forEach(function (a) {
+      if (!porFrente[a.frente]) {
+        porFrente[a.frente] = { frente: a.frente, linhas: [] };
+        ordem.push(porFrente[a.frente]);
+      }
+      porFrente[a.frente].linhas.push({
+        item: a.item,
+        valor: a.mostra,
+        condicao: a.condicao
+      });
+    });
+
+    return ordem;
+  }
+
+
+  window.DECK = {
+    id: 'investimentos-e-direcao',
+    title: 'Investimentos e direção para 2027',
+    subtitle: 'Reunião de aprovação com o Lucas · 17 de novembro de 2026',
+
+    slides: [
+
+      /* ===============================================================
+         ABERTURA
+         =============================================================== */
+
+      {
+        layout: 'cover',
+        label: 'Capa',
+        notes:
+          'Abertura. Cinco frentes, 60 minutos, e a meta é sair daqui com decisão em todas elas.\n\n' +
+          'Dizer logo o formato: cada bloco termina num pedido de aprovação, e no fim tem uma tela só de decisões, ' +
+          'que dá para marcar na hora.\n\n' +
+          'A Arkos abre a apresentação porque é ela que explica por que o rebrand e a embalagem são urgentes — ' +
+          'não é um bloco de contexto solto.',
+        eyebrow: 'Lesco · Reunião de aprovação',
+        title: 'Investimentos\ne direção\npara 2027',
+        sub: 'Arkos, INPI e rebrand, embalagens, Mono nos marketplaces e Mono Creators.',
+        footer: '17 de novembro de 2026 · 60 minutos'
+      },
+
+      {
+        layout: 'index',
+        label: 'Pauta',
+        notes:
+          'Roteiro e relógio. Os tempos são o combinado, não uma promessa: se um bloco esticar, o que cede é o ' +
+          'fechamento, porque as decisões já terão sido pedidas bloco a bloco.\n\n' +
+          'A meta é sair da reunião com decisões em todas as frentes.',
+        eyebrow: 'Decisões em todas as frentes',
+        /* Uma linha, e não duas: com seis blocos a lista encosta na borda de
+           baixo, e a segunda linha do título custa os 89 px que faltam. */
+        title: 'Cinco frentes em 60 minutos',
+        items: [
+          { name: 'Arkos',           apoio: 'Como a concorrência se sustenta, e onde estamos', tag: '8 min' },
+          { name: 'INPI e rebrand',  apoio: 'Registro das marcas e logo novo para 2027',       tag: '15 min' },
+          { name: 'Embalagens',      apoio: 'Kit novo, composição e pedido recomendado',       tag: '8 min' },
+          { name: 'Mono: frete',     apoio: 'O gargalo do marketplace e a proposta Tray',      tag: '10 min' },
+          { name: 'Mono Creators',   apoio: 'Captação de creators por tráfego pago',           tag: '10 min' },
+          { name: 'Fechamento',      apoio: 'Resumo de valores e decisões',                    tag: '7 min' }
+        ]
+      },
+
+      /* ===============================================================
+         ARKOS · 8 min
+         O bloco não tem pedido de dinheiro. O que ele pede é uma data.
+         =============================================================== */
+
+      {
+        layout: 'pontos',
+        label: 'Como a Arkos se sustenta',
+        notes:
+          'O ponto desta tela: a simplicidade é o que sinaliza sofisticação. Nada do que eles fazem é caro de ' +
+          'entender — é caro de manter com disciplina.\n\n' +
+          'Sobre as publicações: o próprio material filtra o cliente. Quem só quer comparar preço recebe o PDF e ' +
+          'resolve sozinho; quem tem perfil de compra recebe o almanaque de obras, com preço, e já chega na ' +
+          'conversa com repertório. A gente hoje trata os dois do mesmo jeito.\n\n' +
+          'Vale dizer que eles vendem produto importado, como nós. A diferença não está no produto.',
+        eyebrow: 'Arkos',
+        title: 'Como a Arkos se sustenta',
+        items: [
+          {
+            label: 'Imagem impecável',
+            text: 'Percepção de luxo construída com coisas concretas: prédio, recepção, mostruário e a organização das amostras.'
+          },
+          {
+            label: 'Ação contra a concorrência',
+            text: 'Trabalho coordenado para desmerecer a concorrência direta junto a quem especifica e quem compra.'
+          },
+          {
+            label: 'Publicações anuais',
+            text: 'Trocaram o catálogo online por dois impressos: PDF de preços para quem só compara e almanaque de obras, com preços, para quem tem perfil de compra.'
+          },
+          {
+            label: 'Showroom que viaja',
+            text: 'O mesmo showroom é reaproveitado nas feiras, sem montar material novo a cada evento.'
+          }
+        ]
+      },
+
+      {
+        layout: 'pontos',
+        label: 'Onde a Lesco está',
+        notes:
+          'Esta é a tela desconfortável, e é de propósito. Não somos vistos como concorrentes à altura — nem pela ' +
+          'Arkos, nem pelos clientes que ela influencia.\n\n' +
+          'PEDIR UMA DATA: este bloco não pede dinheiro, pede agenda. Quero marcar uma reunião só sobre o novo ' +
+          'showroom (conceito de galeria, com câmaras sensoriais que também servem de sala de reunião) e sobre a ' +
+          'definição de posicionamento. Sai daqui com a data.\n\n' +
+          'Se perguntarem do fornecedor de WPC: é o gargalo da estética. Enquanto ele não melhorar, bambu e pedra ' +
+          'flexível continuam no portfólio sem chegar na obra.',
+        eyebrow: 'Arkos',
+        title: 'Onde a Lesco está',
+        items: [
+          {
+            label: 'Percepção',
+            text: 'Não somos vistos como concorrentes à altura, nem pela Arkos nem pelos clientes que ela influencia.'
+          },
+          {
+            label: 'Fornecimento',
+            text: 'A estética fica limitada a quase só madeira, mesmo com bambu e pedra flexível no portfólio. O fornecedor de WPC precisa melhorar.'
+          },
+          {
+            label: 'Posicionamento',
+            text: 'O posicionamento atual não condiz com a realidade da empresa.'
+          }
+        ],
+        rodape: 'Rebrand e embalagem são as respostas que dependem só da gente — e ficam prontas para o começo de 2027.'
+      },
+
+      /* ===============================================================
+         INPI E REBRAND · 15 min
+         Pedido: aprovar o registro de GEO, ZHÜ e ECHO, a ampliação da
+         marca Lesco para novas categorias e o rebrand com logo novo.
+         =============================================================== */
+
+      {
+        layout: 'pontos',
+        label: 'Por que registrar agora',
+        notes:
+          'O argumento é de corrida, não de risco teórico: no Brasil quem deposita primeiro sai na frente. Se um ' +
+          'concorrente registrar GEO, ZHÜ ou ECHO antes, a gente perde o nome que já está no mercado e no material.\n\n' +
+          'Explicar a diferença de formato, porque ela decide o preço: MISTO protege o desenho junto com o nome — é ' +
+          'o que as linhas precisam. NOMINATIVO protege só o nome, com qualquer logo — é o que a Lesco precisa, ' +
+          'justamente porque o logo vai mudar.\n\n' +
+          'Cada classe é um pedido com taxa própria. É daí que vem a conta da próxima tela.',
+        eyebrow: 'INPI e rebrand',
+        title: 'Por que registrar agora',
+        items: [
+          {
+            label: 'Quem deposita primeiro sai na frente',
+            text: 'No Brasil o direito sobre a marca vem do registro no INPI. Sem depósito, um concorrente pode registrar esses nomes e nos impedir de usá-los.'
+          },
+          {
+            label: 'Uma taxa por classe',
+            text: 'O registro é feito por classe de produto ou serviço. Cada classe é um pedido, com taxa própria.'
+          },
+          {
+            label: 'Misto protege o logo, nominativo protege o nome',
+            text: 'O registro misto protege nome e logo de cada linha. O nominativo protege o nome Lesco com qualquer logo — inclusive o novo.'
+          }
+        ]
+      },
+
+      {
+        layout: 'barraspilha',
+        label: 'Pacotes de registro',
+        notes:
+          'A tela da conta. Dois pontos só.\n\n' +
+          'PRIMEIRO: o pacote das três linhas e o da Lesco nominativa custam exatamente o mesmo, ' + $c(linhasMista.total) + '. ' +
+          'Não é coincidência — os dois têm três pedidos, e o preço da Registre.se é por pedido.\n\n' +
+          'SEGUNDO: fechar os dois juntos economiza ' + $c(economia) + '. A regra é que o primeiro pedido do pacote paga ' +
+          'assessoria cheia (' + $c(N.inpi.regra.assessoriaPrimeiro) + ') e os demais saem por ' + $c(N.inpi.regra.assessoriaDemais) + '. ' +
+          'Seis pedidos num pacote só pagam uma assessoria cheia em vez de duas.\n\n' +
+          'O bambu (ZHÜ na classe 20) é opcional e soma ' + $c(N.adicionalBambu()) + '. Decidir se entra agora ou depois.\n\n' +
+          'ATENÇÃO: a proposta venceu em ' + N.inpi.condicoes.validade + '. Os valores precisam ser reconfirmados antes de fechar — ' +
+          'avisar isso antes que ele pergunte.\n\n' +
+          'Se perguntar de desconto: as taxas do INPI podem cair ' + N.inpi.condicoes.reducaoTitular + '% se o titular for ' +
+          'CPF, MEI, ME ou EPP. Vale checar como está o enquadramento.',
+        eyebrow: 'INPI e rebrand',
+        title: 'Pacotes de registro',
+        sub: 'Mista e nominativa custam o mesmo. Juntos, economizam ' + $c(economia) + '.',
+        legenda: [
+          { rotulo: 'Assessoria', tom: 4 },
+          { rotulo: 'Taxas do INPI', tom: 2 }
+        ],
+        items: [linhasMista, comBambu, lescoNom, juntos, N.custoPacote('juntos-bambu')].map(function (p) {
+          return {
+            label: p.nome,
+            apoio: p.resumo + ' · ' + p.pedidos + (p.pedidos === 1 ? ' pedido' : ' pedidos'),
+            segmentos: [
+              { rotulo: 'Assessoria · ' + $c(p.assessoria), valor: p.assessoria, tom: 4 },
+              { rotulo: 'Taxas do INPI · ' + $c(p.taxas), valor: p.taxas, tom: 2 }
+            ],
+            mostra: $c(p.total),
+            destaque: p.id === 'juntos'
+          };
+        }),
+        /* Sem `recado` aqui de propósito: o subtítulo já diz a mesma coisa, e
+           o rodapé de condições é obrigatório e longo. A comparação detalhada
+           entre os dois pacotes separados e juntos está nas notas. */
+        nota:
+          'Registre.se. Assessoria em até ' + N.inpi.condicoes.parcelasAssessoria + 'x sem juros, ou à vista com ' +
+          N.inpi.condicoes.descontoAVista + '% de desconto; taxas do INPI à vista. As taxas podem cair ' +
+          N.inpi.condicoes.reducaoTitular + '% se o titular for CPF, MEI, ME ou EPP. ' +
+          'A proposta venceu em ' + N.inpi.condicoes.validade + ' e os valores precisam ser reconfirmados.'
+      },
+
+      {
+        layout: 'duas',
+        label: 'Logo novo em 2027',
+        notes:
+          'Três perguntas vão vir. As respostas:\n\n' +
+          'POR QUE NÃO SÓ AJUSTAR O LOGO ATUAL? O ajuste já foi desenhado e não muda a percepção — continua lendo ' +
+          'como marca de menor valor. Para disputar com a Arkos, a mudança precisa ser visível para quem já conhece ' +
+          'a marca. Meio-termo aqui é dinheiro gasto sem resultado.\n\n' +
+          'E O REGISTRO DO LOGO ANTIGO? A proteção do nome vem dos pedidos nominativos e não depende do logo. Se o ' +
+          'logo antigo tiver registro próprio, ele continua válido — mas pode ser contestado depois de cinco anos ' +
+          'sem uso no Brasil.\n\n' +
+          'ISSO AFETA A OPERAÇÃO LÁ FORA? Não. Seguimos com o logo antigo fora do Brasil até decidirmos outra coisa.\n\n' +
+          'O depósito do logo novo ainda NÃO está no orçamento da Registre.se, e depende de busca de anterioridade. ' +
+          'É por isso que o valor dele aparece como "a definir" no resumo.',
+        eyebrow: 'INPI e rebrand',
+        title: 'Logo novo em 2027',
+        sub: 'Pedido: aprovar o registro de GEO, ZHÜ e ECHO, a ampliação da marca Lesco para novas categorias e o rebrand com logo novo.',
+        colunas: [
+          {
+            titulo: 'Proposta',
+            texto: 'Logo totalmente novo. O refinamento desenhado antes mantinha a mesma leitura de marca de menor valor. ' +
+                   'A meta é começar 2027 com a identidade nova em todos os pontos de contato no Brasil.'
+          },
+          {
+            titulo: 'Ponto jurídico',
+            texto: 'Não há barreira jurídica para trocar o logo na comunicação dentro do Brasil. Os pedidos da Lesco são ' +
+                   'nominativos e protegem o nome, que continua o mesmo independente do desenho. ' +
+                   'Fora do país nada muda: mantemos o logo antigo e os registros como estão.'
+          }
+        ],
+        destaque: {
+          label: 'Condição',
+          texto: 'Depositar o logo novo no INPI no mesmo pacote de GEO, ZHÜ e ECHO, depois de uma busca de anterioridade. ' +
+                 'Esse pedido ainda não está no orçamento da Registre.se.'
+        }
+      },
+
+      /* ===============================================================
+         EMBALAGENS · 8 min
+         Pedido: aprovar o orçamento das embalagens novas, começando com
+         um lote menor, no pedido recomendado pela Louise.
+         =============================================================== */
+
+      {
+        layout: 'colunas',
+        label: 'Kit novo × kit antigo',
+        notes:
+          'Começar pela diferença desfavorável, sem rodeio: o kit pequeno novo é ' +
+          N.pct(N.diferencaKit('novo-pequeno').pct) + ' mais caro que o antigo. Dito isso, a conta que importa é a de cima: ' +
+          'o kit de duas linhas custa ' + N.deltaReais(N.diferencaKit('novo-duas-linhas').centavos) + ' a mais que o antigo grande. ' +
+          'Um real e três centavos por kit.\n\n' +
+          'O argumento é de ferramenta comercial, não de custo: a embalagem é o primeiro contato físico do cliente com o ' +
+          'produto, e o unboxing pesa na percepção de valor — exatamente o ponto em que a Arkos nos supera. É o bloco ' +
+          'da Arkos voltando aqui.\n\n' +
+          'A composição do kit pequeno novo ainda não está fechada: hoje ele custa o mesmo que uma caixa grande ' +
+          '(' + $(N.custoKit('novo-pequeno')) + '), o que sugere que falta refinar. Está nos pontos em aberto.\n\n' +
+          'Orçamentos da 46 Indústria Gráfica, os melhores que encontramos, já com frete até Itajaí e 10% de ' +
+          'desconto de primeira compra.',
+        eyebrow: 'Embalagens',
+        title: 'Kit novo × kit antigo',
+        sub: 'O kit de duas linhas custa ' + N.deltaReais(N.diferencaKit('novo-duas-linhas').centavos) + ' a mais que o antigo grande.',
+        unidade: 'Custo por kit',
+        legenda: [
+          { rotulo: 'Kit antigo · Printi', papel: 'atual' },
+          { rotulo: 'Kit novo · 46', papel: 'proposta' }
+        ],
+        grupos: [
+          {
+            label: 'Grande',
+            colunas: [
+              colunaKit('antigo-grande', 'atual'),
+              colunaKit('novo-duas-linhas', 'proposta'),
+              colunaKit('novo-completo', 'proposta-clara')
+            ]
+          },
+          {
+            label: 'Pequeno',
+            colunas: [
+              colunaKit('antigo-pequeno', 'atual'),
+              colunaKit('novo-pequeno', 'proposta')
+            ]
+          }
+        ],
+        nota: rodapeEmbalagem
+      },
+
+      {
+        layout: 'barraspilha',
+        label: 'Composição do kit',
+        notes:
+          'Esta tela existe para mostrar onde está o dinheiro: a caixa grande é ' +
+          N.pct(N.partesKit('novo-duas-linhas')[0].pct) + ' do kit de duas linhas e ' +
+          N.pct(N.partesKit('novo-completo')[0].pct) + ' do completo. Cada linha a mais soma só ' +
+          $(N.componente('caixaLinha').centavos) + '.\n\n' +
+          'A consequência prática: ampliar o kit é barato, mudar a caixa grande é caro. Se um dia precisar cortar ' +
+          'custo, é na caixa grande que mexe — não no número de linhas.\n\n' +
+          'O kit pequeno fica fora deste gráfico porque a composição dele ainda não foi confirmada.\n\n' +
+          'Ponto em aberto que vale registrar: ainda não está definido qual item da proposta da 46 é a caixa de linha ' +
+          'de ' + $(N.componente('caixaLinha').centavos) + ' — a flat 250×200×60 mm, cotada só em 6.000 un, ou a flat 250×60×100 mm.',
+        eyebrow: 'Embalagens',
+        title: 'Composição do kit',
+        sub: 'A caixa grande é o maior custo do kit.',
+        dentro: true,
+        legenda: [
+          { rotulo: 'Caixa grande · ' + $(N.componente('caixaGrande').centavos), tom: 4 },
+          { rotulo: 'Caixa de linha · ' + $(N.componente('caixaLinha').centavos) + ' cada', tom: 2 }
+        ],
+        items: [
+          {
+            label: N.kit('novo-duas-linhas').nome,
+            apoio: N.kit('novo-duas-linhas').descricao,
+            segmentos: segmentosDoKit('novo-duas-linhas'),
+            mostra: $(N.custoKit('novo-duas-linhas'))
+          },
+          {
+            label: N.kit('novo-completo').nome,
+            apoio: N.kit('novo-completo').descricao,
+            segmentos: segmentosDoKit('novo-completo'),
+            mostra: $(N.custoKit('novo-completo'))
+          }
+        ],
+        recado: 'A caixa grande é ' + N.pct(N.partesKit('novo-duas-linhas')[0].pct) + ' do kit de duas linhas e ' +
+                N.pct(N.partesKit('novo-completo')[0].pct) + ' do completo. Cada linha a mais soma ' +
+                $(N.componente('caixaLinha').centavos) + '.',
+        nota: 'O kit pequeno fica fora até a composição dele ser confirmada. ' + rodapeEmbalagem
+      },
+
+      {
+        layout: 'linhas',
+        label: 'Preço por volume',
+        notes:
+          'O recado é um só: volume derruba o preço unitário, e derruba muito — de ' +
+          N.pct(N.quedaVolume(N.embalagens.faixasVolume[0]).pct) + ' a ' +
+          N.pct(N.quedaVolume(N.embalagens.faixasVolume[2]).pct) + ' entre 1.000 e 3.000 unidades.\n\n' +
+          'Isso prepara a próxima tela: é o argumento CONTRA o lote pequeno. Ele é mais caro por unidade, e eu vou ' +
+          'defender fazer o lote pequeno mesmo assim. Melhor apresentar a objeção aqui do que deixar ele levantar.\n\n' +
+          'As faixas estão como categorias, não como escala: o que interessa é o degrau de uma para a outra.\n\n' +
+          'O quadro da direita é o que a 46 cotou só em 6.000 un (6 artes × 1.000) — não dá para comparar com as ' +
+          'faixas do gráfico, por isso está separado.\n\n' +
+          'Detalhe que pode ser perguntado: o envelope tem ainda uma faixa de ' + N.numero(N.embalagens.envelope1500.qtd) +
+          ' un, a ' + $(N.embalagens.envelope1500.centavos) + '.',
+        eyebrow: 'Embalagens',
+        title: 'Preço por volume',
+        sub: 'A unidade cai de ' + N.pct(N.quedaVolume(N.embalagens.faixasVolume[0]).pct) + ' a ' +
+             N.pct(N.quedaVolume(N.embalagens.faixasVolume[2]).pct) + ' em volume.',
+        unidadeY: 'R$ por unidade',
+        eixoX: N.embalagens.faixas.map(function (f) { return N.numero(f) + ' un'; }),
+        marcaY: function (centavos) { return $c(centavos); },
+        series: N.embalagens.faixasVolume.map(function (linha, i) {
+          return {
+            nome: linha.item,
+            tom: i + 1,
+            pontos: N.embalagens.faixas.map(function (f) { return linha.precos[f]; }),
+            fim: N.deltaPct(N.quedaVolume(linha).pct)
+          };
+        }),
+        quadro: {
+          titulo: 'Cotado só em ' + N.numero(N.embalagens.lote6000.qtd) + ' un',
+          apoio: N.embalagens.lote6000.nota + '. Não entram no gráfico porque não têm as outras faixas.',
+          linhas: N.embalagens.lote6000.itens.map(function (i) {
+            return {
+              label: i.item,
+              apoio: i.medida + ' · com relevo, ' + $(i.comRelevo),
+              valor: $(i.centavos)
+            };
+          })
+        },
+        nota:
+          'Itens sem relevo. O relevo seco ' + N.embalagens.relevo.medida + ' soma de ' +
+          $(N.embalagens.relevo.de) + ' a ' + $(N.embalagens.relevo.ate) + ' por unidade. ' +
+          'O envelope tem ainda a faixa de ' + N.numero(N.embalagens.envelope1500.qtd) + ' un, a ' +
+          $(N.embalagens.envelope1500.centavos) + '. ' + rodapeEmbalagem
+      },
+
+      {
+        layout: 'colunaspilha',
+        label: 'Pedido recomendado',
+        notes:
+          'O pedido da Louise, em dois tempos: ' + $(imediato.total) + ' agora e ' + $(janeiro.total) + ' em janeiro. ' +
+          'Total de ' + $(N.totalPedido()) + '.\n\n' +
+          'O IMEDIATO É URGENTE: serve para enviar as amostras de GEO que já existem e estão paradas. Isso precisa ' +
+          'ser pedido agora.\n\n' +
+          'Por que só ' + N.numero(imediato.linhas[1].qtd) + ' envelopes? Para enviar TODAS as amostras de GEO seriam ' +
+          N.numero(N.embalagens.envelopesTodasAmostras) + ', e o imediato iria a ' + $(N.imediatoTodasAmostras()) + '. ' +
+          'A Louise recomenda pedir metade, que ela considera suficiente.\n\n' +
+          'SE ELE PERGUNTAR POR QUE NÃO ESPERAR E FAZER DIRETO O LOTE GRANDE: enquanto isso, cada entrega sai com a ' +
+          'embalagem atual — que é justamente o problema que viemos resolver. O lote inicial custa mais por unidade, ' +
+          'mas exige menos caixa e, principalmente, permite ajustar o modelo antes de escalar. Errar em ' +
+          N.numero(imediato.linhas[0].qtd) + ' caixas é barato; errar em ' + N.numero(janeiro.linhas[1].qtd) + ' não é.\n\n' +
+          'Lembrar: a recotação para estas quantidades está pendente. Os preços aqui são da faixa de 1.000 un.',
+        eyebrow: 'Embalagens',
+        title: 'Pedido recomendado',
+        sub: 'Pedido: aprovar o orçamento das embalagens novas, começando pelo lote menor.',
+        unidade: 'Investimento por momento',
+        legenda: [
+          { rotulo: 'Caixas', tom: 4 },
+          { rotulo: 'Envelopes e caixas de linha', tom: 2 }
+        ],
+        items: momentos.map(function (m) {
+          return {
+            label: m.momento,
+            apoio: m.momento === imediato.momento ? 'Pedir agora' : 'Programado',
+            segmentos: m.linhas.map(function (l, i) {
+              return { rotulo: l.item + ' · ' + $(l.total), valor: l.total, tom: i === 0 ? 4 : 2 };
+            }),
+            mostra: $(m.total)
+          };
+        }),
+        geral: { label: 'Total geral', valor: $(N.totalPedido()) },
+        /* Linha de uma altura só: com o momento numa coluna própria, o item
+           não precisa carregar uma segunda linha de apoio — e é isso que faz
+           a tabela caber ao lado do gráfico sem espremer nada. */
+        tabela: {
+          grade: '150px 1fr 90px 140px 160px',
+          colunas: ['Momento', 'Item', 'Qtd.', 'Unitário', 'Total'],
+          numericas: [2, 3, 4],
+          linhas: momentos.reduce(function (todas, m) {
+            return todas.concat(m.linhas.map(function (l, i) {
+              return [
+                i === 0 ? m.momento.replace(' (GEO)', '') : '',
+                l.item,
+                N.numero(l.qtd),
+                $(l.unitario),
+                $(l.total)
+              ];
+            }));
+          }, [])
+        },
+        recado: 'O pedido imediato serve para as amostras de GEO que já existem — e precisa ser feito agora.',
+        nota: rodapeEmbalagem
+      },
+
+      /* ===============================================================
+         MONO: FRETE · 10 min
+         Pedido: aprovar a contratação da Tray para conectar a Mono aos
+         marketplaces via API, como a concorrência faz.
+         =============================================================== */
+
+      {
+        layout: 'barraspilha',
+        label: 'O frete hoje',
+        notes:
+          'O número é ' + perguntas.frete + ' de ' + perguntas.total + ' perguntas sobre frete no último mês. Quase todas são a ' +
+          'MESMA pergunta: se enviamos para tal CEP, quanto custa e quando chega.\n\n' +
+          'Cada uma é respondida manualmente. Enquanto isso o comprador não vê o preço final — e quem não quer ' +
+          'esperar compra de quem mostra o frete na hora. A pergunta no anúncio não é interesse, é atrito.\n\n' +
+          'Contexto do produto: o perfil da Mono passa de ' + N.mono.comprimento + '. Produto longo encarece o frete e ' +
+          'restringe canais — o TikTok Shop, por exemplo, fica fora pelo limite de tamanho.\n\n' +
+          'O mercado de forro vinílico tem muita revenda. A disputa é por preço e prazo, e o frete decide as duas ' +
+          'coisas. Sem resolver isso, investir em catálogo e anúncio no marketplace esbarra no mesmo gargalo.\n\n' +
+          'Se tiver os prints das perguntas, é aqui que eles entram, ao lado do gráfico.',
+        eyebrow: 'Mono nos marketplaces',
+        title: 'O frete hoje',
+        sub: 'Perguntas nos anúncios da Mono no Mercado Livre, no ' + N.mono.periodoPerguntas + '.',
+        legenda: [
+          { rotulo: 'Perguntas sobre frete', tom: 5 },
+          { rotulo: 'Outras perguntas', tom: 1 }
+        ],
+        items: N.mono.perguntasML.map(function (a) {
+          return {
+            label: a.anuncio,
+            apoio: (a.frete + a.outras) + ' perguntas no total',
+            segmentos: [
+              { rotulo: 'Frete · ' + a.frete, valor: a.frete, tom: 5 },
+              { rotulo: 'Outras · ' + a.outras, valor: a.outras, tom: 1 }
+            ],
+            mostra: a.frete + ' de ' + (a.frete + a.outras)
+          };
+        }),
+        lado: {
+          valor: perguntas.frete + ' de ' + perguntas.total,
+          label: 'perguntas são sobre frete',
+          apoio: 'Quase todas são a mesma: se enviamos para tal CEP, quanto custa e quando chega.'
+        },
+        recado: 'Cada uma é respondida manualmente. Enquanto isso o comprador não vê o preço final — ' +
+                'e quem não quer esperar compra de quem mostra o frete na hora.',
+        nota: 'Perguntas recebidas nos anúncios da Mono no Mercado Livre no ' + N.mono.periodoPerguntas + '.'
+      },
+
+      {
+        layout: 'barras',
+        label: 'O que a concorrência mostra',
+        notes:
+          'Esta é a tabela de frete que um concorrente publica DENTRO do anúncio. O comprador vê o preço antes de ' +
+          'perguntar, e decide sozinho.\n\n' +
+          'Não é sobre o valor do frete — é sobre estar visível. Repare que vai de ' +
+          $c(N.mono.freteReferencia[0].centavos) + ' a ' + $c(N.mono.freteReferencia[N.mono.freteReferencia.length - 1].centavos) + ': ' +
+          'não é barato, e mesmo assim converte, porque é previsível.\n\n' +
+          'Para ter isso no nosso anúncio precisamos de um integrador. É a próxima tela.\n\n' +
+          'Se perguntarem por que não fazemos internamente: teríamos que desenvolver a integração e negociar com ' +
+          'transportadoras. A integradora entrega isso pronto e já tem a parceria com o marketplace.',
+        eyebrow: 'Mono nos marketplaces',
+        title: 'O que a concorrência mostra',
+        sub: 'Tabela de frete por região, publicada direto no anúncio.',
+        items: N.mono.freteReferencia.map(function (f) {
+          return {
+            label: f.regiao,
+            apoio: f.apoio || null,
+            valor: f.centavos,
+            mostra: $c(f.centavos),
+            papel: 'atual'
+          };
+        }),
+        recado: 'O comprador vê o frete antes de perguntar. Para ter isso, precisamos de um integrador.',
+        nota: 'Anúncio de referência da concorrência no Mercado Livre, na ordem em que as faixas aparecem lá.'
+      },
+
+      {
+        layout: 'cartoes',
+        label: 'Proposta Tray',
+        notes:
+          'A Tray é integradora de marketplace: conecta a Mono aos canais via API, que é como a concorrência resolve ' +
+          'frete, estoque e prazo.\n\n' +
+          'SE PERGUNTAR O CUSTO DO PRIMEIRO ANO: ' + $c(N.primeiroAnoTray()) + ', se a mensalidade promocional valer pelos ' +
+          tray.meses + ' meses. Esse "se" é importante — ainda não confirmamos até quando vale a promoção nem quanto ' +
+          'fica depois. É a ressalva da tela.\n\n' +
+          'A entrada inclui o visual entregue pronto, o que economiza tempo nosso.\n\n' +
+          'NÃO DÁ PARA RESOLVER INTERNAMENTE? Teríamos que desenvolver a integração e negociar com transportadoras. ' +
+          'A integradora entrega pronto e já tem a parceria com o marketplace. Não é compra de software, é compra de ' +
+          'tempo e de acesso.',
+        eyebrow: 'Mono nos marketplaces',
+        title: 'Proposta Tray',
+        sub: 'Pedido: aprovar a contratação da Tray para conectar a Mono aos marketplaces via API.',
+        items: [
+          {
+            eyebrow: 'Entrada',
+            valor: $c(tray.entrada),
+            label: 'Em até ' + tray.parcelas + 'x de ' + $(N.parcelaTray()),
+            apoio: 'Com o visual entregue pronto.'
+          },
+          {
+            eyebrow: 'Mensalidade',
+            valor: $c(tray.mensalidade),
+            label: 'Por mês',
+            apoio: 'Valor promocional de Black Friday.',
+            destaque: true
+          }
+        ],
+        recado: 'Primeiro ano: ' + $c(N.primeiroAnoTray()) + ', se a mensalidade promocional valer pelos ' + tray.meses + ' meses.',
+        nota: 'Confirmar até quando vale a promoção e quanto fica a mensalidade depois.'
+      },
+
+      /* ===============================================================
+         MONO CREATORS · 10 min
+         Pedido: aprovar a criação das contas de anúncios da Mono e a
+         verba de tráfego pago para a campanha de recrutamento.
+         =============================================================== */
+
+      {
+        layout: 'fluxo',
+        label: 'Mono Creators',
+        notes:
+          'O gargalo é a ENTRADA: captar influenciador manualmente é improdutivo. O tráfego pago resolve volume de ' +
+          'interessados; a Inbazz, que já está contratada, resolve a gestão depois que eles entram.\n\n' +
+          'A INBAZZ NÃO RESOLVE SOZINHA? Ela organiza e acompanha os creators que já chegaram. Ela não traz gente ' +
+          'nova. O tráfego pago é o funil de entrada dela.\n\n' +
+          'POR QUE DUAS CONTAS DE ANÚNCIO? Separar mantém públicos e métricas limpos: uma mede custo por creator ' +
+          'captado, a outra mede custo por venda. Misturar as duas na mesma conta estraga a otimização das duas.\n\n' +
+          'A verba pedida é ' + $c(N.mono.creators.verbaTrafego) + ' só para a campanha de recrutamento. É teste, não escala.\n\n' +
+          'EM ABERTO: falta definir a meta de creators por mês e se a landing page é custo ou trabalho interno. ' +
+          'Se ele perguntar, é honesto dizer que ainda não temos.',
+        eyebrow: 'Mono Creators',
+        title: 'Como funciona',
+        sub: 'Pedido: aprovar a criação das contas de anúncios da Mono e ' + $c(N.mono.creators.verbaTrafego) + ' de tráfego pago para o recrutamento.',
+        etapas: [
+          { titulo: 'Anúncio pago', texto: 'Campanha direcionada a creators.' },
+          { titulo: 'Landing page', texto: 'Onde eles se cadastram para divulgar a Mono.' },
+          { titulo: 'Inbazz', texto: 'Os cadastrados entram na plataforma de gestão de influenciadores, já contratada.' },
+          { titulo: 'Publicação', texto: 'Os creators anunciam o produto nas redes deles.' }
+        ],
+        contas: {
+          caixas: [
+            {
+              titulo: 'Conta Mono Creators',
+              texto: 'Captação de influenciadores.',
+              metrica: 'Medida em custo por creator captado'
+            },
+            {
+              titulo: 'Conta produtos Mono',
+              texto: 'Venda dos produtos.',
+              metrica: 'Medida em custo por venda'
+            }
+          ],
+          orcamento: {
+            label: 'Orçamento compartilhado',
+            valor: $c(N.mono.creators.verbaTrafego) + ' na campanha de recrutamento'
+          }
+        },
+        rodape: [
+          { label: 'Verba de tráfego', valor: $c(N.mono.creators.verbaTrafego) },
+          { label: 'Meta de creators por mês', valor: N.mono.creators.metaMes || 'a definir' },
+          { label: 'Landing page', valor: N.mono.creators.landingPage || 'a definir' }
+        ],
+        nota: 'A Inbazz já está contratada. Separar as contas de anúncio mantém públicos e métricas limpos.'
+      },
+
+      /* ===============================================================
+         FECHAMENTO · 7 min
+         =============================================================== */
+
+      {
+        layout: 'tabela',
+        label: 'Resumo de valores',
+        notes:
+          'Tudo que depende de aprovação, numa tela só.\n\n' +
+          'Se ele quiser o número cheio: INPI nos dois pacotes juntos ' + $c(juntos.total) + ', embalagens ' +
+          $(N.totalPedido()) + ' em dois tempos, Tray ' + $c(tray.entrada) + ' mais ' + $c(tray.mensalidade) + ' por mês, ' +
+          'e ' + $c(N.mono.creators.verbaTrafego) + ' de tráfego para os creators.\n\n' +
+          'O rebrand é o único item sem valor fechado — o depósito do logo depende da busca de anterioridade e ainda ' +
+          'não está orçado.\n\n' +
+          'Os preços unitários de embalagem ficam nas telas 8 a 10, se alguém quiser voltar. Dá para pular direto ' +
+          'digitando o número do slide e Enter.',
+        eyebrow: 'Fechamento',
+        /* Sem subtítulo: com dez linhas na tabela, a linha de apoio é o que
+           sobra de espaço. O cabeçalho da tabela já diz o que cada coluna é. */
+        title: 'Resumo de valores',
+        colunas: ['Frente', 'Item', 'Valor', 'Condição'],
+        grupos: gruposDoResumo(),
+        nota: 'Preços unitários de embalagem nas telas 9 e 10. Valores do INPI pendentes de ' +
+              'reconfirmação; propostas da 46 vencem em novembro.'
+      },
+
+      {
+        layout: 'decisoes',
+        label: 'Decisões',
+        notes:
+          'A tela de marcar. Clicar no status registra ali mesmo, e fica — dá para voltar no slide depois e a ' +
+          'marcação continua. Se exportar o PDF no fim da reunião, ele sai com o que foi decidido.\n\n' +
+          'Passar item por item, sem pular. Para cada um: Aprovado, Ajustar ou Adiar.\n\n' +
+          'O último não é dinheiro, é agenda: a data da reunião sobre showroom e posicionamento. Não sair da sala ' +
+          'sem ela.\n\n' +
+          'Se algum item ficar em "Ajustar", anotar na hora o que precisa mudar — senão a semana que vem começa com ' +
+          'a dúvida de novo.',
+        eyebrow: 'Fechamento',
+        title: 'Decisões',
+        sub: 'O que precisa ser aprovado hoje. Clique para marcar o status durante a reunião.',
+        opcoes: ['Aprovado', 'Ajustar', 'Adiar'],
+        items: N.decisoes(),
+        nota: 'A marcação feita aqui fica registrada no slide e sai na exportação em PDF.'
+      }
+
+    ]
+  };
+})();

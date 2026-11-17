@@ -469,6 +469,104 @@ ranking ao lado.
 
 ---
 
+## A apresentação de aprovação (`investimentos-e-direcao`)
+
+Apresentação ao Lucas para aprovar investimentos e definir direção em cinco
+frentes: Arkos, INPI e rebrand, embalagens, Mono nos marketplaces e Mono
+Creators. São 17 telas e onze layouts que as outras apresentações não têm.
+
+```
+decks/investimentos-e-direcao/
+  dados.js       >>> TODOS os números ficam aqui, em centavos <<<
+  deck.js        as 17 telas, sem um número escrito dentro
+  graficos.js    os onze layouts de gráfico, diagrama e decisão
+  graficos.css   o estilo deles
+```
+
+**Para corrigir um valor, mexa em `dados.js` e em mais nada.** O `deck.js` só
+aponta para os campos e formata com os auxiliares de lá — inclusive nos títulos
+e nas notas do apresentador, onde é fácil esquecer um número desatualizado.
+
+### Dinheiro é inteiro, em centavos
+
+R$ 19,99 é `1999`. Nenhum valor é ponto flutuante: `0,1 + 0,2` em JavaScript dá
+`0,30000000000000004`, e um deck de aprovação de orçamento não pode ter um
+centavo aparecendo do nada numa soma de R$ 36.498,50. A divisão por 100 acontece
+uma vez só, na hora de escrever na tela.
+
+### O que é conta, e não dado
+
+Nada que o código consiga calcular está escrito em `dados.js`:
+
+- **o total de cada pacote do INPI**, pela regra da Registre.se — o primeiro
+  pedido paga assessoria cheia, os demais pagam a reduzida, e a taxa é por
+  pedido. É dessa regra que sai sozinha a economia de fechar dois pacotes
+  juntos, sem ninguém digitar o resultado;
+- **o custo dos kits novos**, pela composição de caixas. Mudar o preço da caixa
+  grande muda os dois kits, a diferença para o kit antigo e o peso dela na
+  composição, tudo de uma vez;
+- **diferenças, percentuais, subtotais e o total geral** do pedido de embalagem.
+
+Os pacotes compostos do INPI não repetem os pedidos: eles **juntam** os de
+outros pacotes (`junta: ['lesco-nominativa', 'linhas-mista']`). Acrescentar uma
+classe num pacote muda o total do composto junto, que é o ponto.
+
+| Layout | Para que serve |
+|---|---|
+| `pontos` | Texto em N pontos numerados, com rodapé de fecho |
+| `duas` | Duas colunas de texto, com uma condição em destaque |
+| `barras` | Barras horizontais simples, valor no fim |
+| `barraspilha` | Barras horizontais empilhadas, total no fim |
+| `colunas` | Colunas verticais agrupadas, com a diferença por cima |
+| `colunaspilha` | Colunas empilhadas, total no topo, tabela ao lado |
+| `linhas` | Linhas sobre faixas categóricas, rótulo no fim de cada uma |
+| `cartoes` | Cartões de valor |
+| `fluxo` | Diagrama de etapas, com as contas penduradas num orçamento |
+| `tabela` | Tabela agrupada por frente |
+| `decisoes` | Lista de aprovação com seletor de status, marcável na reunião |
+
+### A cor nos gráficos
+
+A base é a mesma do deck de números: as partes se separam pela **opacidade** da
+mesma tinta, em cinco degraus (`--f1` a `--f5`). Sobre essa base, e só nos
+gráficos que comparam proposta com situação atual, o que é **proposta** leva o
+verde da marca e o que é **atual ou antigo** fica cinza.
+
+Os dois papéis estão longe um do outro também em **claridade** — o verde é o tom
+escuro da marca, o cinza do atual é um dos degraus claros. É isso que mantém o
+gráfico legível em projetor desbotado, em preto e branco e para quem não
+distingue as duas cores: a cor reforça a leitura, nunca é a única coisa que a
+carrega.
+
+Para voltar ao monocromático puro, troque as duas linhas de `--proposta` em
+`graficos.css` por `var(--f5)` e `var(--f4)`. Nada mais no deck muda.
+
+### Eixo começa em zero, sempre
+
+Toda barra e toda coluna nasce da linha de base. Nenhum layout daqui aceita
+outro começo — não há variável para isso, de propósito. O topo do eixo é o
+primeiro número redondo acima do pico, em degraus finos (1; 1,2; 1,5; 2; 2,5; 3;
+4; 5; 6; 8): com os degraus grossos de 1-2-5, um pico de 2,94 milhões subia o
+eixo até 5 milhões e a coluna mais alta ficava com 59% da área.
+
+### A tela de decisões
+
+A tela 17 é marcável durante a reunião: clicar num status registra ali mesmo, e
+clicar de novo no mesmo status desmarca. O motor monta todos os slides uma vez
+só e nunca os remonta, então a marcação **continua lá ao voltar no slide** — e
+sai assim na exportação em PDF, que vira o registro do que foi decidido.
+
+Os botões são `tabindex="-1"` e largam o foco assim que clicados. Sem isso, um
+botão com o foco faria a barra de espaço marcar o status em vez de passar o
+slide.
+
+> **Uma armadilha ao escrever conteúdo.** O motor **escapa** o texto do deck de
+> propósito: `html:` converte `\n` em `<br>` e escapa o resto. Marcação montada
+> à mão em `deck.js` sai escrita na tela, com tags e tudo. Quando uma célula
+> precisa de duas linhas, use a forma estruturada (`{ texto, apoio }`), não HTML.
+
+---
+
 ## Criar uma apresentação nova
 
 1. Copie a pasta `decks/instalacao-de-estruturas/` com outro nome.
@@ -551,6 +649,12 @@ decks/
     layouts-dados.js           os oito layouts de gráfico
     dados.css                  o estilo deles
     mapa-brasil.js             o desenho dos estados (gerado)
+  investimentos-e-direcao/     aprovação de investimentos, para o Lucas
+    index.html                 a moldura, com os arquivos a mais
+    deck.js                    as 17 telas
+    dados.js                   >>> os números ficam aqui, em centavos <<<
+    graficos.js                os onze layouts de gráfico e decisão
+    graficos.css               o estilo deles
 
 export/                        PDFs de revisão gerados
 tools/serve.js                 servidor local, sem dependências
