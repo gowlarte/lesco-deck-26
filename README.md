@@ -473,7 +473,7 @@ ranking ao lado.
 
 Apresentação ao Lucas para aprovar investimentos e definir direção em cinco
 frentes: Arkos, INPI e rebrand, embalagens, Mono nos marketplaces e Mono
-Creators. São 22 telas e treze layouts que as outras apresentações não têm.
+Creators. São 25 telas e quatorze layouts que as outras apresentações não têm.
 
 É também a única apresentação que veste a **identidade de 2027** — paleta,
 marca e peças do manual `LESCO-ID-VISUAL-2027.pdf`. Isso vale só aqui, e a
@@ -482,10 +482,10 @@ razão está mais abaixo.
 ```
 decks/investimentos-e-direcao/
   dados.js       >>> TODOS os números ficam aqui, em centavos <<<
-  deck.js        as 22 telas, sem um número escrito dentro
+  deck.js        as 25 telas, sem um número escrito dentro
   identidade.css a paleta de 2027, só para este deck
   marca.js       o logo novo em vetor, em window.DRAWINGS
-  graficos.js    os treze layouts de gráfico, foto, diagrama e decisão
+  graficos.js    os quatorze layouts de gráfico, foto, diagrama e decisão
   graficos.css   o estilo deles
   img/           as fotos dos dois showrooms e as peças da identidade
                  (ver img/LEIA-ME.md: de onde veio cada uma e por quê)
@@ -534,6 +534,7 @@ classe num pacote muda o total do composto junto, que é o ponto.
 | `decisoes` | Lista de aprovação com seletor de status, marcável na reunião |
 | `confronto` | Duas fotos lado a lado, cada uma com a sua etiqueta |
 | `marca` | O logo de hoje e o de 2027, um ao lado do outro |
+| `topico` | Um assunto por tela, com ou sem foto |
 
 ### A identidade de 2027
 
@@ -564,7 +565,7 @@ consulta quando um slide pede `media: { svg: 'marca-lesco' }`. É embutido, e n�
 carregado por `fetch`, porque o deck abre em `file://`.
 
 Por que vestir a identidade numa reunião que ainda vai aprová-la: porque é mais
-honesto mostrar do que descrever. A tela 10 pede a decisão sobre o rebrand, e o
+honesto mostrar do que descrever. A tela 13 pede a decisão sobre o rebrand, e o
 deck inteiro vestido é a resposta à pergunta "como isso fica".
 
 ### A cor nos gráficos
@@ -605,7 +606,7 @@ eixo até 5 milhões e a coluna mais alta ficava com 59% da área.
 
 ### A tela de decisões
 
-A tela 22 é marcável durante a reunião: clicar num status registra ali mesmo, e
+A tela 25 é marcável durante a reunião: clicar num status registra ali mesmo, e
 clicar de novo no mesmo status desmarca. O motor monta todos os slides uma vez
 só e nunca os remonta, então a marcação **continua lá ao voltar no slide** — e
 sai assim na exportação em PDF, que vira o registro do que foi decidido.

@@ -1,7 +1,7 @@
 /* ===========================================================================
    LAYOUTS DE GRÁFICO E DECISÃO
 
-   Treze layouts a mais, só para esta apresentação. Eles entram em
+   Quatorze layouts a mais, só para esta apresentação. Eles entram em
    window.DeckLayouts ao lado dos treze de engine/layouts.js — o motor não
    sabe a diferença e nada do que já existe muda. Por isso este arquivo é
    carregado DEPOIS de engine/layouts.js e ANTES de deck.js.
@@ -19,6 +19,7 @@
      decisoes      lista de aprovação com seletor de status, marcável na reunião
      confronto     duas fotos lado a lado, cada uma com a sua etiqueta
      marca         o logo de hoje e o de 2027, um ao lado do outro
+     topico        um assunto por tela, com ou sem foto
 
    O DESENHO
      Tudo é traço e preenchimento chapado sobre o papel quente. Sem grade de
@@ -1146,4 +1147,75 @@
       ]);
     }
   };
+
+  /* =====================================================================
+     14 · topico — um assunto por tela, com ou sem foto
+
+       { layout: 'topico', eyebrow, num, title, text, destaques,
+         media: [{ src, alt, focal }],   // zero, uma ou duas
+         recado, nota }
+
+     Os quatro pontos de "Como a Arkos se sustenta" viraram quatro telas, e
+     este layout é o que as mantém parecendo um conjunto: o mesmo número
+     grande, o mesmo título, o mesmo corpo. Duas delas têm foto e duas não
+     — e esse é o ponto de ter um layout só. Sem ele, a tela sem foto
+     viraria outro layout e o bloco perderia o ritmo.
+
+     Quando não há foto, a coluna de texto abre para a largura inteira em
+     vez de deixar metade da tela vazia. Nenhuma moldura vazia entra aqui:
+     o `frame--empty` do motor serve para foto que vai chegar, e aqui as
+     duas telas sem foto são sem foto de propósito.
+     ===================================================================== */
+
+  L.topico = {
+    transition: 'stagger',
+    render: function (s) {
+      var fotos = lista(s.media);
+
+      var texto = h('div', { class: 'topico__texto' }, [
+        s.num ? h('span', { class: 'topico__num', text: s.num, anim: true }) : null,
+        olho(s.eyebrow),
+        titulo(s.title, s.tituloTam || 'lg'),
+        s.text ? h('p', { class: 'topico__corpo', html: s.text, anim: true }) : null,
+        faixaDestaques(s.destaques)
+      ]);
+
+      var corpo = h('div', {
+        class: 'topico' + (fotos.length ? ' topico--com-foto' : ' topico--so-texto') +
+               (fotos.length === 2 ? ' topico--duas' : '')
+      }, [texto]);
+
+      if (fotos.length) {
+        var quadro = h('div', { class: 'topico__fotos' });
+        fotos.forEach(function (m) {
+          var moldura = h('div', { class: 'frame', anim: 'slide' }, [
+            h('img', { src: m.src, alt: m.alt || '' })
+          ]);
+          if (m.focal) moldura.style.setProperty('--focal', m.focal);
+          quadro.appendChild(moldura);
+        });
+        corpo.appendChild(quadro);
+      }
+
+      return h('div', { class: 'l-topico pad' }, [
+        corpo,
+        s.recado ? h('p', { class: 'g-recado', html: s.recado, anim: true }) : null,
+        nota(s.nota)
+      ]);
+    }
+  };
+
+  /* A faixa de destaques do motor, refeita aqui porque a função de lá é
+     privada do IIFE de engine/layouts.js. A classe é a mesma, então o
+     estilo continua vindo de engine/layouts.css — nada de CSS novo. */
+  function faixaDestaques(valores) {
+    var itens = lista(valores);
+    if (!itens.length) return null;
+
+    var faixa = h('div', { class: 'destaques', anim: true });
+    itens.forEach(function (d) {
+      faixa.appendChild(h('span', { class: 'destaques__item', text: d }));
+    });
+    return faixa;
+  }
 })(window);

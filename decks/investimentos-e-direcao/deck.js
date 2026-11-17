@@ -161,37 +161,109 @@
          O bloco não tem pedido de dinheiro. O que ele pede é uma data.
          =============================================================== */
 
+      /* ---------------------------------------------------------------
+         COMO A ARKOS SE SUSTENTA, EM QUATRO TELAS
+
+         Era uma tela só, com os quatro pontos em duas colunas. Virou
+         quatro telas de um assunto cada, porque duas delas têm foto e
+         fotografia não cabe numa lista.
+
+         Duas continuam sem foto, e é de propósito: a ação contra a
+         concorrência não se fotografa, e o showroom que viaja só teria
+         como ilustração as mesmas fotos que as telas dos dois showrooms
+         usam logo a seguir. Repetir foto a três telas de distância custa
+         mais do que a tela ganha.
+         --------------------------------------------------------------- */
+
       {
-        layout: 'pontos',
-        label: 'Como a Arkos se sustenta',
+        layout: 'topico',
+        label: 'Imagem impecável',
         notes:
-          'O ponto desta tela: a simplicidade é o que sinaliza sofisticação. Nada do que eles fazem é caro de ' +
-          'entender — é caro de manter com disciplina.\n\n' +
-          'Sobre as publicações: o próprio material filtra o cliente. Quem só quer comparar preço recebe o PDF e ' +
-          'resolve sozinho; quem tem perfil de compra recebe o almanaque de obras, com preço, e já chega na ' +
-          'conversa com repertório. A gente hoje trata os dois do mesmo jeito.\n\n' +
-          'Vale dizer que eles vendem produto importado, como nós. A diferença não está no produto.',
-        eyebrow: 'Arkos',
-        title: 'Como a Arkos se sustenta',
-        items: [
+          'O ponto da tela: a percepção de luxo nasce de coisas concretas, não de adjetivo. Prédio, recepção, ' +
+          'mostruário e a organização das amostras — nada disso é caro de entender, é caro de manter com ' +
+          'disciplina.\n\n' +
+          'A foto é a estante de amostras deles: cada cor na sua caixa, cada caixa etiquetada, a publicação aberta ' +
+          'no balcão ao lado. Comparar de cabeça com a nossa mesa de reunião, que aparece daqui a três telas.\n\n' +
+          'Nada no showroom deles diz "somos luxo". O espaço diz sozinho — e uma marca que precisa dizer que é ' +
+          'luxo na propaganda já perdeu.',
+        num: '01',
+        eyebrow: 'Como a Arkos se sustenta',
+        title: 'Imagem impecável',
+        text: 'Percepção de luxo construída com coisas concretas: prédio, recepção, mostruário e a organização das amostras.',
+        media: [
           {
-            label: 'Imagem impecável',
-            text: 'Percepção de luxo construída com coisas concretas: prédio, recepção, mostruário e a organização das amostras.'
-          },
-          {
-            label: 'Ação contra a concorrência',
-            text: 'Trabalho coordenado para desmerecer a concorrência direta junto a quem especifica e quem compra.'
-          },
-          {
-            label: 'Publicações anuais',
-            text: 'Trocaram o catálogo online por dois impressos: PDF de preços para quem só compara e almanaque de obras, com preços, para quem tem perfil de compra.'
-          },
-          {
-            label: 'Showroom que viaja',
-            text: 'O mesmo showroom é reaproveitado nas feiras, sem montar material novo a cada evento.'
+            src: 'img/arkos/amostras-estante.webp',
+            alt: 'Estante do showroom da Arkos com as amostras guardadas em caixas coloridas e etiquetadas, e uma publicação aberta no balcão',
+            focal: '50% 34%'
           }
         ]
       },
+
+      {
+        layout: 'topico',
+        label: 'Ação contra a concorrência',
+        notes:
+          'A tela sem foto, e sem foto porque isto não se fotografa.\n\n' +
+          'É trabalho coordenado, não comentário solto: chega em quem especifica (arquiteto e escritório de ' +
+          'projeto) e em quem compra. A palavra que ouvimos na visita sobre a Lesco foi "fubanga" — não repetir ' +
+          'na reunião se não for necessário, mas é esse o tamanho da leitura que circula.\n\n' +
+          'O que dá para fazer contra isso não é responder. É tirar a razão da frase: marca, embalagem e ' +
+          'showroom. As três estão nesta pauta.',
+        num: '02',
+        eyebrow: 'Como a Arkos se sustenta',
+        title: 'Ação contra\na concorrência',
+        text: 'Trabalho coordenado para desmerecer a concorrência direta junto a quem especifica e quem compra.',
+        destaques: ['Quem especifica', 'Quem compra']
+      },
+
+      {
+        layout: 'topico',
+        label: 'Publicações anuais',
+        notes:
+          'ATENÇÃO: o catálogo NÃO saiu do ar. O que mudou é que não depende mais de formulário — e, além dele, ' +
+          'agora existem dois impressos.\n\n' +
+          'O material filtra o cliente sozinho. Quem só quer comparar preço recebe o PDF e resolve sozinho; quem ' +
+          'tem perfil de compra recebe o almanaque de obras, com preço, e chega na conversa com repertório. A ' +
+          'gente hoje trata os dois do mesmo jeito.\n\n' +
+          'Reparar no QR code da página aberta: o impresso não compete com o site, ele leva para o site. E ' +
+          'reparar no preço publicado — valores não são assunto delicado em canal nenhum deles.\n\n' +
+          'Se perguntarem quanto custa fazer igual: não é esta reunião. Mas é a mesma conversa do almanaque que ' +
+          'a gente vem adiando.',
+        num: '03',
+        eyebrow: 'Como a Arkos se sustenta',
+        title: 'Publicações anuais',
+        text: 'Trocaram o catálogo online por dois impressos: PDF de preços para quem só compara e almanaque de obras, com preços, para quem tem perfil de compra.',
+        media: [
+          {
+            src: 'img/arkos/almanaque.webp',
+            alt: 'Capa do almanaque anual da Arkos de 2026, preta, com uma foto aérea de uma casa de madeira na mata',
+            focal: '50% 50%'
+          },
+          {
+            src: 'img/arkos/almanaque-aberto.webp',
+            alt: 'O almanaque aberto numa página de painéis amadeirados, com o QR code impresso no canto',
+            focal: '50% 50%'
+          }
+        ],
+        nota: 'Almanaque Arkos 2026, fotografado na visita ao showroom.'
+      },
+
+      {
+        layout: 'topico',
+        label: 'Showroom que viaja',
+        notes:
+          'O argumento que volta mais tarde, na decisão sobre modularidade: a estrutura do showroom deles é a ' +
+          'mesma que vai para as feiras. O investimento aparece duas vezes.\n\n' +
+          'Não é economia de material, é economia de decisão: eles não desenham um estande por evento, eles ' +
+          'desmontam o que já existe e levam.\n\n' +
+          'Guardar isto para a reunião do showroom novo — é um requisito de projeto, não um detalhe de montagem.',
+        num: '04',
+        eyebrow: 'Como a Arkos se sustenta',
+        title: 'Showroom que viaja',
+        text: 'O mesmo showroom é reaproveitado nas feiras, sem montar material novo a cada evento.',
+        destaques: ['Um investimento, dois usos']
+      },
+
 
       /* ---------------------------------------------------------------
          OS DOIS SHOWROOMS
