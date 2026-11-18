@@ -275,10 +275,18 @@ window.NUMEROS = (function () {
       },
       caixaLinha: {
         label: 'Caixa de linha',
-        medida: '',
+        /* A medida ficou em branco enquanto não se sabia qual das duas
+           flats de R$ 5,99 da proposta era esta. Resolvido em 18 de nov.
+           de 2026: a caixa de linha é a que vai DENTRO da grande, e é a
+           de 250×200×60 mm — a que a proposta cotou só em 6.000 un. A
+           flat 250×60×100 é a caixa da GEO, que é outra peça. */
+        medida: '250×200×60 mm',
         uso: 'Uma por linha dentro do kit',
         centavos: 599
       },
+      /* Envelope e carteira são a mesma peça, com dois nomes. A caixa da
+         GEO (250×60×100 mm) NÃO é esta: é um volume, e está em
+         faixasVolume sem componente próprio. */
       envelope: {
         label: 'Envelope',
         medida: 'pasta 250×150 mm',

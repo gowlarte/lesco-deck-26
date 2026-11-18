@@ -795,8 +795,12 @@
           'A consequência prática: ampliar o kit é barato, mudar a caixa grande é caro. Se um dia precisar cortar ' +
           'custo, é na caixa grande que mexe — não no número de linhas.\n\n' +
           'O kit pequeno fica fora deste gráfico porque a composição dele ainda não foi confirmada.\n\n' +
-          'Ponto em aberto que vale registrar: ainda não está definido qual item da proposta da 46 é a caixa de linha ' +
-          'de ' + $(N.componente('caixaLinha').centavos) + ' — a flat 250×200×60 mm, cotada só em 6.000 un, ou a flat 250×60×100 mm.',
+          'Isto estava em aberto e foi fechado: a caixa de linha de ' + $(N.componente('caixaLinha').centavos) + ' é a ' +
+          'flat ' + N.componente('caixaLinha').medida + ', a que vai dentro da grande. A flat 250×60×100 mm é a ' +
+          'caixa da GEO — outra peça, também orçada.\n\n' +
+          'O que sobra disso, e só dizer se ele perguntar de prazo: a de ' + N.componente('caixaLinha').medida + ' a 46 ' +
+          'cotou só em ' + N.numero(N.embalagens.lote6000.qtd) + ' un, e o pedido recomendado soma menos que isso. A ' +
+          'recotação está pendente, e a tela do pedido já avisa.',
         eyebrow: 'Embalagens',
         title: 'Composição do kit',
         sub: 'A caixa grande é o maior custo do kit.',

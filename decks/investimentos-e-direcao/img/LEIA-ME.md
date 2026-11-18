@@ -96,9 +96,10 @@ pasta fechada e a aberta no mesmo quadro.
 
 ## `emb/` — as embalagens já orçadas
 
-As três peças que a 46 Indústria Gráfica orçou, do mesmo manual. Elas abrem
-o bloco de embalagens, antes de qualquer número, e são as mesmas que os dois
-gráficos seguintes decompõem.
+Três das quatro peças que a 46 Indústria Gráfica orçou, do mesmo manual.
+Elas abrem o bloco de embalagens, antes de qualquer número, e são as mesmas
+que os dois gráficos seguintes decompõem. A quarta é a carteira, que fica
+na tela 17 por ser peça da identidade antes de ser item de orçamento.
 
 | Arquivo | Tela | Qual é a peça |
 |---|---|---|
@@ -112,20 +113,30 @@ em JPEG e duas em FlateDecode, que a extração antiga nem via. As quatro foram
 recortadas na mesma altura e remontadas 2×2, como a página as põe. Os fundos
 cinza-claros emendam sem costura visível no tamanho em que a tela as mostra.
 
-**A correspondência com `dados.js`, conferida em 18 de novembro de 2026:**
+**As quatro peças orçadas, pela medida — confirmadas em 18 de novembro de
+2026.** A medida é o que identifica cada uma; o nome muda conforme quem
+fala.
 
-| Foto | Componente em `dados.js` |
-|---|---|
-| `caixas-linha.webp` | `caixaLinha` |
-| `caixa-grande.webp` | `caixaGrande` |
-| `caixa-geo.webp` | `envelope` |
+| Medida | A peça | Onde está a foto |
+|---|---|---|
+| 500×200×150 mm | a caixa grande, que leva as menores dentro | `emb/caixa-grande.webp` |
+| 250×200×60 mm | as caixas menores, uma por linha, dentro da grande | `emb/caixas-linha.webp` |
+| 250×60×100 mm | a caixa da GEO | `emb/caixa-geo.webp` |
+| 250×150 mm | o envelope, também chamado de **carteira** | `id/geo.webp`, na tela 17 |
 
-Ela não está escrita em lugar nenhum do manual: foi deduzida das medidas e
-do campo `uso` de cada componente, e depois confirmada na revisão. Fica
-registrada aqui para ninguém ter de deduzir de novo — e com um aviso: o
-componente se chama **envelope**, e a descrição dele é "pasta 250×150 mm",
-enquanto a foto é a **caixa de amostras** da GEO. São a mesma linha de
-orçamento com dois nomes, não duas peças.
+**A caixa da GEO e o envelope são peças diferentes, e as duas foram
+orçadas.** Vale escrever porque a versão anterior deste arquivo dizia o
+contrário: tinha juntado as duas numa linha só de orçamento. A carteira é
+plana, 250×150 mm, e vai nela a amostra de pedra flexível — é a peça que a
+tela 17 mostra. A caixa da GEO é um volume, 250×60×100 mm, e é a que
+aparece na tela 20.
+
+**Em `dados.js`:** `caixaGrande` é a de 500×200×150, `caixaLinha` é a de
+250×200×60 e `envelope` é a carteira de 250×150. A caixa da GEO, de
+250×60×100, aparece em `faixasVolume` (como *caixa tampa e base* e como
+*caixa flat*) mas não tem componente próprio — o pedido imediato da GEO a
+trata como `caixaLinha`. Os dois saem no mesmo preço na faixa de 1.000 un,
+então o total não muda; o modelo é que está juntando duas peças.
 
 **Mesmo com a correspondência fechada, a tela não põe preço na foto.** As
 peças aparecem sem legenda e sem valor porque é isso que o bloco pede: esta
