@@ -284,9 +284,25 @@ window.NUMEROS = (function () {
         uso: 'Uma por linha dentro do kit',
         centavos: 599
       },
-      /* Envelope e carteira são a mesma peça, com dois nomes. A caixa da
-         GEO (250×60×100 mm) NÃO é esta: é um volume, e está em
-         faixasVolume sem componente próprio. */
+      /* A caixa da GEO, que até 18 de nov. de 2026 o modelo tratava como
+         uma caixa de linha. São peças diferentes: esta é um volume de
+         250×60×100 mm e vai sozinha; a de linha é a de 250×200×60 mm e
+         vai dentro da caixa grande.
+
+         O PREÇO CONTINUA O MESMO, de propósito. A proposta da 46 traz
+         DOIS itens nesta medida: a flat, a R$ 5,99 na faixa de 1.000 un,
+         e a tampa e base, a R$ 14,59. O modelo antigo usava os R$ 5,99 da
+         flat, e separar a peça não é hora de trocar o número — se a caixa
+         da GEO for a tampa e base, o imediato sobe, e isso é decisão de
+         quem leu a proposta. */
+      caixaGeo: {
+        label: 'Caixa da GEO',
+        medida: '250×60×100 mm',
+        uso: 'Envio de amostras GEO, fora do kit',
+        centavos: 599
+      },
+
+      /* Envelope e carteira são a mesma peça, com dois nomes. */
       envelope: {
         label: 'Envelope',
         medida: 'pasta 250×150 mm',
@@ -355,7 +371,9 @@ window.NUMEROS = (function () {
 
     /* O pedido recomendado pela Louise. */
     pedido: [
-      { momento: 'Imediato (GEO)', item: 'Caixas',            componente: 'caixaLinha',  qtd: 400 },
+      /* As 400 do imediato são as caixas da GEO, não as de linha: elas
+         saem sozinhas com a amostra, não dentro do kit. */
+      { momento: 'Imediato (GEO)', item: 'Caixas da GEO',     componente: 'caixaGeo',    qtd: 400 },
       { momento: 'Imediato (GEO)', item: 'Envelopes',         componente: 'envelope',    qtd: 600 },
       { momento: 'Janeiro',        item: 'Caixa grande',      componente: 'caixaGrande', qtd: 750 },
       { momento: 'Janeiro',        item: 'Caixas das linhas', componente: 'caixaLinha',  qtd: 2400 }

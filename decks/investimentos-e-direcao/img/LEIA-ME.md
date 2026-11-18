@@ -131,12 +131,18 @@ plana, 250×150 mm, e vai nela a amostra de pedra flexível — é a peça que a
 tela 17 mostra. A caixa da GEO é um volume, 250×60×100 mm, e é a que
 aparece na tela 20.
 
-**Em `dados.js`:** `caixaGrande` é a de 500×200×150, `caixaLinha` é a de
-250×200×60 e `envelope` é a carteira de 250×150. A caixa da GEO, de
-250×60×100, aparece em `faixasVolume` (como *caixa tampa e base* e como
-*caixa flat*) mas não tem componente próprio — o pedido imediato da GEO a
-trata como `caixaLinha`. Os dois saem no mesmo preço na faixa de 1.000 un,
-então o total não muda; o modelo é que está juntando duas peças.
+**Em `dados.js` cada uma tem o seu componente:** `caixaGrande` (500×200×150),
+`caixaLinha` (250×200×60), `caixaGeo` (250×60×100) e `envelope`, a carteira
+(250×150). O pedido imediato da GEO aponta para `caixaGeo` desde 18 de nov.
+de 2026 — antes ele usava `caixaLinha`, que é outra peça. O total não mudou
+com a separação, porque o preço não mudou.
+
+**E o preço é o ponto que continua aberto.** A proposta da 46 traz *dois*
+itens em 250×60×100: a flat, a R$ 5,99 na faixa de 1.000 un, e a tampa e
+base, a R$ 14,59. O `caixaGeo` ficou com os R$ 5,99 porque era o que o
+modelo antigo já usava, e separar a peça não era hora de trocar o número.
+Se a caixa da GEO for a tampa e base, as 400 unidades do imediato sobem —
+e é uma decisão de quem leu a proposta, não de quem mexe no deck.
 
 **Mesmo com a correspondência fechada, a tela não põe preço na foto.** As
 peças aparecem sem legenda e sem valor porque é isso que o bloco pede: esta
