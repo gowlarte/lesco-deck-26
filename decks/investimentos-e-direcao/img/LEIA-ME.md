@@ -112,11 +112,28 @@ em JPEG e duas em FlateDecode, que a extração antiga nem via. As quatro foram
 recortadas na mesma altura e remontadas 2×2, como a página as põe. Os fundos
 cinza-claros emendam sem costura visível no tamanho em que a tela as mostra.
 
-**O que a tela NÃO faz:** amarrar foto a preço. As peças aparecem sem legenda
-e sem valor; quem diz quanto custa cada componente é `dados.js`, nos gráficos
-das telas seguintes. A correspondência entre uma foto e uma linha do
-orçamento não está escrita em lugar nenhum do manual — e inventá-la numa
-reunião de preço sairia caro.
+**A correspondência com `dados.js`, conferida em 18 de novembro de 2026:**
+
+| Foto | Componente em `dados.js` |
+|---|---|
+| `caixas-linha.webp` | `caixaLinha` |
+| `caixa-grande.webp` | `caixaGrande` |
+| `caixa-geo.webp` | `envelope` |
+
+Ela não está escrita em lugar nenhum do manual: foi deduzida das medidas e
+do campo `uso` de cada componente, e depois confirmada na revisão. Fica
+registrada aqui para ninguém ter de deduzir de novo — e com um aviso: o
+componente se chama **envelope**, e a descrição dele é "pasta 250×150 mm",
+enquanto a foto é a **caixa de amostras** da GEO. São a mesma linha de
+orçamento com dois nomes, não duas peças.
+
+**Mesmo com a correspondência fechada, a tela não põe preço na foto.** As
+peças aparecem sem legenda e sem valor porque é isso que o bloco pede: esta
+tela mostra o que se compra, e o gráfico de composição, duas telas adiante,
+diz quanto custa. Rotular aqui seria dizer a mesma coisa duas vezes — e um
+preço escrito à mão numa legenda é exatamente o número que diverge de
+`dados.js` na primeira vez que alguém mexe no orçamento. Pelo mesmo motivo
+a tabela acima dá o nome do componente, e não o valor dele.
 
 ## `marcas/` — a página das três marcas
 
