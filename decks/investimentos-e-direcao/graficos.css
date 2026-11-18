@@ -1748,9 +1748,11 @@
   45%      { opacity: 0.58; transform: translateX(-7px); }
 }
 
-/* A estrela da echo gira devagar e respira. Os dois caminhos têm o mesmo
-   centro, então `fill-box` basta e não é preciso cravar coordenada. */
-.slide.is-current .m27__estrela path {
+/* O grafismo da echo gira devagar e respira. Quem gira é o <g> de dentro:
+   o de fora carrega a entrada e o do meio carrega o encaixe na página, e
+   animar transform em qualquer um dos dois apagaria o que ele já faz.
+   `fill-box` resolve o centro sem cravar coordenada. */
+.slide.is-current .m27__estrela .m27__gira {
   transform-box: fill-box;
   transform-origin: center;
   animation: m27Estrela 11s var(--ease-standard) infinite alternate;
@@ -1776,10 +1778,51 @@
    o laço também para, senão cada página sai num quadro diferente. */
 @media (prefers-reduced-motion: reduce) {
   .slide.is-current .m27__onda path,
-  .slide.is-current .m27__estrela path,
+  .slide.is-current .m27__estrela .m27__gira,
   .slide.is-current .m27__listras path { animation: none !important; }
 }
 
 body.is-export .m27__onda path,
-body.is-export .m27__estrela path,
+body.is-export .m27__estrela .m27__gira,
 body.is-export .m27__listras path { animation: none !important; }
+
+/* =====================================================================
+   A faixa de peças dos gráficos
+
+   Mora no flanco direito do cabeçalho, em cima da legenda. A conta que
+   manda no tamanho é a altura da linha do cabeçalho: 195px nas telas de
+   uma legenda e 245px na de duas. Com a foto em 150×100, o nome em 19px
+   e os respiros, sobram 13px na pior delas — é apertado de propósito,
+   porque crescer daqui empurra o gráfico para baixo.
+   ===================================================================== */
+
+.g-flanco {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 22px;
+}
+
+/* A tela de preço por volume não tem legenda: o cabeçalho dela vira a
+   mesma linha das outras três só quando há peças para pôr nela. */
+.l-linhas__cabeca {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+.g-pecas { display: flex; gap: 16px; }
+
+.g-pecas__item { margin: 0; width: 150px; }
+
+.g-pecas__foto { aspect-ratio: 3 / 2; }
+
+.g-pecas__nome {
+  margin-top: 8px;
+  font-size: 19px;
+  line-height: 1.25;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}

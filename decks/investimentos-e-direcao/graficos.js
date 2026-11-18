@@ -109,6 +109,48 @@
     ]);
   }
 
+  /* =====================================================================
+     A faixa de peças de um gráfico
+
+       pecas: [{ src, alt, nome, focal }]
+
+     A foto do que o número está medindo, pequena, no alto à direita. Não
+     é enfeite: é a resposta para "qual caixa é essa?", que é a pergunta
+     que aparece quando a legenda diz só "caixa de linha" e existem
+     quatro caixas diferentes no orçamento.
+
+     Fica em cima da legenda, no mesmo flanco, porque é dela que a foto
+     está falando. O tamanho é curto de propósito — 150px, contra os
+     1680 da área útil: quem manda na tela continua sendo o gráfico.
+     ===================================================================== */
+
+  function faixaPecas(valores) {
+    var itens = lista(valores);
+    if (!itens.length) return null;
+
+    var faixa = h('div', { class: 'g-pecas' });
+    itens.forEach(function (p, i) {
+      var moldura = h('div', { class: 'frame g-pecas__foto' }, [
+        h('img', { src: p.src, alt: p.alt || '' })
+      ]);
+      if (p.focal) moldura.style.setProperty('--focal', p.focal);
+      faixa.appendChild(h('figure', { class: 'g-pecas__item', style: '--k:' + i, anim: true }, [
+        moldura,
+        p.nome ? h('figcaption', { class: 'g-pecas__nome', text: p.nome }) : null
+      ]));
+    });
+    return faixa;
+  }
+
+  /* O flanco direito do cabeçalho: peças em cima, legenda embaixo. Sem
+     peças ele some e a legenda volta a ser filha direta da linha, que é
+     como as outras telas do deck continuam montadas. */
+  function flanco(s, legenda) {
+    var pecas = faixaPecas(s.pecas);
+    if (!pecas) return legenda;
+    return h('div', { class: 'g-flanco' }, [pecas, legenda]);
+  }
+
   function dois(n) { return n < 10 ? '0' + n : String(n); }
 
   function soma(valores) {
@@ -376,7 +418,7 @@
       }
 
       return h('div', { class: 'l-pilhas pad' + (s.lado ? ' l-pilhas--lado' : '') }, [
-        h('div', { class: 'l-pilhas__cabeca' }, [cabeca(s, 'md'), legenda]),
+        h('div', { class: 'l-pilhas__cabeca' }, [cabeca(s, 'md'), flanco(s, legenda)]),
         corpo,
         s.recado ? h('p', { class: 'g-recado', html: s.recado, anim: true }) : null,
         nota(s.nota)
@@ -445,7 +487,7 @@
       }
 
       return h('div', { class: 'l-colunas pad pad--tight' }, [
-        h('div', { class: 'l-colunas__cabeca' }, [cabeca(s, 'md'), legenda]),
+        h('div', { class: 'l-colunas__cabeca' }, [cabeca(s, 'md'), flanco(s, legenda)]),
         h('div', { class: 'l-colunas__caixa' }, [
           s.unidade ? h('span', { class: 'g-unidade', text: s.unidade }) : null,
           grade
@@ -582,7 +624,7 @@
       }
 
       return h('div', { class: 'l-cpilhas pad pad--tight' }, [
-        h('div', { class: 'l-cpilhas__cabeca' }, [cabeca(s, 'md'), legenda]),
+        h('div', { class: 'l-cpilhas__cabeca' }, [cabeca(s, 'md'), flanco(s, legenda)]),
         h('div', { class: 'l-cpilhas__corpo' }, [
           h('div', { class: 'l-cpilhas__caixa' }, [
             s.unidade ? h('span', { class: 'g-unidade', text: s.unidade }) : null,
@@ -780,8 +822,12 @@
         });
       }
 
+      /* Esta é a única das quatro sem legenda, então o flanco não existe:
+         a faixa de peças entra sozinha, e só quando há peças. */
+      var pecas = faixaPecas(s.pecas);
+
       return h('div', { class: 'l-linhas pad pad--tight' + (temQuadro ? ' l-linhas--quadro' : '') }, [
-        cabeca(s, 'md'),
+        pecas ? h('div', { class: 'l-linhas__cabeca' }, [cabeca(s, 'md'), pecas]) : cabeca(s, 'md'),
         h('div', { class: 'l-linhas__corpo' }, [caixa, quadro]),
         s.recado ? h('p', { class: 'g-recado', html: s.recado, anim: true }) : null,
         nota(s.nota)
@@ -1428,7 +1474,9 @@
       arte.innerHTML = typeof lib['marcas-2027'] === 'function'
         ? lib['marcas-2027'](s.alt || 'As marcas zhú, echo e geo')
         : '';
-      [].forEach.call(arte.querySelectorAll('g'), function (g) {
+      /* só os grupos de primeiro nível: os de dentro carregam encaixe e
+         laço, e marcá-los somaria peças fantasma à cascata. */
+      [].forEach.call(arte.querySelectorAll('svg > g'), function (g) {
         g.setAttribute('data-anim', '');
         [].forEach.call(g.children, function (p, i) { p.style.setProperty('--n', i); });
       });

@@ -600,11 +600,19 @@ o viewBox da página inteira. Nada foi posicionado no olho — e é por isso que
 não tem título nem subtítulo: a página não tem.
 
 A entrada é a cascata do motor, que numera `[data-anim]` na ordem do documento:
-três fotos, sete peças do desenho, três linhas de rodapé. Já o movimento
-contínuo dos três símbolos — a onda da zhú, a estrela da echo e as listras da
-geo — é CSS, e vive nos `<path>` dentro de cada `<g>`: o `<g>` já carrega a
-animação de entrada, e duas animações no mesmo elemento viram uma só. O laço
-para em `prefers-reduced-motion` e na exportação.
+três fotos, sete peças do desenho, três linhas de rodapé — e só os `<g>` de
+primeiro nível, porque os de dentro carregam encaixe e laço, e marcá-los somaria
+peças fantasma à cascata. Já o movimento contínuo dos três símbolos — a onda da
+zhú, o grafismo da echo e as listras da geo — é CSS, e vive dentro de cada `<g>`:
+o `<g>` já carrega a animação de entrada, e duas animações no mesmo elemento
+viram uma só. O laço para em `prefers-reduced-motion` e na exportação.
+
+**O símbolo da echo não vem do PDF.** Os outros seis desenhos desta tela foram
+convertidos dos operadores de página do manual; este é o grafismo oficial de
+`ASSETS/GRAFISMOS/elemento-echo.svg`, que substituiu a estrela do PDF. Ele traz
+a própria cor e o próprio viewBox, e entra encaixado na mesma caixa que a
+estrela ocupava — por isso são três `<g>` aninhados e não um: entrada por fora,
+encaixe no meio, rotação por dentro.
 
 ### A cor nos gráficos
 
@@ -647,6 +655,23 @@ pacotes em `dados.js`. Cada cruzamento preenchido é um pedido, e um pedido é u
 taxa — então o diagrama diz "uma taxa por classe" sem escrever a frase, e dá
 para contar o custo olhando. Acrescentar uma classe num pacote acrescenta um
 selo aqui e muda o total da tela seguinte, de uma vez.
+
+### A peça ao lado do número
+
+Os quatro gráficos do bloco de embalagens (telas 21 a 24) levam, no alto à
+direita, a foto pequena da peça que o número está medindo. Não é enfeite: é a
+resposta para "qual caixa é essa?", que é a pergunta que aparece quando a
+legenda diz só **caixa de linha** e existem quatro caixas diferentes no
+orçamento.
+
+A faixa mora no flanco direito do cabeçalho, em cima da legenda, porque é dela
+que a foto está falando. O nome embaixo de cada foto vem de `dados.js`, do
+mesmo campo que a legenda usa — se a legenda e a foto chamassem a peça por
+nomes diferentes, a tela inventaria uma quinta caixa.
+
+O tamanho é curto de propósito: 150px contra os 1680 da área útil. A conta que
+manda nele é a altura da linha do cabeçalho, e crescer dali empurra o gráfico
+para baixo.
 
 ### Eixo começa em zero, sempre
 

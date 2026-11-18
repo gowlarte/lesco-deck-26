@@ -103,9 +103,14 @@ na tela 17 por ser peça da identidade antes de ser item de orçamento.
 
 | Arquivo | Tela | Qual é a peça |
 |---|---|---|
-| `emb/caixas-linha.webp` | 20 · a grande | as quatro caixas de linha, uma cor por linha |
-| `emb/caixa-grande.webp` | 20 · direita, em cima | a caixa grande, comprida, verde por fora e terracota por dentro |
-| `emb/caixa-geo.webp` | 20 · direita, embaixo | a caixa de amostras da GEO |
+| `emb/caixas-linha.webp` | 20 · a grande; 21 e 22 · faixa | as quatro caixas de linha, uma cor por linha |
+| `emb/caixa-grande.webp` | 20 · direita, em cima; 21 a 24 · faixa | a caixa grande, comprida, verde por fora e terracota por dentro |
+| `emb/caixa-geo.webp` | 20 · direita, embaixo; 23 e 24 · faixa | a caixa de amostras da GEO |
+
+**As mesmas três voltam nos quatro gráficos**, pequenas, no alto à direita: a
+tela 20 mostra o que se compra, e as de 21 a 24 põem a peça ao lado do número
+que a mede. Os nomes embaixo das fotos saem de `dados.js`, do mesmo campo que
+a legenda usa.
 
 **A das quatro cores é uma montagem**, e é honesta: o manual mostra as quatro
 caixas numa página só, mas no PDF elas são quatro imagens separadas — duas
@@ -166,6 +171,13 @@ resolvido no CSS — assim a moldura não precisa de deslocamento nenhum.
 | `marcas/casa-na-mata.webp` | 487, 606 · 402×269 | a casa de concreto e vidro dentro da mata |
 
 Os logotipos e os símbolos **não** são imagem: são vetor, em `marcas.js`.
+
+Seis dos sete desenhos saíram dos operadores de página do PDF. O sétimo, o
+símbolo da echo, é o grafismo oficial de
+`ASSETS/GRAFISMOS/elemento-echo.svg`, que em 18 de nov. de 2026 substituiu a
+estrela que vinha do manual. Ele traz a própria cor (`#c2dad6`) e o próprio
+viewBox, e entra encaixado na mesma caixa de 191×193 que a estrela ocupava,
+para a composição da página não se mexer.
 
 ## `marca-lesco.svg` e `marca-lesco-terracota.svg`
 

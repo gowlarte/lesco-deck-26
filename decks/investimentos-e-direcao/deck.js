@@ -758,6 +758,21 @@
           'desconto de primeira compra.',
         eyebrow: 'Embalagens',
         title: 'Kit novo × kit antigo',
+        /* As duas peças do kit novo: a base e a caixa que entra por linha.
+           O gráfico compara kits inteiros, e estas são as duas coisas de
+           que ele é feito. */
+        pecas: [
+          {
+            src: 'img/emb/caixa-grande.webp',
+            alt: 'A caixa grande, comprida, verde por fora e terracota por dentro',
+            nome: N.componente('caixaGrande').label
+          },
+          {
+            src: 'img/emb/caixas-linha.webp',
+            alt: 'As quatro caixas de linha, uma cor por linha, com a marca nova',
+            nome: N.componente('caixaLinha').label
+          }
+        ],
         sub: 'O kit de duas linhas custa ' + N.deltaReais(N.diferencaKit('novo-duas-linhas').centavos) + ' a mais que o antigo grande.',
         unidade: 'Custo por kit',
         legenda: [
@@ -803,6 +818,19 @@
           'recotação está pendente, e a tela do pedido já avisa.',
         eyebrow: 'Embalagens',
         title: 'Composição do kit',
+        /* As mesmas duas da legenda, na mesma ordem da legenda. */
+        pecas: [
+          {
+            src: 'img/emb/caixa-grande.webp',
+            alt: 'A caixa grande, comprida, verde por fora e terracota por dentro',
+            nome: N.componente('caixaGrande').label
+          },
+          {
+            src: 'img/emb/caixas-linha.webp',
+            alt: 'As quatro caixas de linha, uma cor por linha, com a marca nova',
+            nome: N.componente('caixaLinha').label
+          }
+        ],
         sub: 'A caixa grande é o maior custo do kit.',
         dentro: true,
         legenda: [
@@ -845,6 +873,21 @@
           ' un, a ' + $(N.embalagens.envelope1500.centavos) + '.',
         eyebrow: 'Embalagens',
         title: 'Preço por volume',
+        /* Os dois extremos da tabela: a peça mais cara e a mais barata.
+           As quatro linhas do gráfico são três objetos, porque a tampa e
+           base e a flat têm a mesma medida. */
+        pecas: [
+          {
+            src: 'img/emb/caixa-grande.webp',
+            alt: 'A caixa grande, comprida, verde por fora e terracota por dentro',
+            nome: N.componente('caixaGrande').label
+          },
+          {
+            src: 'img/emb/caixa-geo.webp',
+            alt: 'A caixa de amostras da GEO, em terracota',
+            nome: N.componente('caixaGeo').label
+          }
+        ],
         sub: 'A unidade cai de ' + N.pct(N.quedaVolume(N.embalagens.faixasVolume[0]).pct) + ' a ' +
              N.pct(N.quedaVolume(N.embalagens.faixasVolume[2]).pct) + ' em volume.',
         unidadeY: 'R$ por unidade',
@@ -897,6 +940,21 @@
           'Lembrar: a recotação para estas quantidades está pendente. Os preços aqui são da faixa de 1.000 un.',
         eyebrow: 'Embalagens',
         title: 'Pedido recomendado',
+        /* Uma peça por momento: a caixa da GEO é o que se pede agora, a
+           caixa grande é o que se pede em janeiro. É a mesma leitura que
+           as duas colunas do gráfico fazem. */
+        pecas: [
+          {
+            src: 'img/emb/caixa-geo.webp',
+            alt: 'A caixa de amostras da GEO, em terracota',
+            nome: N.componente('caixaGeo').label
+          },
+          {
+            src: 'img/emb/caixa-grande.webp',
+            alt: 'A caixa grande, comprida, verde por fora e terracota por dentro',
+            nome: N.componente('caixaGrande').label
+          }
+        ],
         sub: 'Pedido: aprovar o orçamento das embalagens novas, começando pelo lote menor.',
         unidade: 'Investimento por momento',
         legenda: [
