@@ -1381,4 +1381,66 @@
     }
   };
 
+
+  /* =====================================================================
+     17 · marcas — a página das três marcas, do manual
+
+       { layout: 'marcas', alt,
+         media: [{ src, alt, x, y, w, h }],   // coordenadas da PÁGINA
+         textos: { ano, assinatura, site } }
+
+     Esta tela é a página 23 do LESCO-ID-VISUAL-2027 refeita no motor, e é
+     o único layout do deck que trabalha em coordenadas absolutas. Pode
+     fazer isso porque a página do manual mede 1920×1080 — exatamente o
+     palco. Cada foto entra no x/y/largura/altura que o próprio PDF
+     declara no operador `cm`, e o desenho vetorial vem com o viewBox da
+     página inteira. Nada aqui foi posicionado no olho.
+
+     QUEM ANIMA O QUÊ
+       A entrada é do motor: cada peça leva `data-anim` e o motor numera a
+       cascata na ordem do documento — primeiro as três fotos, depois as
+       sete peças do desenho, por último o rodapé. O `data-anim` do
+       desenho é posto aqui, e não no arquivo gerado, porque marcas.js é
+       só o desenho: quem decide o que se move é o layout.
+
+       O movimento contínuo dos três símbolos é CSS e vive nos <path>
+       dentro de cada <g>. O <g> já está ocupado com a animação de
+       entrada, e empilhar as duas no mesmo elemento apagaria uma delas.
+       O `--n` de cada caminho é o que escalona a onda e as listras.
+     ===================================================================== */
+
+  L.marcas = {
+    transition: 'stagger',
+    tone: 'ink',
+    render: function (s) {
+      var palco = h('div', { class: 'm27' });
+
+      lista(s.media).forEach(function (m) {
+        palco.appendChild(h('div', {
+          class: 'm27__foto',
+          style: 'left:' + m.x + 'px;top:' + m.y + 'px;width:' + m.w + 'px;height:' + m.h + 'px',
+          anim: true
+        }, [h('img', { src: m.src, alt: m.alt || '' })]));
+      });
+
+      var lib = global.DRAWINGS || {};
+      var arte = h('div', { class: 'm27__arte' });
+      arte.innerHTML = typeof lib['marcas-2027'] === 'function'
+        ? lib['marcas-2027'](s.alt || 'As marcas zhú, echo e geo')
+        : '';
+      [].forEach.call(arte.querySelectorAll('g'), function (g) {
+        g.setAttribute('data-anim', '');
+        [].forEach.call(g.children, function (p, i) { p.style.setProperty('--n', i); });
+      });
+      palco.appendChild(arte);
+
+      var t = s.textos || {};
+      if (t.ano) palco.appendChild(h('span', { class: 'm27__ano', text: t.ano, anim: true }));
+      if (t.site) palco.appendChild(h('span', { class: 'm27__site', text: t.site, anim: true }));
+      if (t.assinatura) palco.appendChild(h('span', { class: 'm27__assinatura', text: t.assinatura, anim: true }));
+
+      return h('div', { class: 'l-m27' }, [palco]);
+    }
+  };
+
 })(window);

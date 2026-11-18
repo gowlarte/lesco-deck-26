@@ -1671,3 +1671,115 @@
    é largura de leitura de ninguém. O texto fica à esquerda, onde já
    estava quando eram duas colunas. */
 .duas--uma { grid-template-columns: minmax(0, 1180px); }
+
+/* Com uma coluna o texto é a tela inteira, e não metade dela: pode crescer
+   e passa a ser legível do fundo da sala. */
+.duas--uma .duas__col-olho  { font-size: 28px; }
+.duas--uma .duas__col-texto { font-size: 38px; line-height: 1.5; }
+
+
+/* =====================================================================
+   17 · marcas — a página das três marcas
+
+   O único layout do deck em coordenadas absolutas, e com motivo: a
+   página do manual mede 1920×1080, que é o palco. As fotos entram no
+   x/y/w/h do operador `cm` do PDF e o desenho traz o viewBox da página
+   inteira, então os dois se encaixam sozinhos.
+   ===================================================================== */
+
+.l-m27 {
+  position: absolute;
+  inset: 0;
+  background: var(--verde-escuro);
+  overflow: hidden;
+}
+
+.m27 { position: absolute; inset: 0; }
+
+.m27__foto { position: absolute; overflow: hidden; }
+
+.m27__foto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* O desenho cobre o palco inteiro: cada peça já vem no lugar dela. */
+.m27__arte { position: absolute; inset: 0; pointer-events: none; }
+.m27__arte svg { display: block; width: 100%; height: 100%; }
+
+/* Os três textos do manual, nas coordenadas do próprio PDF. */
+.m27__ano,
+.m27__site,
+.m27__assinatura {
+  position: absolute;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  color: var(--paper);
+  white-space: nowrap;
+}
+
+/* O manual ancora os três no mesmo respiro de 46px. Os dois da direita
+   vão pela borda direita, e não pelo x do PDF: a fonte daqui é mais larga
+   que a de lá, e presa à esquerda a assinatura saía da tela. */
+.m27__ano        { right: 46px; top: 62px; }
+.m27__site       { left: 46px;  bottom: 44px; }
+.m27__assinatura { right: 46px; bottom: 44px; }
+
+/* ---------------------------------------------------------------------
+   O movimento contínuo dos três símbolos
+
+   Fica nos <path>, nunca no <g>: o <g> carrega a animação de entrada do
+   motor, e duas animações no mesmo elemento significam uma animação só.
+   Tudo escalonado por --n, que o layout põe em cada caminho.
+   --------------------------------------------------------------------- */
+
+/* A onda da zhú: as seis lâminas respiram em sequência, da mais clara
+   para a mais escura — a onda anda da esquerda para a direita. */
+.slide.is-current .m27__onda path {
+  animation: m27Onda 4.4s var(--ease-standard) infinite;
+  animation-delay: calc(var(--n, 0) * 110ms);
+}
+
+@keyframes m27Onda {
+  0%, 100% { opacity: 1;    transform: translateX(0); }
+  45%      { opacity: 0.58; transform: translateX(-7px); }
+}
+
+/* A estrela da echo gira devagar e respira. Os dois caminhos têm o mesmo
+   centro, então `fill-box` basta e não é preciso cravar coordenada. */
+.slide.is-current .m27__estrela path {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: m27Estrela 11s var(--ease-standard) infinite alternate;
+}
+
+@keyframes m27Estrela {
+  from { transform: rotate(0deg) scale(1); }
+  to   { transform: rotate(9deg) scale(1.05); }
+}
+
+/* As listras da geo escorrem de cima para baixo, uma atrás da outra. */
+.slide.is-current .m27__listras path {
+  animation: m27Listra 5.2s var(--ease-standard) infinite;
+  animation-delay: calc(var(--n, 0) * 70ms);
+}
+
+@keyframes m27Listra {
+  0%, 100% { transform: translateX(0);    opacity: 1; }
+  50%      { transform: translateX(13px); opacity: 0.82; }
+}
+
+/* Quem pediu menos movimento não leva movimento nenhum — e na exportação
+   o laço também para, senão cada página sai num quadro diferente. */
+@media (prefers-reduced-motion: reduce) {
+  .slide.is-current .m27__onda path,
+  .slide.is-current .m27__estrela path,
+  .slide.is-current .m27__listras path { animation: none !important; }
+}
+
+body.is-export .m27__onda path,
+body.is-export .m27__estrela path,
+body.is-export .m27__listras path { animation: none !important; }

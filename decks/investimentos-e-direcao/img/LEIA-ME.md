@@ -60,11 +60,11 @@ embutidos no próprio arquivo e recortadas com o `ffmpeg`.
 
 | Arquivo | Tela | Qual é a peça |
 |---|---|---|
-| `id/pasta-tecnica.webp` | 16 · a grande | a pasta de documentação técnica aberta, com a frase da assinatura impressa |
-| `id/geo.webp` | 16 · direita, em cima | a pasta da GEO, com a marca nova da Lesco no cartão interno |
-| `id/paleta.webp` | 16 · direita, embaixo | a paleta de amostras e a papelaria |
+| `id/pasta-tecnica.webp` | 17 · a grande | a pasta de documentação técnica aberta, com a frase da assinatura impressa |
+| `id/geo.webp` | 17 · direita, em cima | a pasta da GEO, com a marca nova da Lesco no cartão interno |
+| `id/paleta.webp` | 17 · direita, embaixo | a paleta de amostras e a papelaria |
 
-**Por que estas três.** A tela 16 parou de defender a identidade e passou a
+**Por que estas três.** A tela 17 parou de defender a identidade e passou a
 só mostrá-la, então as peças têm de carregar a tela sozinhas, sem legenda.
 A pasta técnica tem a frase da assinatura, a tipografia e as duas cores no
 mesmo quadro. A da GEO é a que mais vale apontar: é a mesma GEO que o bloco
@@ -94,6 +94,45 @@ pasta fechada e a aberta no mesmo quadro.
 - **O render de arquitetura.** Bonito, e não sustenta argumento nenhum
   numa reunião de orçamento. Está no PDF para quem quiser.
 
+## `emb/` — as embalagens já orçadas
+
+As três peças que a 46 Indústria Gráfica orçou, do mesmo manual. Elas abrem
+o bloco de embalagens, antes de qualquer número, e são as mesmas que os dois
+gráficos seguintes decompõem.
+
+| Arquivo | Tela | Qual é a peça |
+|---|---|---|
+| `emb/caixas-linha.webp` | 20 · a grande | as quatro caixas de linha, uma cor por linha |
+| `emb/caixa-grande.webp` | 20 · direita, em cima | a caixa grande, comprida, verde por fora e terracota por dentro |
+| `emb/caixa-geo.webp` | 20 · direita, embaixo | a caixa de amostras da GEO |
+
+**A das quatro cores é uma montagem**, e é honesta: o manual mostra as quatro
+caixas numa página só, mas no PDF elas são quatro imagens separadas — duas
+em JPEG e duas em FlateDecode, que a extração antiga nem via. As quatro foram
+recortadas na mesma altura e remontadas 2×2, como a página as põe. Os fundos
+cinza-claros emendam sem costura visível no tamanho em que a tela as mostra.
+
+**O que a tela NÃO faz:** amarrar foto a preço. As peças aparecem sem legenda
+e sem valor; quem diz quanto custa cada componente é `dados.js`, nos gráficos
+das telas seguintes. A correspondência entre uma foto e uma linha do
+orçamento não está escrita em lugar nenhum do manual — e inventá-la numa
+reunião de preço sairia caro.
+
+## `marcas/` — a página das três marcas
+
+As três fotos da página 23, nas posições que o próprio PDF declara. A da casa
+na mata vem **recortada como o PDF a recorta**: lá ela entra maior que a
+janela e sobra para fora, então o recorte foi feito no arquivo em vez de ser
+resolvido no CSS — assim a moldura não precisa de deslocamento nenhum.
+
+| Arquivo | Posição na página | O que é |
+|---|---|---|
+| `marcas/parede-entalhada.webp` | 212, 368 · 274×238 | o painel entalhado com pinheiro e garças |
+| `marcas/laminas-azuis.webp` | 889, 259 · 581×339 | a parede de lâminas azuis, com alguém passando |
+| `marcas/casa-na-mata.webp` | 487, 606 · 402×269 | a casa de concreto e vidro dentro da mata |
+
+Os logotipos e os símbolos **não** são imagem: são vetor, em `marcas.js`.
+
 ## `marca-lesco.svg` e `marca-lesco-terracota.svg`
 
 O logo de 2027 **em vetor**, não em print. O manual carrega o desenho em
@@ -101,7 +140,7 @@ vetor dentro do PDF; os caminhos foram convertidos de operadores de página
 para SVG, então é a mesma curva do arquivo original.
 
 - `marca-lesco.svg` — preenchimento em `currentColor`, para tingir pelo CSS.
-  É a versão embutida em `marca.js`, que o motor usa na tela 15.
+  É a versão embutida em `marca.js`, que o motor usa na tela 16.
 - `marca-lesco-terracota.svg` — a mesma coisa com a cor da marca embutida.
   Serve à capa, onde a marca entra como `<img>` e um `<img>` não herda cor.
 

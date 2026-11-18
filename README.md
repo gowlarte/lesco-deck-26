@@ -473,7 +473,7 @@ ranking ao lado.
 
 Apresentação ao Lucas para aprovar investimentos e definir direção em cinco
 frentes: Arkos, INPI e rebrand, embalagens, Mono nos marketplaces e Mono
-Creators. São 31 telas e dezesseis layouts que as outras apresentações não têm.
+Creators. São 33 telas e dezessete layouts que as outras apresentações não têm.
 
 Cada uma das seis frentes abre com uma **capa de bloco** numerada de 01 a 06 —
 os mesmos números da pauta, para quem se perder saber onde está. São o layout
@@ -486,10 +486,10 @@ razão está mais abaixo.
 ```
 decks/investimentos-e-direcao/
   dados.js       >>> TODOS os números ficam aqui, em centavos <<<
-  deck.js        as 31 telas, sem um número escrito dentro
+  deck.js        as 33 telas, sem um número escrito dentro
   identidade.css a paleta de 2027, só para este deck
   marca.js       o logo novo em vetor, em window.DRAWINGS
-  graficos.js    os dezesseis layouts de gráfico, foto, diagrama e decisão
+  graficos.js    os dezessete layouts de gráfico, foto, diagrama e decisão
   graficos.css   o estilo deles
   img/           as fotos dos dois showrooms e as peças da identidade
                  (ver img/LEIA-ME.md: de onde veio cada uma e por quê)
@@ -540,7 +540,8 @@ classe num pacote muda o total do composto junto, que é o ponto.
 | `marca` | O logo de hoje e o de 2027, um ao lado do outro |
 | `topico` | Um assunto por tela, com ou sem foto |
 | `matriz` | O diagrama de marca × classe do INPI |
-| `galeria` | Peças da identidade: uma grande e duas ao lado, sem legenda |
+| `galeria` | Três peças, uma grande e duas ao lado, sem legenda |
+| `marcas` | A página das três marcas, refeita nas coordenadas do manual |
 
 ### A identidade de 2027
 
@@ -571,16 +572,33 @@ consulta quando um slide pede `media: { svg: 'marca-lesco' }`. É embutido, e n�
 carregado por `fetch`, porque o deck abre em `file://`.
 
 Por que vestir a identidade numa reunião que ainda vai aprová-la: porque é mais
-honesto mostrar do que descrever. A tela 15 põe a marca de hoje ao lado da de
-2027, a 16 abre três peças do manual e o deck inteiro vestido é a resposta à
-pergunta "como isso fica".
+honesto mostrar do que descrever. A tela 12 abre o bloco com as três marcas, a
+16 põe a marca de hoje ao lado da de 2027, a 17 abre três peças do manual e o
+deck inteiro vestido é a resposta à pergunta "como isso fica".
 
 **Nenhuma das duas defende o desenho**, e isso é deliberado: a identidade nova
 aparece, não se justifica. O bloco inteiro tem um argumento só, e ele é
 jurídico — não há barreira para trocar o logo na comunicação dentro do Brasil,
 porque os pedidos da Lesco são nominativos e o nome não muda. Ele cabe inteiro
-na tela 17, que por isso tem uma coluna só (`duas--uma`, que devolve a medida de
-leitura a um texto que de outro modo atravessaria os 1728px da área útil).
+na tela 18, que por isso tem uma coluna só (`duas--uma`, que devolve a medida de
+leitura a um texto que de outro modo atravessaria os 1728px da área útil, e
+cresce o corpo porque uma coluna só é a tela inteira).
+
+### A página das três marcas
+
+A tela 12 é a página 23 do manual refeita no motor, e é o único layout do deck
+em **coordenadas absolutas**. Pode ser: a página do manual mede 1920×1080, que
+é exatamente o palco. Cada foto entra no `x`, `y`, largura e altura que o
+próprio operador `cm` do PDF declara, e o desenho vetorial (`marcas.js`) vem com
+o viewBox da página inteira. Nada foi posicionado no olho — e é por isso que ela
+não tem título nem subtítulo: a página não tem.
+
+A entrada é a cascata do motor, que numera `[data-anim]` na ordem do documento:
+três fotos, sete peças do desenho, três linhas de rodapé. Já o movimento
+contínuo dos três símbolos — a onda da zhú, a estrela da echo e as listras da
+geo — é CSS, e vive nos `<path>` dentro de cada `<g>`: o `<g>` já carrega a
+animação de entrada, e duas animações no mesmo elemento viram uma só. O laço
+para em `prefers-reduced-motion` e na exportação.
 
 ### A cor nos gráficos
 
@@ -612,7 +630,7 @@ nenhuma na mão. Para voltar ao monocromático puro, troque as linhas de
 
 ### O infográfico do INPI
 
-A tela 13 troca dois parágrafos por um desenho. O selo é o argumento: **uma
+A tela 14 troca dois parágrafos por um desenho. O selo é o argumento: **uma
 barra é o nome, um quadrado é o símbolo**. Nominativa tem só a barra; mista tem
 o quadrado grudado nela. Quem olha entende, sem legenda, por que trocar o logo
 envelhece um registro misto e não mexe num nominativo — que é exatamente a
@@ -634,7 +652,7 @@ eixo até 5 milhões e a coluna mais alta ficava com 59% da área.
 
 ### A tela de decisões
 
-A tela 31 é marcável durante a reunião: clicar num status registra ali mesmo, e
+A tela 33 é marcável durante a reunião: clicar num status registra ali mesmo, e
 clicar de novo no mesmo status desmarca. O motor monta todos os slides uma vez
 só e nunca os remonta, então a marcação **continua lá ao voltar no slide** — e
 sai assim na exportação em PDF, que vira o registro do que foi decidido.

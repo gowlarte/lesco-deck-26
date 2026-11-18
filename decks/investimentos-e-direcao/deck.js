@@ -414,6 +414,50 @@
       },
 
       {
+        /* A página 23 do manual, refeita no motor. É a única tela do deck
+           em coordenadas absolutas, e a única que não argumenta nada: ela
+           apresenta o elenco. Os três nomes aparecem como marca antes de
+           virarem linha de orçamento duas telas adiante. */
+        layout: 'marcas',
+        label: 'As três marcas',
+        notes:
+          'A tela de apresentar o elenco. Deixar respirar — os símbolos se mexem sozinhos, e a tela se explica ' +
+          'sem narração. Não ler nada em voz alta aqui.\n\n' +
+          'São os três nomes que o bloco vai pedir para registrar: GEO, ZHÜ e ECHO. Os três já estão no ' +
+          'mercado, em catálogo e em amostra — é por isso que o pedido é agora.\n\n' +
+          'Se perguntarem qual é qual: GEO é o revestimento de pedra flexível e ZHÜ é a linha de bambu, que é ' +
+          'a razão da classe 20 aparecer no pacote. Da ECHO, não arriscar material em voz alta.\n\n' +
+          'É a página 23 do LESCO-ID-VISUAL-2027, refeita aqui: os logotipos e os símbolos são o vetor do ' +
+          'próprio arquivo, nas posições do próprio arquivo.',
+        alt: 'As marcas zhú, echo e geo sobre verde escuro, com fotos de um painel entalhado, de lâminas azuis e de uma casa na mata',
+        /* x, y, largura e altura saem do operador cm de cada foto na
+           página do PDF. A página mede 1920×1080, que é o palco — por
+           isso os números entram como estão. */
+        media: [
+          {
+            src: 'img/marcas/parede-entalhada.webp',
+            alt: 'Painel de parede entalhado com desenho de pinheiro e garças',
+            x: 211.9, y: 368.34, w: 273.85, h: 238.03
+          },
+          {
+            src: 'img/marcas/laminas-azuis.webp',
+            alt: 'Parede de lâminas verticais azuis, com uma pessoa passando em movimento',
+            x: 888.77, y: 258.94, w: 581.37, h: 338.69
+          },
+          {
+            src: 'img/marcas/casa-na-mata.webp',
+            alt: 'Casa de concreto e vidro dentro da mata, ao fim da tarde',
+            x: 487.43, y: 606.36, w: 402.21, h: 268.68
+          }
+        ],
+        textos: {
+          ano: '2027',
+          site: 'LESCO.COM.BR',
+          assinatura: 'ARQUITETURA FEITA PARA O AMANHÃ'
+        }
+      },
+
+      {
         /* Era um dos três pontos de uma tela de lista. Virou tela própria
            porque é o único dos três que é ARGUMENTO — os outros dois eram
            explicação de como o INPI funciona, e explicação virou desenho
@@ -576,8 +620,10 @@
           'papelaria.\n\n' +
           'A da GEO é a que vale apontar com o dedo: é a mesma GEO que está sendo registrada duas telas atrás. ' +
           'A identidade nova não para no logo da Lesco — já desce para as marcas da casa.\n\n' +
-          'ANTES QUE ELE PERGUNTE: são estudos do manual, não são peças orçadas. A caixa que tem orçamento é a ' +
-          'do bloco de embalagens, logo a seguir, e custa ' + $(N.componente('caixaGrande').centavos) + '.',
+          'CUIDADO AO DIZER QUE NÃO FOI ORÇADO: parte do manual JÁ está orçada pela 46. A pasta da GEO está no ' +
+          'mesmo documento de cotação das embalagens do bloco seguinte. A pasta técnica e a paleta são estudos.\n\n' +
+          'Se ele perguntar quanto custa: o preço fechado aparece no bloco de embalagens, logo a seguir. Aqui é ' +
+          'a linguagem; lá é a conta.',
         eyebrow: 'INPI e rebrand',
         title: 'A identidade aplicada',
         media: [
@@ -599,7 +645,7 @@
             focal: '50% 53%'
           }
         ],
-        nota: 'Peças do manual LESCO-ID-VISUAL-2027. São estudos da identidade, não peças orçadas.'
+        nota: 'Peças do manual LESCO-ID-VISUAL-2027.'
       },
 
       {
@@ -629,12 +675,10 @@
                    'nominativos e protegem o nome, que continua o mesmo independente do desenho. ' +
                    'Fora do país nada muda: mantemos o logo antigo e os registros como estão.'
           }
-        ],
-        destaque: {
-          label: 'Condição',
-          texto: 'Depositar o logo novo no INPI no mesmo pacote de GEO, ZHÜ e ECHO, depois de uma busca de anterioridade. ' +
-                 'Esse pedido ainda não está no orçamento da Registre.se.'
-        }
+        ]
+        /* A condição saiu da tela a pedido: depositar o logo novo no mesmo
+           pacote, depois da busca de anterioridade, continua nas notas —
+           é instrução de execução, não é o que se decide aqui. */
       },
 
       /* ===============================================================
@@ -657,6 +701,44 @@
         eyebrow: 'Pauta, bloco 03',
         title: 'Embalagens',
         footer: 'Kit novo contra kit antigo, onde está o custo e o pedido recomendado pela Louise, em dois momentos.'
+      },
+
+      {
+        /* O bloco do dinheiro mais concreto começava direto no gráfico.
+           Esta tela põe as peças na mesa antes dos números: são as três
+           que a 46 já orçou, e são as mesmas que os dois gráficos
+           seguintes decompõem. Sem legenda — o preço vem a seguir, e
+           repetir aqui seria dizer duas vezes. */
+        layout: 'galeria',
+        label: 'As peças orçadas',
+        notes:
+          'Antes de abrir qualquer número, mostrar o que está sendo comprado. Trocar o slide e deixar olhar.\n\n' +
+          'As três peças: as caixas de linha, uma cor por linha; a caixa grande, que é a base do kit; e a caixa ' +
+          'de amostras da GEO.\n\n' +
+          'O ponto que amarra com o bloco anterior: elas já estão com a identidade nova. Aprovar o rebrand agora ' +
+          'é o que permite mandar imprimir uma vez só.\n\n' +
+          'A caixa grande é a mais cara do kit, a ' + $(N.componente('caixaGrande').centavos) + ', e é ela que o ' +
+          'gráfico de composição mostra pesando duas telas adiante.',
+        eyebrow: 'Embalagens',
+        title: 'As peças orçadas',
+        media: [
+          {
+            src: 'img/emb/caixas-linha.webp',
+            alt: 'As quatro caixas de linha, em verde escuro, verde claro, terracota e azul, com a marca nova',
+            focal: '50% 50%'
+          },
+          {
+            src: 'img/emb/caixa-grande.webp',
+            alt: 'A caixa grande, comprida, em verde escuro com o interior terracota e a marca nova',
+            focal: '50% 50%'
+          },
+          {
+            src: 'img/emb/caixa-geo.webp',
+            alt: 'A caixa de amostras da GEO, em terracota, com a marca GEO e a frase kit de amostras',
+            focal: '50% 50%'
+          }
+        ],
+        nota: 'Peças do manual LESCO-ID-VISUAL-2027, já orçadas pela 46 Indústria Gráfica.'
       },
 
       {
