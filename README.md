@@ -565,11 +565,17 @@ outros continuam com o tema neutro. Para devolver este ao tema antigo, tire a
 linha do `<link>` em `index.html` — nenhum outro arquivo sabe que a folha
 existe.
 
-O logo novo está **em vetor**: o manual carrega o desenho em vetor dentro do
-PDF, e os caminhos foram convertidos de operadores de página para SVG. Ele vive
-em `marca.js`, dentro de `window.DRAWINGS`, que é o registro que o motor
-consulta quando um slide pede `media: { svg: 'marca-lesco' }`. É embutido, e não
+O logo novo está **em vetor**, vindo do `logo-final.svg` da Lesco. Ele vive em
+`marca.js`, dentro de `window.DRAWINGS`, que é o registro que o motor consulta
+quando um slide pede `media: { svg: 'marca-lesco' }`. É embutido, e não
 carregado por `fetch`, porque o deck abre em `file://`.
+
+**Trocar o logo é refazer três arquivos, e só eles:** `marca.js` (o desenho que
+a tela 16 usa), `img/marca-lesco.svg` (o mesmo, em `currentColor`) e
+`img/marca-lesco-terracota.svg` (com a cor embutida, porque a capa põe a marca
+como `<img>` e `<img>` não herda cor de CSS). Os três saem do mesmo SVG de
+origem. O símbolo solto que aparece no canto da tela 12 não está em nenhum
+deles: vive em `marcas.js`, junto com o resto da página das três marcas.
 
 Por que vestir a identidade numa reunião que ainda vai aprová-la: porque é mais
 honesto mostrar do que descrever. A tela 12 abre o bloco com as três marcas, a

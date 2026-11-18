@@ -169,9 +169,17 @@ Os logotipos e os símbolos **não** são imagem: são vetor, em `marcas.js`.
 
 ## `marca-lesco.svg` e `marca-lesco-terracota.svg`
 
-O logo de 2027 **em vetor**, não em print. O manual carrega o desenho em
-vetor dentro do PDF; os caminhos foram convertidos de operadores de página
-para SVG, então é a mesma curva do arquivo original.
+O logo de 2027 **em vetor**, não em print. Os caminhos vêm de
+`logo-final.svg`, o arquivo de vetor que a Lesco mantém no Drive, em
+`MKT/LESCO/COMUNICAÇÕES/03 - IDV E LOGOTIPO`.
+
+**Em 18 de nov. de 2026 o logo foi reajustado**: o L ficou menos redondo —
+a haste desce mais antes de virar e a curva de saída é mais fechada — para
+a tipografia aguentar ser usada sem o símbolo. Só o L mudou; o símbolo, as
+outras letras e o ® são os mesmos. A primeira versão daqui tinha sido
+convertida dos operadores de página do PDF do manual, e o PDF em
+`_source/uploads/` ainda é o anterior: **a origem destes arquivos passou a
+ser o SVG**, que é exato e não precisa de conversão.
 
 - `marca-lesco.svg` — preenchimento em `currentColor`, para tingir pelo CSS.
   É a versão embutida em `marca.js`, que o motor usa na tela 16.
