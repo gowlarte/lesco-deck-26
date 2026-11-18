@@ -395,8 +395,11 @@
 
       /* ===============================================================
          INPI E REBRAND
-         Pedido: aprovar o registro de GEO, ZHÜ e ECHO, a ampliação da
-         marca Lesco para novas categorias e o rebrand com logo novo.
+         Pedido: aprovar o registro de GEO, ZHÜ e ECHO e a ampliação da
+         marca Lesco para novas categorias. O logo novo de 2027 NÃO é
+         pedido: ele entra na comunicação, não vai ao INPI, e as telas
+         que o mostram estão aqui como argumento de que isso pode ser
+         feito sem registro nenhum.
          =============================================================== */
 
       {
@@ -405,12 +408,15 @@
         notes:
           'A capa do bloco. Serve para dar o fôlego entre a Arkos e o dinheiro: a conversa muda de assunto aqui.\n\n' +
           'O número 02 é o mesmo da pauta — se ele perguntar onde estamos, é só apontar.\n\n' +
-          'Dizer o pedido inteiro de uma vez, antes de abrir os números: registrar GEO, ZHÜ e ECHO, ampliar a ' +
-          'marca Lesco para novas classes e trocar o logo em 2027. As três coisas são uma decisão só.',
+          'Dizer o pedido inteiro de uma vez, antes de abrir os números: registrar GEO, ZHÜ e ECHO e ampliar a ' +
+          'marca Lesco para novas classes. São duas coisas, e uma decisão só.\n\n' +
+          'O LOGO NOVO NÃO ESTÁ NO PEDIDO. Ele entra na comunicação em 2027 e não vai ao INPI — as telas da marca ' +
+          'estão aqui para mostrar o que vem por aí e por que dá para fazer sem registro, não para pedir ' +
+          'aprovação. Se ele perguntar quanto custa, a resposta é: nada no orçamento do INPI.',
         num: '02',
         eyebrow: 'Pauta, bloco 02',
         title: 'INPI\ne rebrand',
-        footer: 'Registrar GEO, ZHÜ e ECHO, ampliar a marca Lesco para novas classes e trocar o logo em 2027.'
+        footer: 'Registrar GEO, ZHÜ e ECHO e ampliar a marca Lesco para novas classes. O logo novo de 2027 entra na comunicação, fora do INPI.'
       },
 
       {
@@ -567,9 +573,11 @@
          A MARCA, ANTES DO PEDIDO
 
          Duas telas que o PRD não previa, e que entram porque o manual de
-         2027 ficou pronto: a marca nova e a marca aplicada. Elas vêm
-         ANTES do slide que pede a aprovação do rebrand, de propósito —
-         é mais fácil decidir vendo do que lendo a descrição.
+         2027 ficou pronto: a marca nova e a marca aplicada. Elas não
+         pedem nada — o logo novo já está decidido e vai para a
+         comunicação. Estão aqui porque é mais fácil mostrar do que
+         descrever, e porque preparam a tela seguinte, que é o argumento
+         de por que isso não depende do INPI.
 
          As imagens são do próprio manual (ver img/LEIA-ME.md). As peças
          da segunda tela são estudos da identidade, não são as embalagens
@@ -660,11 +668,12 @@
           'E O REGISTRO DO LOGO ANTIGO? Se ele tiver registro próprio, continua válido — mas pode ser contestado ' +
           'depois de cinco anos sem uso no Brasil.\n\n' +
           'ISSO AFETA A OPERAÇÃO LÁ FORA? Não. Seguimos com o logo antigo fora do Brasil até decidirmos outra coisa.\n\n' +
-          'O depósito do logo novo ainda NÃO está no orçamento da Registre.se, e depende de busca de anterioridade. ' +
-          'É por isso que o valor dele aparece como "a definir" no resumo.',
+          'ESTA TELA NÃO PEDE NADA. O logo novo já está decidido e entra na comunicação; o que ela faz é tirar da ' +
+          'frente a objeção de que isso dependeria do INPI. Não abrir discussão de orçamento aqui: o logo não ' +
+          'custa nada ao pacote de registro, porque não vai ser depositado.',
         eyebrow: 'INPI e rebrand',
         title: 'Logo novo em 2027',
-        sub: 'Pedido: aprovar o registro de GEO, ZHÜ e ECHO, a ampliação da marca Lesco para novas categorias e o rebrand com logo novo.',
+        sub: 'O logo novo entra na comunicação em 2027, e não precisa passar pelo INPI.',
         /* Uma coluna só. A outra defendia o desenho novo, e a defesa saiu:
            o desenho já foi mostrado, e o que sobra para decidir aqui é
            jurídico. */
@@ -676,9 +685,6 @@
                    'Fora do país nada muda: mantemos o logo antigo e os registros como estão.'
           }
         ]
-        /* A condição saiu da tela a pedido: depositar o logo novo no mesmo
-           pacote, depois da busca de anterioridade, continua nas notas —
-           é instrução de execução, não é o que se decide aqui. */
       },
 
       /* ===============================================================
@@ -715,8 +721,8 @@
           'Antes de abrir qualquer número, mostrar o que está sendo comprado. Trocar o slide e deixar olhar.\n\n' +
           'As três peças: as caixas de linha, uma cor por linha; a caixa grande, que é a base do kit; e a caixa ' +
           'de amostras da GEO.\n\n' +
-          'O ponto que amarra com o bloco anterior: elas já estão com a identidade nova. Aprovar o rebrand agora ' +
-          'é o que permite mandar imprimir uma vez só.\n\n' +
+          'O ponto que amarra com o bloco anterior: elas já estão com a identidade nova. Como o logo novo já está ' +
+          'decidido, dá para mandar imprimir uma vez só.\n\n' +
           'A caixa grande é a mais cara do kit, a ' + $(N.componente('caixaGrande').centavos) + ', e é ela que o ' +
           'gráfico de composição mostra pesando duas telas adiante.',
         eyebrow: 'Embalagens',
@@ -1203,12 +1209,14 @@
         label: '06 · Fechamento',
         notes:
           'Nada de assunto novo daqui para a frente. O fechamento só junta o que já foi pedido bloco a bloco.\n\n' +
-          'Duas telas: o resumo de valores e a lista de decisões, que é marcável na hora. A meta é não sair ' +
-          'daqui com nenhuma frente em aberto.',
+          'São seis telas: o resumo de valores e depois CINCO decisões, uma por frente, cada uma com as opções ' +
+          'dentro. Escolher uma opção é a decisão, e a marcação sai na exportação em PDF.\n\n' +
+          'A meta é não sair daqui com nenhuma frente em aberto. O rebrand não tem tela de decisão porque não ' +
+          'há o que decidir: o logo novo entra na comunicação e não vai ao INPI.',
         num: '06',
         eyebrow: 'Pauta, bloco 06',
         title: 'Fechamento',
-        footer: 'O resumo de valores e a tela de decisões, para marcar na reunião.'
+        footer: 'O resumo de valores e cinco telas de decisão, uma por frente, para marcar na reunião.'
       },
 
       {
@@ -1219,8 +1227,8 @@
           'Se ele quiser o número cheio: INPI nos dois pacotes juntos ' + $c(juntos.total) + ', embalagens ' +
           $(N.totalPedido()) + ' em dois tempos, Tray ' + $c(tray.entrada) + ' mais ' + $c(tray.mensalidade) + ' por mês, ' +
           'e ' + $c(N.mono.creators.verbaTrafego) + ' de tráfego para os creators.\n\n' +
-          'O rebrand é o único item sem valor fechado — o depósito do logo depende da busca de anterioridade e ainda ' +
-          'não está orçado.\n\n' +
+          'Não há nenhum item em aberto na tabela: o logo novo saiu do orçamento porque não vai ao INPI, e com ele ' +
+          'saiu o único "a definir" que a tela tinha.\n\n' +
           'Os preços unitários de embalagem ficam nas telas 8 a 10, se alguém quiser voltar. Dá para pular direto ' +
           'digitando o número do slide e Enter.',
         eyebrow: 'Fechamento',
@@ -1233,125 +1241,215 @@
               'reconfirmação; propostas da 46 vencem em novembro.'
       },
 
-      {
-        /* Era uma lista plana de sete itens com três botões de status em
-           cada. O status dizia SE, nunca O QUÊ — e metade das linhas
-           escondia a alternativa dentro de um parêntese. Agora o tópico é
-           a unidade e a opção escolhida É a decisão.
+      /* ===============================================================
+         AS DECISÕES, UMA POR TELA
 
-           Todo valor daqui sai de dados.js. Nenhuma opção foi inventada:
-           as cinco do INPI são os cinco pacotes da proposta da Registre.se,
-           e as de embalagem são os dois momentos do pedido mais o cenário
-           de todas as amostras, que a Louise descartou mas que continua
-           sendo uma escolha possível. */
+         Três versões em três dias, e a razão foi sempre a mesma. Primeiro
+         era uma lista plana de sete itens com Aprovado / Ajustar / Adiar
+         em cada: o status dizia SE, nunca O QUÊ. Depois virou uma tela só
+         com os tópicos e as opções dentro, e aí o aperto da lista não
+         deixava a opção explicar o que ela compra. Agora é uma tela por
+         decisão, e cada opção cabe com a linha de apoio que vem dos
+         dados: o que o pacote do INPI protege, o que o pedido leva
+         dentro.
+
+         Nenhuma opção é inventada e nenhum valor é digitado. Os cinco
+         pacotes são os de inpi.pacotes; os três cenários de embalagem são
+         os dois momentos do pedido mais o de todas as amostras de GEO,
+         que a Louise descartou mas que continua sendo escolha dele.
+
+         O REBRAND NÃO TEM TELA AQUI. O logo novo entra na comunicação,
+         não vai ao INPI e não custa nada ao pacote de registro — não há o
+         que decidir. As telas 16 a 18 mostram o logo e explicam por que
+         ele não depende do INPI; nenhuma delas pede aprovação.
+         =============================================================== */
+
+      {
         layout: 'escolhas',
-        label: 'Decisões',
+        label: 'Decisão 1 · INPI',
         notes:
-          'A tela de marcar, e agora de ESCOLHER. Cada tópico tem as opções dentro: clicar numa opção é a decisão. ' +
-          'Clicar de novo na mesma desmarca.\n\n' +
-          'A marcação fica no slide e sai na exportação em PDF. Dá para voltar aqui depois que ela continua.\n\n' +
-          'ONDE ESTÁ A ESCOLHA DE VERDADE, tópico por tópico:\n\n' +
-          'INPI — são cinco pacotes, não dois itens. Juntar a Lesco com as linhas economiza ' +
-          $c(N.economiaJunto('lesco-nominativa', 'linhas-mista', 'juntos')) + ', e é o que está recomendado. O bambu ' +
-          'é o opcional de ' + $c(N.adicionalBambu()) + ' que ainda não foi decidido.\n\n' +
-          'REBRAND — são duas decisões separáveis, e vale dizer isso: trocar o logo na comunicação não custa nada ' +
-          'novo e não tem barreira jurídica; depositar o logo no INPI é que está fora do orçamento.\n\n' +
-          'EMBALAGENS — o imediato é urgente porque as amostras de GEO já existem e estão paradas. O cenário de ' +
-          'todas as amostras de uma vez a Louise descartou, mas está aqui porque é escolha dele, não dela.\n\n' +
-          'SHOWROOM — não é dinheiro, é agenda. Não sair da sala sem a data.\n\n' +
-          'Se um tópico ficar sem nenhuma opção marcada, é porque ficou em aberto. Anotar o que falta na hora.',
-        eyebrow: 'Fechamento',
-        title: 'Decisões',
-        sub: 'Cada tópico tem as opções dentro. Clicar numa opção é a decisão.',
+          'PRIMEIRA DECISÃO, e a que tem mais caminhos: cinco pacotes, um a escolher. Clicar marca; clicar de novo ' +
+          'desmarca. A marcação fica no slide e sai na exportação em PDF.\n\n' +
+          'O ATALHO DA CONVERSA: juntar a Lesco com as linhas economiza ' +
+          $c(N.economiaJunto('lesco-nominativa', 'linhas-mista', 'juntos')) + ' em relação a contratar os dois ' +
+          'separados. É por isso que "os dois juntos" está marcado como recomendado.\n\n' +
+          'O BAMBU é o opcional de ' + $c(N.adicionalBambu()) + ', e é a classe 20. Só vale se a linha ZHÜ for mesmo ' +
+          'vender bambu semitrabalhado. Sem resposta hoje, marcar sem bambu e tratar a classe 20 depois — ela pode ' +
+          'ser acrescentada num pedido novo, só não sai no mesmo lote.\n\n' +
+          'CONDIÇÕES: assessoria em ' + N.inpi.condicoes.parcelasAssessoria + 'x, taxas à vista.',
+        eyebrow: 'Fechamento · decisão 1 de 5',
+        title: 'Registro no INPI',
+        sub: 'Um pacote. Valores da proposta da Registre.se.',
         grupos: [
           {
-            titulo: 'Registro no INPI',
-            apoio: 'Um pacote',
+            adiar: 'Adiar o registro',
             opcoes: [
               {
                 rotulo: 'Só as linhas: GEO, ZHÜ e ECHO',
+                apoio: N.pacote('linhas-mista').protege,
                 valor: $c(N.custoPacote('linhas-mista').total)
               },
               {
                 rotulo: 'Só as linhas, com ZHÜ em bambu',
+                apoio: N.pacote('linhas-mista-bambu').protege,
                 valor: $c(N.custoPacote('linhas-mista-bambu').total)
               },
               {
                 rotulo: 'Só a Lesco, classes 19, 35 e 42',
+                apoio: N.pacote('lesco-nominativa').protege,
                 valor: $c(N.custoPacote('lesco-nominativa').total)
               },
               {
                 rotulo: 'Os dois juntos',
+                apoio: N.pacote('juntos').protege + ' · economia de ' +
+                       $c(N.economiaJunto('lesco-nominativa', 'linhas-mista', 'juntos')),
                 valor: $c(N.custoPacote('juntos').total),
                 recomendado: true
               },
               {
                 rotulo: 'Os dois juntos, com bambu',
+                apoio: N.pacote('juntos-bambu').protege,
                 valor: $c(N.custoPacote('juntos-bambu').total)
               }
             ]
-          },
+          }
+        ],
+        nota: 'Assessoria em ' + N.inpi.condicoes.parcelasAssessoria + 'x e taxas à vista. Valores pendentes de reconfirmação.'
+      },
+
+      {
+        layout: 'escolhas',
+        label: 'Decisão 2 · Embalagens',
+        notes:
+          'O IMEDIATO É URGENTE: serve para enviar as amostras de GEO que já existem e estão paradas. Isso precisa ' +
+          'ser pedido agora, independente do resto.\n\n' +
+          'A escolha de verdade é o tamanho do imediato. A Louise recomenda ' +
+          N.numero(N.momentosPedido()[0].linhas[1].qtd) + ' envelopes, metade do que seria preciso para todas as ' +
+          'amostras — ela considera suficiente. Pedir todas sobe o imediato para ' + $(N.imediatoTodasAmostras()) + '.\n\n' +
+          'SE ELE PERGUNTAR POR QUE NÃO ESPERAR E FAZER DIRETO O LOTE GRANDE: enquanto isso, cada entrega sai com a ' +
+          'embalagem atual, que é o problema que viemos resolver. O lote inicial custa mais por unidade, mas permite ' +
+          'ajustar o modelo antes de escalar.\n\n' +
+          'Os preços são da faixa de 1.000 un e a recotação para estas quantidades está pendente.',
+        eyebrow: 'Fechamento · decisão 2 de 5',
+        title: 'Embalagens',
+        sub: 'Quanto pedir agora. Valores da proposta da 46 Indústria Gráfica.',
+        grupos: [
           {
-            titulo: 'Rebrand com logo novo',
-            apoio: 'Até onde ir',
-            opcoes: [
-              { rotulo: 'Trocar o logo só na comunicação', valor: 'Sem custo novo' },
-              { rotulo: 'Trocar e depositar o logo no INPI', valor: 'A definir', recomendado: true }
-            ]
-          },
-          {
-            titulo: 'Embalagens',
-            apoio: 'Quanto pedir agora',
+            adiar: 'Adiar o pedido',
             opcoes: [
               {
-                rotulo: 'Só o imediato, como recomendado',
+                rotulo: 'Só o pedido imediato',
+                apoio: N.numero(N.momentosPedido()[0].linhas[0].qtd) + ' caixas da GEO e ' +
+                       N.numero(N.momentosPedido()[0].linhas[1].qtd) + ' envelopes',
                 valor: $(N.momentosPedido()[0].total)
               },
               {
                 rotulo: 'Imediato com todas as amostras de GEO',
+                apoio: 'Os envelopes vão de ' + N.numero(N.momentosPedido()[0].linhas[1].qtd) + ' para ' +
+                       N.numero(N.embalagens.envelopesTodasAmostras) + ' · cenário que a Louise descartou',
                 valor: $(N.imediatoTodasAmostras())
               },
               {
                 rotulo: 'Imediato e janeiro, os dois',
+                apoio: 'O imediato mais ' + N.numero(N.momentosPedido()[1].linhas[0].qtd) + ' caixas grandes e ' +
+                       N.numero(N.momentosPedido()[1].linhas[1].qtd) + ' caixas de linha',
                 valor: $(N.totalPedido()),
                 recomendado: true
               }
             ]
-          },
+          }
+        ],
+        nota: 'Preços da faixa de 1.000 un; a recotação para estas quantidades está pendente. As propostas vencem em novembro.'
+      },
+
+      {
+        layout: 'escolhas',
+        label: 'Decisão 3 · Tray',
+        notes:
+          'Aqui não há escolha de escopo, só de caixa: a Tray é uma só, o que muda é como a entrada é paga.\n\n' +
+          'A mensalidade é a mesma nos dois caminhos, e é valor promocional de Black Friday — se passar da data, ' +
+          'muda.\n\n' +
+          'Primeiro ano fechado, se ele pedir o número: ' + $c(N.primeiroAnoTray()) + '.\n\n' +
+          'O que a Tray resolve é o gargalo de frete nos marketplaces, que as duas telas do bloco 04 mostraram.',
+        eyebrow: 'Fechamento · decisão 3 de 5',
+        title: 'Tray para a Mono',
+        sub: 'Como pagar a entrada. A mensalidade é a mesma nos dois caminhos.',
+        grupos: [
           {
-            titulo: 'Tray para a Mono',
-            apoio: 'Como pagar a entrada',
+            adiar: 'Adiar a integração',
             opcoes: [
               {
                 rotulo: 'Entrada à vista e mensalidade',
+                apoio: 'Mensalidade em valor promocional de Black Friday',
                 valor: $c(N.mono.tray.entrada) + ' + ' + $c(N.mono.tray.mensalidade) + '/mês'
               },
               {
-                rotulo: 'Entrada em ' + N.mono.tray.parcelas + 'x e mensalidade',
-                valor: $(N.parcelaTray()) + '/mês + ' + $c(N.mono.tray.mensalidade) + '/mês'
+                rotulo: 'Entrada parcelada e mensalidade',
+                apoio: 'A mensalidade não muda; só a entrada se divide',
+                valor: N.mono.tray.parcelas + '× ' + $(N.parcelaTray()) + ' + ' + $c(N.mono.tray.mensalidade) + '/mês'
               }
             ]
-          },
+          }
+        ],
+        nota: 'Primeiro ano fechado: ' + $c(N.primeiroAnoTray()) + '. Mensalidade em valor promocional.'
+      },
+
+      {
+        layout: 'escolhas',
+        label: 'Decisão 4 · Mono Creators',
+        notes:
+          'A frente mais aberta das cinco, e vale dizer isso antes de pedir: a meta de creators por mês e o custo da ' +
+          'landing page ainda não estão definidos.\n\n' +
+          'O que se pede aqui é a verba de tráfego e o aval para montar a operação — não um número fechado de ' +
+          'resultado. A Inbazz já está contratada, então a ferramenta existe; falta alimentar ela.\n\n' +
+          'Se ele quiser segurar: adiar não quebra nada hoje, mas adia junto a primeira leva de creators.',
+        eyebrow: 'Fechamento · decisão 4 de 5',
+        title: 'Mono Creators',
+        sub: 'Verba de tráfego para recrutar creators.',
+        grupos: [
           {
-            titulo: 'Mono Creators',
-            apoio: 'Verba de tráfego',
+            adiar: 'Adiar a captação',
             opcoes: [
               {
                 rotulo: 'Aprovar a verba e montar a operação',
+                apoio: 'Inbazz já contratada · meta por mês e landing page ainda a definir',
                 valor: $c(N.mono.creators.verbaTrafego),
                 recomendado: true
               }
             ]
-          },
+          }
+        ],
+        nota: 'A meta de creators por mês e o custo da landing page ficam para depois da primeira leva.'
+      },
+
+      {
+        layout: 'escolhas',
+        label: 'Decisão 5 · Showroom',
+        notes:
+          'A ÚLTIMA NÃO É DINHEIRO, É AGENDA. Não sair da sala sem a data.\n\n' +
+          'É o único pedido do bloco da Arkos, lá no começo, e ficou guardado até aqui de propósito: depois de ver ' +
+          'os dois showrooms lado a lado, a conversa sobre o novo showroom se justifica sozinha.\n\n' +
+          'O assunto da reunião: conceito de galeria, com câmaras sensoriais que também servem de sala de reunião, ' +
+          'e a definição de posicionamento.\n\n' +
+          'Se ele desviar para orçamento de obra, segurar: hoje é só a data.',
+        eyebrow: 'Fechamento · decisão 5 de 5',
+        title: 'Showroom e posicionamento',
+        sub: 'Agenda, não dinheiro.',
+        grupos: [
           {
-            titulo: 'Showroom e posicionamento',
-            apoio: 'Agenda',
+            adiar: 'Adiar a conversa',
             opcoes: [
-              { rotulo: 'Marcar a reunião', valor: 'Definir data', recomendado: true }
+              {
+                rotulo: 'Marcar a reunião',
+                apoio: 'Conceito de galeria, com câmaras sensoriais que servem de sala de reunião',
+                valor: 'Definir data',
+                recomendado: true
+              }
             ]
           }
         ],
-        nota: 'Valores da proposta da Registre.se e da 46 Indústria Gráfica. A escolha feita aqui fica registrada no slide e sai na exportação em PDF.'
+        recado: 'É o único pedido do bloco da Arkos, e o único que não custa nada.',
+        nota: 'A escolha feita aqui fica registrada no slide e sai na exportação em PDF.'
       }
 
     ]

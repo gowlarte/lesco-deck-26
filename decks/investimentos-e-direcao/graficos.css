@@ -1951,12 +1951,24 @@ body.is-export .m27__listras path { animation: none !important; }
               box-shadow var(--dur-fast, 160ms) var(--ease-standard);
 }
 
-.opcao__rotulo {
+.opcao__texto {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.opcao__rotulo {
   font-size: 24px;
   line-height: 1.3;
   color: var(--text-body);
+}
+
+.opcao__apoio {
+  font-size: 19px;
+  line-height: 1.3;
+  color: var(--text-muted);
 }
 
 .opcao__selo {
@@ -1977,6 +1989,52 @@ body.is-export .m27__listras path { animation: none !important; }
 
 /* A de adiar não compete com as outras: ela é a saída, não uma proposta. */
 .opcao--adiar .opcao__rotulo { color: var(--text-muted); }
+
+/* ---------------------------------------------------------------------
+   Uma decisão por tela
+
+   Sem colunas para equilibrar e sem cabeça de grupo (o título da tela já
+   é o tópico), cada opção ganha corpo e uma linha de apoio: o que o
+   pacote protege, o que o pedido leva dentro. É a mesma lista da versão
+   compacta, lida de longe.
+   --------------------------------------------------------------------- */
+
+/* Uma decisao com uma proposta so ocuparia duas linhas no alto e deixaria
+   meia tela vazia embaixo. Centrada, a mesma lista le como pausa, nao como
+   sobra. Nas telas cheias o deslocamento e de poucos pixels. */
+.l-escolhas--solo .escolhas {
+  column-count: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.l-escolhas--solo .escolha { margin-bottom: 0; }
+
+.l-escolhas--solo .opcao {
+  gap: 22px;
+  padding: 14px 16px 14px 0;
+}
+
+.l-escolhas--solo .opcao__marca {
+  width: 22px;
+  height: 22px;
+  margin-left: 16px;
+}
+
+.l-escolhas--solo .opcao__rotulo { font-size: 30px; }
+.l-escolhas--solo .opcao__apoio  { font-size: 21px; }
+.l-escolhas--solo .opcao__valor  { font-size: 30px; }
+.l-escolhas--solo .opcao__selo   { font-size: 18px; }
+
+/* A de adiar é a última e não é proposta: um filete a separa das que
+   são. */
+.l-escolhas--solo .opcao--adiar {
+  margin-top: 8px;
+  border-top: 1px solid var(--hairline);
+}
+
+.l-escolhas--solo .opcao--adiar .opcao__rotulo { font-size: 24px; }
 
 /* ---- a opção escolhida ------------------------------------------------ */
 

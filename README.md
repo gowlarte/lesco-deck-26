@@ -473,7 +473,7 @@ ranking ao lado.
 
 Apresentação ao Lucas para aprovar investimentos e definir direção em cinco
 frentes: Arkos, INPI e rebrand, embalagens, Mono nos marketplaces e Mono
-Creators. São 33 telas e dezoito layouts que as outras apresentações não têm.
+Creators. São 37 telas e dezoito layouts que as outras apresentações não têm.
 
 Cada uma das seis frentes abre com uma **capa de bloco** numerada de 01 a 06 —
 os mesmos números da pauta, para quem se perder saber onde está. São o layout
@@ -486,7 +486,7 @@ razão está mais abaixo.
 ```
 decks/investimentos-e-direcao/
   dados.js       >>> TODOS os números ficam aqui, em centavos <<<
-  deck.js        as 33 telas, sem um número escrito dentro
+  deck.js        as 37 telas, sem um número escrito dentro
   identidade.css a paleta de 2027, só para este deck
   marca.js       o logo novo em vetor, em window.DRAWINGS
   graficos.js    os dezoito layouts de gráfico, foto, diagrama e decisão
@@ -535,7 +535,7 @@ classe num pacote muda o total do composto junto, que é o ponto.
 | `cartoes` | Cartões de valor |
 | `fluxo` | Diagrama de etapas, com as contas penduradas num orçamento |
 | `tabela` | Tabela agrupada por frente |
-| `escolhas` | Tópicos do fechamento, com as opções dentro, marcável na reunião |
+| `escolhas` | Uma decisão por tela, com as opções dentro, marcável na reunião |
 | `decisoes` | Lista de aprovação com seletor de status — hoje sem nenhuma tela |
 | `confronto` | Duas fotos lado a lado, cada uma com a sua etiqueta |
 | `marca` | O logo de hoje e o de 2027, um ao lado do outro |
@@ -684,31 +684,39 @@ eixo até 5 milhões e a coluna mais alta ficava com 59% da área.
 
 ### A tela de decisões
 
-A tela 33 é marcável durante a reunião, e o que se marca ali é uma **opção**,
-não um status. A versão anterior era uma lista plana de sete itens com
-Aprovado / Ajustar / Adiar em cada um: o status dizia SE, nunca O QUÊ — e
-metade das linhas escondia a alternativa dentro de um parêntese, do tipo
-"R$ 9.380 (R$ 12.100 com bambu)". Quem lia tinha de adivinhar que ali havia
-uma escolha.
+As telas 33 a 37 são as decisões, **uma por frente**, e o que se marca nelas é
+uma **opção**, não um status. A primeira versão era uma lista plana de sete
+itens com Aprovado / Ajustar / Adiar em cada um: o status dizia SE, nunca O
+QUÊ — e metade das linhas escondia a alternativa dentro de um parêntese, do
+tipo "R$ 9.380 (R$ 12.100 com bambu)". Quem lia tinha de adivinhar que ali
+havia uma escolha.
 
-Agora o tópico é a unidade e as opções moram dentro dele. Escolher uma opção É
-a decisão, e clicar de novo na mesma desmarca. **Nenhuma opção é inventada:**
-as cinco do INPI são os cinco pacotes de `inpi.pacotes`, e as de embalagem são
-os dois momentos do pedido mais o cenário de todas as amostras de GEO, que a
-Louise descartou mas que continua sendo uma escolha possível. Todo valor sai de
-`dados.js`.
+Escolher uma opção É a decisão, e clicar de novo na mesma desmarca. **Nenhuma
+opção é inventada:** as cinco do INPI são os cinco pacotes de `inpi.pacotes`, e
+as de embalagem são os dois momentos do pedido mais o cenário de todas as
+amostras de GEO, que a Louise descartou mas que continua sendo uma escolha
+possível. Todo valor sai de `dados.js`, e a linha de apoio de cada opção também
+— o que o pacote protege vem de `pacote(id).protege`, o que o pedido leva
+dentro vem das quantidades de `momentosPedido()`.
 
-**Adiar não entra na lista:** é o único status que não é uma proposta, então
-fica no título do tópico, à direita. Adiar limpa a opção escolhida e escolher
-uma opção limpa o adiar — um tópico não pode estar decidido e adiado ao mesmo
-tempo. Tirar essas seis linhas da lista é também o que faz a tela caber em duas
-colunas.
+**O rebrand não tem tela de decisão**, e isso é deliberado: o logo novo entra na
+comunicação, não vai ao INPI e não custa nada ao pacote de registro. As telas 16
+a 18 mostram a marca e explicam por que ela não depende do registro; nenhuma
+delas pede aprovação. Com o rebrand fora do orçamento saiu também o único "a
+definir" que o resumo tinha.
 
-A grade é `column-count`, e não um grid de colunas fixas: os grupos têm alturas
-muito diferentes e equilibrar na mão sairia errado na primeira vez que alguém
-acrescentasse uma opção. O limite é físico e vale saber: duas colunas de 620px
-comportam 1.240px de conteúdo, e os seis tópicos somam 958. Passar disso não
-quebra o layout — abre uma terceira coluna, fora do slide.
+**Adiar é a última opção da lista**, separada das propostas por um filete,
+porque é o único status que não é uma proposta. Adiar limpa a opção escolhida e
+escolher uma opção limpa o adiar — uma frente não pode estar decidida e adiada
+ao mesmo tempo.
+
+O layout tem dois modos. Com **um grupo** (o caso de todas as cinco telas) ele
+abre em tela cheia: sem colunas, sem cabeça de grupo, cada opção com corpo de
+30px e a linha de apoio embaixo, e o bloco centrado na vertical — é o que faz a
+tela de uma proposta só ler como pausa e não como sobra. Com **dois ou mais
+grupos** ele volta a ser a lista compacta em duas colunas por `column-count`,
+com o adiar no título de cada tópico. Esse modo não está em uso hoje; ficou
+porque é para onde a tela volta se um dia as decisões couberem numa só.
 
 O motor monta todos os slides uma vez só e nunca os remonta, então a marcação
 **continua lá ao voltar no slide** — e sai assim na exportação em PDF, que vira

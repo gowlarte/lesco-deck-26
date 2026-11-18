@@ -619,14 +619,10 @@ window.NUMEROS = (function () {
         condicao: reaisCurto(juntosBambu.total) + ' com o opcional; economia de ' +
                   reaisCurto(economiaJunto('lesco-nominativa', 'linhas-mista', 'juntos'))
       },
-      {
-        frente: 'Rebrand',
-        item: 'Logo novo e depósito do logo no INPI',
-        decisao: 'Rebrand com logo novo + depósito no INPI',
-        mostra: 'A definir',
-        mostraDecisao: 'A definir',
-        condicao: 'Fora do orçamento; depende de busca de anterioridade'
-      },
+      /* O rebrand NÃO entra aqui, e isso é deliberado: o logo novo vai
+         para a comunicação e não para o INPI, então não há o que
+         aprovar nem o que orçar. Era a única linha sem valor fechado
+         da tabela — com ela sai o único "a definir" do resumo. */
       {
         frente: 'Embalagens',
         item: 'Pedido imediato (GEO)',

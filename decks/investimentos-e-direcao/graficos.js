@@ -1524,60 +1524,85 @@
   L.escolhas = {
     transition: 'stagger',
     render: function (s) {
+      var grupos = lista(s.grupos);
+
+      /* Um grupo só = uma tela só para aquela decisão. Aí não há o que
+         equilibrar em colunas, o título do grupo seria eco do título da
+         tela, e sobra espaço para cada opção dizer o que protege ou o que
+         leva dentro. Com dois ou mais grupos a tela volta a ser a lista
+         compacta em duas colunas. */
+      var solo = grupos.length === 1;
+
       var grade = h('div', { class: 'escolhas' });
 
-      lista(s.grupos).forEach(function (g, gi) {
+      grupos.forEach(function (g, gi) {
         var caixa = h('div', { class: 'escolha', style: '--k:' + gi, anim: 'slide' });
-
-        /* Adiar é o único status que não é uma proposta, então não entra
-           na lista: fica no título, à direita, como a saída do tópico.
-           Tirar essas seis linhas da lista é também o que faz a tela
-           caber em duas colunas. */
-        var adiar = h('button', {
-          class: 'escolha__adiar',
-          type: 'button',
-          tabindex: '-1',
-          'aria-pressed': 'false',
-          text: 'adiar'
-        });
-
-        caixa.appendChild(h('div', { class: 'escolha__cabeca' }, [
-          h('span', { class: 'escolha__num', text: dois(gi + 1) }),
-          h('span', { class: 'escolha__titulo', html: g.titulo }),
-          g.apoio ? h('span', { class: 'escolha__apoio', html: g.apoio }) : null,
-          adiar
-        ]));
 
         var caixaOpcoes = h('div', {
           class: 'escolha__opcoes',
           role: 'group',
-          'aria-label': g.titulo
+          'aria-label': g.titulo || s.title || 'Opções'
         });
+
+        /* Adiar é o único status que não é uma proposta. Na tela compacta
+           ele fica no título, para não gastar uma linha por tópico; na
+           tela solo vira a última opção, que é onde o olho o procura. */
+        var adiar = solo
+          ? h('button', {
+              class: 'opcao opcao--adiar',
+              type: 'button',
+              tabindex: '-1',
+              'aria-pressed': 'false'
+            }, [
+              h('span', { class: 'opcao__marca', 'aria-hidden': 'true' }),
+              h('span', { class: 'opcao__texto' }, [
+                h('span', { class: 'opcao__rotulo', text: g.adiar || 'Adiar esta decisão' })
+              ])
+            ])
+          : h('button', {
+              class: 'escolha__adiar',
+              type: 'button',
+              tabindex: '-1',
+              'aria-pressed': 'false',
+              text: 'adiar'
+            });
+
+        if (!solo) {
+          caixa.appendChild(h('div', { class: 'escolha__cabeca' }, [
+            h('span', { class: 'escolha__num', text: dois(gi + 1) }),
+            h('span', { class: 'escolha__titulo', html: g.titulo }),
+            g.apoio ? h('span', { class: 'escolha__apoio', html: g.apoio }) : null,
+            adiar
+          ]));
+        }
+
+        function limpa() {
+          Array.prototype.forEach.call(
+            caixaOpcoes.querySelectorAll('.opcao'),
+            function (outro) { outro.setAttribute('aria-pressed', 'false'); }
+          );
+          adiar.setAttribute('aria-pressed', 'false');
+        }
 
         lista(g.opcoes).forEach(function (o) {
           var botao = h('button', {
-            class: 'opcao' +
-                   (o.recomendado ? ' opcao--recomendada' : '') +
-                   (o.adiar ? ' opcao--adiar' : ''),
+            class: 'opcao' + (o.recomendado ? ' opcao--recomendada' : ''),
             type: 'button',
             tabindex: '-1',
             'aria-pressed': 'false'
           }, [
             h('span', { class: 'opcao__marca', 'aria-hidden': 'true' }),
-            h('span', { class: 'opcao__rotulo', html: o.rotulo }),
+            h('span', { class: 'opcao__texto' }, [
+              h('span', { class: 'opcao__rotulo', html: o.rotulo }),
+              o.apoio ? h('span', { class: 'opcao__apoio', html: o.apoio }) : null
+            ]),
             o.recomendado ? h('span', { class: 'opcao__selo', text: 'recomendado' }) : null,
             h('span', { class: 'opcao__valor', html: o.valor || '' })
           ]);
 
           botao.addEventListener('click', function () {
             var jaMarcado = botao.getAttribute('aria-pressed') === 'true';
-
-            Array.prototype.forEach.call(
-              caixaOpcoes.querySelectorAll('.opcao'),
-              function (outro) { outro.setAttribute('aria-pressed', 'false'); }
-            );
-            adiar.setAttribute('aria-pressed', 'false');
-
+            limpa();
             botao.setAttribute('aria-pressed', jaMarcado ? 'false' : 'true');
             caixa.setAttribute('data-escolhido', jaMarcado ? '' : 'sim');
             botao.blur();
@@ -1591,24 +1616,21 @@
            tempo. */
         adiar.addEventListener('click', function () {
           var jaAdiado = adiar.getAttribute('aria-pressed') === 'true';
-
-          Array.prototype.forEach.call(
-            caixaOpcoes.querySelectorAll('.opcao'),
-            function (outro) { outro.setAttribute('aria-pressed', 'false'); }
-          );
-
+          limpa();
           adiar.setAttribute('aria-pressed', jaAdiado ? 'false' : 'true');
           caixa.setAttribute('data-escolhido', jaAdiado ? '' : 'adiado');
           adiar.blur();
         });
 
+        if (solo) caixaOpcoes.appendChild(adiar);
         caixa.appendChild(caixaOpcoes);
         grade.appendChild(caixa);
       });
 
-      return h('div', { class: 'l-escolhas pad pad--tight' }, [
+      return h('div', { class: 'l-escolhas' + (solo ? ' l-escolhas--solo' : '') + ' pad pad--tight' }, [
         cabeca(s, 'md'),
         grade,
+        s.recado ? h('p', { class: 'g-recado', html: s.recado, anim: true }) : null,
         nota(s.nota)
       ]);
     }
