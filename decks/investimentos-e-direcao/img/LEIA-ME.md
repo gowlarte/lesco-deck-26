@@ -36,7 +36,7 @@ urgentes.
 | `arkos/parede.webp` | 8 · fundo inteiro | a parede de madeira com AMANTES DE BOA ARQUITETURA em letra de metal, e a mesa de reunião sobre o deck |
 | `arkos/showroom.webp` | 9 · esquerda | a vista ampla: forro ripado, balcão curvo iluminado e a estante de amostras por cor |
 | `lesco/armarios.webp` | 9 · direita | a vista larga do escritório de São Paulo, com os armários e a parede de folhagem |
-| `arkos/amostras.webp` | 10 · esquerda | o plinto de exposição com os perfis em pé e as letras ARKOS contra a janela |
+| `arkos/amostras.webp` | 10 · esquerda | o expositor com os perfis em pé e as letras ARKOS contra a janela |
 | `lesco/mesa-amostras.webp` | 10 · direita | a mesa de reunião com os perfis empilhados e as caixas de papelão abertas ao lado |
 
 São cópias, e não atalhos para a pasta do outro deck: cada apresentação

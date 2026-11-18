@@ -340,7 +340,7 @@
             src: 'img/arkos/showroom.webp',
             alt: 'Vista ampla do showroom da Arkos, com forro ripado, estante de amostras coloridas e balcão curvo iluminado',
             focal: '50% 56%',
-            texto: 'Forro ripado, balcão curvo iluminado, as amostras organizadas por cor e plintos de exposição.'
+            texto: 'Forro ripado, balcão curvo iluminado, as amostras organizadas por cor e expositores feitos sob medida.'
           },
           {
             nome: 'Lesco',
@@ -361,7 +361,7 @@
         notes:
           'A tela da página 16 do deck do showroom, trazida para cá. Deixar na tela e ficar calado alguns segundos: ' +
           'ela dispensa argumento.\n\n' +
-          'É o mesmo momento da conversa dos dois lados — o cliente pede para ver o material. À esquerda, um plinto ' +
+          'É o mesmo momento da conversa dos dois lados — o cliente pede para ver o material. À esquerda, um expositor ' +
           'desenhado para isso. À direita, a nossa mesa de reunião, com os perfis empilhados e as caixas de papelão ' +
           'abertas ao lado.\n\n' +
           'Nenhuma das duas foi escolhida para favorecer ninguém: são o que existe nos dois lugares. Existe uma foto ' +
@@ -375,9 +375,9 @@
             nome: 'Arkos',
             apoio: 'Expositor no showroom',
             src: 'img/arkos/amostras.webp',
-            alt: 'Plinto de exposição da Arkos com perfis de fachada em pé e as letras ARKOS recortadas contra a janela',
+            alt: 'Expositor da Arkos com perfis de fachada em pé e as letras ARKOS recortadas contra a janela',
             focal: '50% 56%',
-            texto: 'Um plinto desenhado para isso, com os perfis em pé e a marca recortada contra a cidade.'
+            texto: 'Um expositor desenhado para isso, com os perfis em pé e a marca recortada contra a cidade.'
           },
           {
             nome: 'Lesco',
