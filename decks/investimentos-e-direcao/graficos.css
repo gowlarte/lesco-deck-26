@@ -1826,3 +1826,172 @@ body.is-export .m27__listras path { animation: none !important; }
   text-transform: uppercase;
   color: var(--text-muted);
 }
+
+
+/* =====================================================================
+   18 · escolhas — tópicos do fechamento, com as opções dentro
+
+   Duas colunas por `column-count`, porque os grupos têm alturas muito
+   diferentes e equilibrar na mão sairia errado na primeira vez que uma
+   opção fosse acrescentada.
+   ===================================================================== */
+
+.l-escolhas { display: flex; flex-direction: column; }
+
+.l-escolhas .g-cabeca { margin-bottom: 26px; }
+
+.escolhas {
+  flex: 1;
+  min-height: 0;
+  column-count: 2;
+  column-gap: 72px;
+}
+
+.escolha {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: 18px;
+}
+
+.escolha:last-child { margin-bottom: 0; }
+
+/* ---- a cabeça do tópico ---------------------------------------------- */
+
+.escolha__cabeca {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.escolha__num {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.escolha__titulo {
+  font-size: 26px;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-strong);
+}
+
+.escolha__apoio {
+  margin-left: auto;
+  font-size: 20px;
+  color: var(--text-muted);
+}
+
+/* O botão de adiar: discreto enquanto não é usado, porque não é a saída
+   que a reunião procura. */
+.escolha__adiar {
+  flex: none;
+  margin-left: 16px;
+  padding: 3px 12px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: none;
+  font-family: inherit;
+  font-size: 17px;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background var(--dur-fast, 160ms) var(--ease-standard),
+              color var(--dur-fast, 160ms) var(--ease-standard);
+}
+
+.escolha__adiar:hover { background: var(--surface-sunk); color: var(--text-body); }
+
+.escolha__adiar[aria-pressed="true"] {
+  border-color: var(--f3);
+  background: var(--f1);
+  color: var(--text-strong);
+}
+
+/* Tópico adiado: as propostas apagam, para o olho ir direto no que falta
+   decidir. */
+.escolha[data-escolhido="adiado"] .escolha__opcoes { opacity: 0.4; }
+
+/* ---- as opções -------------------------------------------------------- */
+
+.escolha__opcoes { display: flex; flex-direction: column; }
+
+.opcao {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 6px 10px 6px 0;
+  border: 0;
+  border-bottom: 1px solid var(--hairline-soft, rgba(48, 48, 48, 0.08));
+  background: none;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--dur-fast, 160ms) var(--ease-standard);
+}
+
+.opcao:last-child { border-bottom: 0; }
+
+.opcao:hover { background: var(--surface-sunk); }
+
+/* A marca é um anel que enche quando a opção é a escolhida. */
+.opcao__marca {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-left: 10px;
+  border: 2px solid var(--f2);
+  border-radius: 50%;
+  transition: border-color var(--dur-fast, 160ms) var(--ease-standard),
+              box-shadow var(--dur-fast, 160ms) var(--ease-standard);
+}
+
+.opcao__rotulo {
+  flex: 1;
+  min-width: 0;
+  font-size: 24px;
+  line-height: 1.3;
+  color: var(--text-body);
+}
+
+.opcao__selo {
+  flex: none;
+  font-size: 17px;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--accent-deep);
+}
+
+.opcao__valor {
+  flex: none;
+  font-size: 24px;
+  color: var(--text-strong);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* A de adiar não compete com as outras: ela é a saída, não uma proposta. */
+.opcao--adiar .opcao__rotulo { color: var(--text-muted); }
+
+/* ---- a opção escolhida ------------------------------------------------ */
+
+.opcao[aria-pressed="true"] { background: var(--accent-wash); }
+
+.opcao[aria-pressed="true"] .opcao__marca {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 4px var(--accent);
+}
+
+.opcao[aria-pressed="true"] .opcao__rotulo,
+.opcao[aria-pressed="true"] .opcao__valor {
+  color: var(--text-strong);
+}
+
+/* Com um grupo já decidido, o filete do título vira acento: dá para ver
+   de longe o que falta resolver sem ler opção nenhuma. */
+.escolha[data-escolhido="sim"] .escolha__cabeca { border-bottom-color: var(--accent); }

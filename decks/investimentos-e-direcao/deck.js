@@ -1234,22 +1234,124 @@
       },
 
       {
-        layout: 'decisoes',
+        /* Era uma lista plana de sete itens com três botões de status em
+           cada. O status dizia SE, nunca O QUÊ — e metade das linhas
+           escondia a alternativa dentro de um parêntese. Agora o tópico é
+           a unidade e a opção escolhida É a decisão.
+
+           Todo valor daqui sai de dados.js. Nenhuma opção foi inventada:
+           as cinco do INPI são os cinco pacotes da proposta da Registre.se,
+           e as de embalagem são os dois momentos do pedido mais o cenário
+           de todas as amostras, que a Louise descartou mas que continua
+           sendo uma escolha possível. */
+        layout: 'escolhas',
         label: 'Decisões',
         notes:
-          'A tela de marcar. Clicar no status registra ali mesmo, e fica — dá para voltar no slide depois e a ' +
-          'marcação continua. Se exportar o PDF no fim da reunião, ele sai com o que foi decidido.\n\n' +
-          'Passar item por item, sem pular. Para cada um: Aprovado, Ajustar ou Adiar.\n\n' +
-          'O último não é dinheiro, é agenda: a data da reunião sobre showroom e posicionamento. Não sair da sala ' +
-          'sem ela.\n\n' +
-          'Se algum item ficar em "Ajustar", anotar na hora o que precisa mudar — senão a semana que vem começa com ' +
-          'a dúvida de novo.',
+          'A tela de marcar, e agora de ESCOLHER. Cada tópico tem as opções dentro: clicar numa opção é a decisão. ' +
+          'Clicar de novo na mesma desmarca.\n\n' +
+          'A marcação fica no slide e sai na exportação em PDF. Dá para voltar aqui depois que ela continua.\n\n' +
+          'ONDE ESTÁ A ESCOLHA DE VERDADE, tópico por tópico:\n\n' +
+          'INPI — são cinco pacotes, não dois itens. Juntar a Lesco com as linhas economiza ' +
+          $c(N.economiaJunto('lesco-nominativa', 'linhas-mista', 'juntos')) + ', e é o que está recomendado. O bambu ' +
+          'é o opcional de ' + $c(N.adicionalBambu()) + ' que ainda não foi decidido.\n\n' +
+          'REBRAND — são duas decisões separáveis, e vale dizer isso: trocar o logo na comunicação não custa nada ' +
+          'novo e não tem barreira jurídica; depositar o logo no INPI é que está fora do orçamento.\n\n' +
+          'EMBALAGENS — o imediato é urgente porque as amostras de GEO já existem e estão paradas. O cenário de ' +
+          'todas as amostras de uma vez a Louise descartou, mas está aqui porque é escolha dele, não dela.\n\n' +
+          'SHOWROOM — não é dinheiro, é agenda. Não sair da sala sem a data.\n\n' +
+          'Se um tópico ficar sem nenhuma opção marcada, é porque ficou em aberto. Anotar o que falta na hora.',
         eyebrow: 'Fechamento',
         title: 'Decisões',
-        sub: 'O que precisa ser aprovado hoje. Clique para marcar o status durante a reunião.',
-        opcoes: ['Aprovado', 'Ajustar', 'Adiar'],
-        items: N.decisoes(),
-        nota: 'A marcação feita aqui fica registrada no slide e sai na exportação em PDF.'
+        sub: 'Cada tópico tem as opções dentro. Clicar numa opção é a decisão.',
+        grupos: [
+          {
+            titulo: 'Registro no INPI',
+            apoio: 'Um pacote',
+            opcoes: [
+              {
+                rotulo: 'Só as linhas: GEO, ZHÜ e ECHO',
+                valor: $c(N.custoPacote('linhas-mista').total)
+              },
+              {
+                rotulo: 'Só as linhas, com ZHÜ em bambu',
+                valor: $c(N.custoPacote('linhas-mista-bambu').total)
+              },
+              {
+                rotulo: 'Só a Lesco, classes 19, 35 e 42',
+                valor: $c(N.custoPacote('lesco-nominativa').total)
+              },
+              {
+                rotulo: 'Os dois juntos',
+                valor: $c(N.custoPacote('juntos').total),
+                recomendado: true
+              },
+              {
+                rotulo: 'Os dois juntos, com bambu',
+                valor: $c(N.custoPacote('juntos-bambu').total)
+              }
+            ]
+          },
+          {
+            titulo: 'Rebrand com logo novo',
+            apoio: 'Até onde ir',
+            opcoes: [
+              { rotulo: 'Trocar o logo só na comunicação', valor: 'Sem custo novo' },
+              { rotulo: 'Trocar e depositar o logo no INPI', valor: 'A definir', recomendado: true }
+            ]
+          },
+          {
+            titulo: 'Embalagens',
+            apoio: 'Quanto pedir agora',
+            opcoes: [
+              {
+                rotulo: 'Só o imediato, como recomendado',
+                valor: $(N.momentosPedido()[0].total)
+              },
+              {
+                rotulo: 'Imediato com todas as amostras de GEO',
+                valor: $(N.imediatoTodasAmostras())
+              },
+              {
+                rotulo: 'Imediato e janeiro, os dois',
+                valor: $(N.totalPedido()),
+                recomendado: true
+              }
+            ]
+          },
+          {
+            titulo: 'Tray para a Mono',
+            apoio: 'Como pagar a entrada',
+            opcoes: [
+              {
+                rotulo: 'Entrada à vista e mensalidade',
+                valor: $c(N.mono.tray.entrada) + ' + ' + $c(N.mono.tray.mensalidade) + '/mês'
+              },
+              {
+                rotulo: 'Entrada em ' + N.mono.tray.parcelas + 'x e mensalidade',
+                valor: $(N.parcelaTray()) + '/mês + ' + $c(N.mono.tray.mensalidade) + '/mês'
+              }
+            ]
+          },
+          {
+            titulo: 'Mono Creators',
+            apoio: 'Verba de tráfego',
+            opcoes: [
+              {
+                rotulo: 'Aprovar a verba e montar a operação',
+                valor: $c(N.mono.creators.verbaTrafego),
+                recomendado: true
+              }
+            ]
+          },
+          {
+            titulo: 'Showroom e posicionamento',
+            apoio: 'Agenda',
+            opcoes: [
+              { rotulo: 'Marcar a reunião', valor: 'Definir data', recomendado: true }
+            ]
+          }
+        ],
+        nota: 'Valores da proposta da Registre.se e da 46 Indústria Gráfica. A escolha feita aqui fica registrada no slide e sai na exportação em PDF.'
       }
 
     ]

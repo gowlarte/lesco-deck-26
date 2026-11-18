@@ -1491,4 +1491,127 @@
     }
   };
 
+
+  /* =====================================================================
+     18 · escolhas — os tópicos do fechamento, com as opções dentro
+
+       { layout: 'escolhas', eyebrow, title, sub,
+         grupos: [{ titulo, apoio,
+                    opcoes: [{ rotulo, valor, apoio, recomendado, adiar }] }],
+         nota }
+
+     A tela de decisões era uma lista plana: sete linhas, três botões de
+     status em cada. O status dizia SE, mas nunca O QUÊ — e metade das
+     linhas escondia uma alternativa dentro de um parêntese, do tipo
+     "R$ 9.380 (R$ 12.100 com bambu)". Quem lia tinha de adivinhar que ali
+     havia uma escolha.
+
+     Aqui o tópico é a unidade e as opções moram dentro dele. Escolher uma
+     opção É a decisão: não existe mais um "aprovado" sem objeto. Cada
+     grupo tem a sua própria escolha, e todo grupo termina em "Adiar",
+     porque adiar também é uma decisão e precisa de onde ser marcada.
+
+     Clicar de novo na mesma opção desmarca — dá para corrigir na hora sem
+     ter de escolher outra coisa, que é o mesmo gesto da tela antiga.
+
+     A grade é `column-count`, e não um grid de colunas fixas: os grupos
+     têm alturas bem diferentes (seis opções no INPI, duas no showroom) e
+     deixar o navegador equilibrar sai melhor do que cravar quem vai em
+     qual coluna. `break-inside: avoid` é o que impede um grupo de ser
+     partido no meio.
+     ===================================================================== */
+
+  L.escolhas = {
+    transition: 'stagger',
+    render: function (s) {
+      var grade = h('div', { class: 'escolhas' });
+
+      lista(s.grupos).forEach(function (g, gi) {
+        var caixa = h('div', { class: 'escolha', style: '--k:' + gi, anim: 'slide' });
+
+        /* Adiar é o único status que não é uma proposta, então não entra
+           na lista: fica no título, à direita, como a saída do tópico.
+           Tirar essas seis linhas da lista é também o que faz a tela
+           caber em duas colunas. */
+        var adiar = h('button', {
+          class: 'escolha__adiar',
+          type: 'button',
+          tabindex: '-1',
+          'aria-pressed': 'false',
+          text: 'adiar'
+        });
+
+        caixa.appendChild(h('div', { class: 'escolha__cabeca' }, [
+          h('span', { class: 'escolha__num', text: dois(gi + 1) }),
+          h('span', { class: 'escolha__titulo', html: g.titulo }),
+          g.apoio ? h('span', { class: 'escolha__apoio', html: g.apoio }) : null,
+          adiar
+        ]));
+
+        var caixaOpcoes = h('div', {
+          class: 'escolha__opcoes',
+          role: 'group',
+          'aria-label': g.titulo
+        });
+
+        lista(g.opcoes).forEach(function (o) {
+          var botao = h('button', {
+            class: 'opcao' +
+                   (o.recomendado ? ' opcao--recomendada' : '') +
+                   (o.adiar ? ' opcao--adiar' : ''),
+            type: 'button',
+            tabindex: '-1',
+            'aria-pressed': 'false'
+          }, [
+            h('span', { class: 'opcao__marca', 'aria-hidden': 'true' }),
+            h('span', { class: 'opcao__rotulo', html: o.rotulo }),
+            o.recomendado ? h('span', { class: 'opcao__selo', text: 'recomendado' }) : null,
+            h('span', { class: 'opcao__valor', html: o.valor || '' })
+          ]);
+
+          botao.addEventListener('click', function () {
+            var jaMarcado = botao.getAttribute('aria-pressed') === 'true';
+
+            Array.prototype.forEach.call(
+              caixaOpcoes.querySelectorAll('.opcao'),
+              function (outro) { outro.setAttribute('aria-pressed', 'false'); }
+            );
+            adiar.setAttribute('aria-pressed', 'false');
+
+            botao.setAttribute('aria-pressed', jaMarcado ? 'false' : 'true');
+            caixa.setAttribute('data-escolhido', jaMarcado ? '' : 'sim');
+            botao.blur();
+          });
+
+          caixaOpcoes.appendChild(botao);
+        });
+
+        /* Adiar limpa a opção escolhida, e escolher uma opção limpa o
+           adiar: um tópico não pode estar decidido e adiado ao mesmo
+           tempo. */
+        adiar.addEventListener('click', function () {
+          var jaAdiado = adiar.getAttribute('aria-pressed') === 'true';
+
+          Array.prototype.forEach.call(
+            caixaOpcoes.querySelectorAll('.opcao'),
+            function (outro) { outro.setAttribute('aria-pressed', 'false'); }
+          );
+
+          adiar.setAttribute('aria-pressed', jaAdiado ? 'false' : 'true');
+          caixa.setAttribute('data-escolhido', jaAdiado ? '' : 'adiado');
+          adiar.blur();
+        });
+
+        caixa.appendChild(caixaOpcoes);
+        grade.appendChild(caixa);
+      });
+
+      return h('div', { class: 'l-escolhas pad pad--tight' }, [
+        cabeca(s, 'md'),
+        grade,
+        nota(s.nota)
+      ]);
+    }
+  };
+
 })(window);
