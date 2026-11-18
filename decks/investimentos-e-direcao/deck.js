@@ -537,90 +537,92 @@
         layout: 'marca',
         label: 'A marca nova',
         notes:
-          'Ficar calado um segundo depois de trocar o slide. A comparação é o argumento.\n\n' +
-          'O que mudou não é só o desenho: o logo de hoje é uma palavra com um degradê, e o de 2027 é uma marca — ' +
-          'tem símbolo, tem cor própria e tem uma frase que diz o que a empresa faz.\n\n' +
-          'A cor é terracota, e o fundo verde escuro é o par que o próprio manual usa. Os dois saem da mesma paleta, ' +
-          'e é a paleta que está vestindo esta apresentação inteira: se ele reparar que o deck mudou de cor, foi ' +
-          'de propósito — é a identidade nova aplicada.\n\n' +
-          'Se perguntarem quem fez: o manual é o LESCO-ID-VISUAL-2027. O desenho que está nesta tela saiu direto ' +
-          'do arquivo, em vetor — não é foto de tela.',
+          'Mostrar e seguir. Esta tela não defende o desenho novo: põe os dois na mesma largura para ninguém sair ' +
+          'da reunião sem saber o que muda.\n\n' +
+          'Ficar calado um segundo depois de trocar o slide, e deixar ele olhar.\n\n' +
+          'Se ele reparar que a apresentação inteira trocou de cor: foi de propósito. É a paleta do manual novo — ' +
+          'o deck já está vestido com a identidade que está em cima da mesa.\n\n' +
+          'Se perguntarem de onde veio: o manual é o LESCO-ID-VISUAL-2027, e o desenho desta tela saiu do vetor do ' +
+          'próprio arquivo — não é foto de tela.\n\n' +
+          'O bloco tem um argumento só, e ele vem duas telas adiante: não há barreira jurídica para trocar o logo ' +
+          'na comunicação dentro do Brasil.',
         eyebrow: 'INPI e rebrand',
         title: 'A marca nova',
         sub: 'O logo de hoje e o de 2027, na mesma largura.',
         antes: {
           src: '../../shared/brand/logo-dark.png',
           alt: 'Logo atual da Lesco: a palavra LESCO com um traço em degradê',
-          etiqueta: 'Hoje',
-          apoio: 'Uma palavra e um degradê. Sem símbolo, sem cor própria.'
+          etiqueta: 'Hoje'
         },
         depois: {
           svg: 'marca-lesco',
           alt: 'Marca nova da Lesco, de 2027',
           etiqueta: '2027',
-          assinatura: 'Arquitetura feita para o amanhã.',
-          apoio: 'Símbolo, cor própria e uma frase que diz o que a empresa faz.'
+          assinatura: 'Arquitetura feita para o amanhã.'
         },
         nota: 'Marca, paleta e tipografia do manual LESCO-ID-VISUAL-2027. O desenho vem do vetor do próprio arquivo.'
       },
 
       {
-        layout: 'duo',
+        /* Sem legenda em peça nenhuma, e sem subtítulo: a tela é para
+           olhar. Cada linha de texto aqui seria uma linha a menos de
+           foto, e o que foi pedido é justamente o contrário. */
+        layout: 'galeria',
         label: 'A identidade aplicada',
         notes:
-          'O que a aprovação do rebrand produz, em peça. Dois estudos do manual: a pasta de documentação técnica e ' +
-          'a caixa.\n\n' +
-          'ATENÇÃO AO MAL-ENTENDIDO, e é melhor dizer antes que ele pergunte: estas peças são estudos da ' +
-          'identidade, NÃO são as embalagens que a 46 orçou. A caixa da foto não é a caixa de ' +
-          $(N.componente('caixaGrande').centavos) + ' do bloco seguinte. O que esta tela mostra é a linguagem; ' +
-          'o que o bloco de embalagens mostra é o custo.\n\n' +
-          'A ligação entre as duas coisas é direta: aprovar o rebrand agora é o que permite mandar imprimir a ' +
-          'embalagem nova já com a identidade certa, em vez de imprimir duas vezes.',
+          'Três peças do manual, sem legenda na tela de propósito: aqui é para olhar, não para ler. Trocar o ' +
+          'slide e deixar correr.\n\n' +
+          'Se precisar nomear: a pasta de documentação técnica, a pasta da GEO e a paleta de amostras com a ' +
+          'papelaria.\n\n' +
+          'A da GEO é a que vale apontar com o dedo: é a mesma GEO que está sendo registrada duas telas atrás. ' +
+          'A identidade nova não para no logo da Lesco — já desce para as marcas da casa.\n\n' +
+          'ANTES QUE ELE PERGUNTE: são estudos do manual, não são peças orçadas. A caixa que tem orçamento é a ' +
+          'do bloco de embalagens, logo a seguir, e custa ' + $(N.componente('caixaGrande').centavos) + '.',
         eyebrow: 'INPI e rebrand',
         title: 'A identidade aplicada',
-        /* Duas fotos, e não três: as peças do manual são todas deitadas, e
-           num grid de três colunas o corte vira retrato e desmonta a
-           composição — a frase da caixa ficava cortada no meio. */
-        sub: 'Estudos do manual — não são as embalagens que a 46 orçou.',
         media: [
           {
-            src: 'img/id/pasta.webp',
-            alt: 'Pastas de documentação técnica da Lesco em areia e verde escuro, com a marca nova em recorte',
+            src: 'img/id/pasta-tecnica.webp',
+            alt: 'Pasta de documentação técnica da Lesco aberta, com a frase arquitetura feita para o amanhã impressa em terracota e verde',
+            /* A frase está na parte de cima da folha; o corte da moldura
+               come por baixo. */
+            focal: '50% 44%'
+          },
+          {
+            src: 'img/id/geo.webp',
+            alt: 'Pasta da marca GEO em terracota, com a marca nova da Lesco no cartão interno e uma amostra de pedra flexível',
             focal: '50% 50%'
           },
           {
-            src: 'img/id/caixa-nova.webp',
-            alt: 'Caixa de papelão em azul claro com a marca nova em terracota e a frase arquitetura feita para o amanhã',
-            /* Puxado para a esquerda: no centro, o corte come o A de
-               ARQUITETURA na lateral da caixa. */
-            focal: '34% 50%'
+            src: 'img/id/paleta.webp',
+            alt: 'Paleta de amostras de madeira e pedra em suporte terracota, ao lado de uma caixa verde com a marca nova',
+            focal: '50% 53%'
           }
-        ]
+        ],
+        nota: 'Peças do manual LESCO-ID-VISUAL-2027. São estudos da identidade, não peças orçadas.'
       },
 
       {
         layout: 'duas',
         label: 'Logo novo em 2027',
         notes:
-          'Três perguntas vão vir. As respostas:\n\n' +
-          'POR QUE NÃO SÓ AJUSTAR O LOGO ATUAL? O ajuste já foi desenhado e não muda a percepção — continua lendo ' +
-          'como marca de menor valor. Para disputar com a Arkos, a mudança precisa ser visível para quem já conhece ' +
-          'a marca. Meio-termo aqui é dinheiro gasto sem resultado.\n\n' +
-          'E O REGISTRO DO LOGO ANTIGO? A proteção do nome vem dos pedidos nominativos e não depende do logo. Se o ' +
-          'logo antigo tiver registro próprio, ele continua válido — mas pode ser contestado depois de cinco anos ' +
-          'sem uso no Brasil.\n\n' +
+          'A tela do argumento, e é um só: juridicamente nada impede trocar o logo na comunicação dentro do Brasil. ' +
+          'Não entrar no mérito do desenho aqui — o desenho já foi mostrado duas telas atrás.\n\n' +
+          'POR QUE NÃO IMPEDE: os pedidos da Lesco no INPI são NOMINATIVOS, protegem o nome, e o nome não muda. É a ' +
+          'mesma diferença que o diagrama do registro desenhou: barra é nome, quadrado é símbolo. Quem registrou ' +
+          'só a barra pode trocar o símbolo à vontade.\n\n' +
+          'E O REGISTRO DO LOGO ANTIGO? Se ele tiver registro próprio, continua válido — mas pode ser contestado ' +
+          'depois de cinco anos sem uso no Brasil.\n\n' +
           'ISSO AFETA A OPERAÇÃO LÁ FORA? Não. Seguimos com o logo antigo fora do Brasil até decidirmos outra coisa.\n\n' +
           'O depósito do logo novo ainda NÃO está no orçamento da Registre.se, e depende de busca de anterioridade. ' +
           'É por isso que o valor dele aparece como "a definir" no resumo.',
         eyebrow: 'INPI e rebrand',
         title: 'Logo novo em 2027',
         sub: 'Pedido: aprovar o registro de GEO, ZHÜ e ECHO, a ampliação da marca Lesco para novas categorias e o rebrand com logo novo.',
+        /* Uma coluna só. A outra defendia o desenho novo, e a defesa saiu:
+           o desenho já foi mostrado, e o que sobra para decidir aqui é
+           jurídico. */
         colunas: [
-          {
-            titulo: 'Proposta',
-            texto: 'Logo totalmente novo. O refinamento desenhado antes mantinha a mesma leitura de marca de menor valor. ' +
-                   'A meta é começar 2027 com a identidade nova em todos os pontos de contato no Brasil.'
-          },
           {
             titulo: 'Ponto jurídico',
             texto: 'Não há barreira jurídica para trocar o logo na comunicação dentro do Brasil. Os pedidos da Lesco são ' +

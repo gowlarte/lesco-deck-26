@@ -1639,3 +1639,35 @@
   height: 2px;
   background: var(--f1);
 }
+
+
+/* =====================================================================
+   16 · galeria — peças da identidade, sem legenda
+
+   Uma peça grande na coluna larga e duas empilhadas ao lado. A divisão
+   63/37 não é estética: é a conta que deixa as duas pequenas perto de
+   1,9 e a grande perto de 1,6, que é onde os mockups deitados do manual
+   cortam sem perder a peça.
+   ===================================================================== */
+
+.l-galeria { display: flex; flex-direction: column; }
+
+.l-galeria .g-cabeca { margin-bottom: 30px; }
+
+.galeria {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 63fr) minmax(0, 37fr);
+  grid-template-rows: 1fr 1fr;
+  gap: 26px;
+}
+
+.galeria__peca { min-height: 0; }
+
+.galeria__peca--grande { grid-row: 1 / span 2; }
+
+/* Uma coluna só na grade de duas: sem limite a linha vai a 1728px, que
+   é largura de leitura de ninguém. O texto fica à esquerda, onde já
+   estava quando eram duas colunas. */
+.duas--uma { grid-template-columns: minmax(0, 1180px); }

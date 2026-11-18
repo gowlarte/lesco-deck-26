@@ -205,9 +205,12 @@
   L.duas = {
     transition: 'stagger',
     render: function (s) {
-      var grade = h('div', { class: 'duas' });
+      /* Com uma coluna só a grade continua sendo a mesma: o que muda é
+         o modificador, que devolve a medida de leitura. */
+      var colunas = lista(s.colunas);
+      var grade = h('div', { class: 'duas' + (colunas.length === 1 ? ' duas--uma' : '') });
 
-      lista(s.colunas).forEach(function (c, i) {
+      colunas.forEach(function (c, i) {
         grade.appendChild(h('div', { class: 'duas__col', style: '--k:' + i, anim: 'slide' }, [
           h('div', { class: 'duas__col-olho', text: c.titulo }),
           h('p', { class: 'duas__col-texto', html: c.texto })
@@ -1331,4 +1334,51 @@
       ]);
     }
   };
+
+  /* =====================================================================
+     16 · galeria — peças da identidade, sem legenda
+
+       { layout: 'galeria', eyebrow, title, sub,
+         media: [{ src, alt, focal }],   // a primeira é a grande
+         nota }
+
+     Esta tela não argumenta: mostra. A primeira peça ocupa a coluna larga
+     e as outras duas se empilham ao lado. Nenhuma leva legenda, e isso é
+     a regra do layout, não um esquecimento — uma pasta, uma caixa e uma
+     paleta de amostras se explicam sozinhas, e a legenda devolveria à
+     tela justamente o texto que ela existe para substituir.
+
+     AS PROPORÇÕES SÃO DIFERENTES DE PROPÓSITO
+       A peça grande fica perto de 1,6 e as duas menores perto de 1,9. Os
+       mockups do manual são todos deitados e com margem sobrando, então
+       é nessa faixa que o corte come fundo e não come a peça. Igualar as
+       três cortaria a do meio.
+     ===================================================================== */
+
+  L.galeria = {
+    transition: 'stagger',
+    render: function (s) {
+      var pecas = lista(s.media);
+
+      var grade = h('div', { class: 'galeria' });
+      pecas.forEach(function (m, i) {
+        var moldura = h('div', {
+          class: 'frame galeria__peca' + (i === 0 ? ' galeria__peca--grande' : ''),
+          style: '--k:' + i,
+          anim: 'slide'
+        }, [
+          h('img', { src: m.src, alt: m.alt || '' })
+        ]);
+        if (m.focal) moldura.style.setProperty('--focal', m.focal);
+        grade.appendChild(moldura);
+      });
+
+      return h('div', { class: 'l-galeria pad pad--tight' }, [
+        cabeca(s, 'md'),
+        grade,
+        nota(s.nota)
+      ]);
+    }
+  };
+
 })(window);

@@ -60,20 +60,37 @@ embutidos no próprio arquivo e recortadas com o `ffmpeg`.
 
 | Arquivo | Tela | Qual é a peça |
 |---|---|---|
-| `id/pasta.webp` | 16 · esquerda | as pastas de documentação técnica, em areia e verde escuro |
-| `id/caixa-nova.webp` | 16 · direita | a caixa com a marca nova e a frase da assinatura |
+| `id/pasta-tecnica.webp` | 16 · a grande | a pasta de documentação técnica aberta, com a frase da assinatura impressa |
+| `id/geo.webp` | 16 · direita, em cima | a pasta da GEO, com a marca nova da Lesco no cartão interno |
+| `id/paleta.webp` | 16 · direita, embaixo | a paleta de amostras e a papelaria |
 
-**O cuidado que a tela 16 toma na cara:** estas peças são estudos da
-identidade, **não** são as embalagens que a 46 Indústria Gráfica orçou. A
-caixa da foto não é a caixa de R$ 19,99 do bloco seguinte. O subtítulo da
-tela diz isso, porque confundir as duas coisas custaria caro numa reunião
-cujo assunto é justamente o preço da embalagem.
+**Por que estas três.** A tela 16 parou de defender a identidade e passou a
+só mostrá-la, então as peças têm de carregar a tela sozinhas, sem legenda.
+A pasta técnica tem a frase da assinatura, a tipografia e as duas cores no
+mesmo quadro. A da GEO é a que mais vale apontar: é a mesma GEO que o bloco
+está registrando, e prova que a identidade nova desce para as marcas da
+casa. A paleta amarra com os showrooms do bloco anterior — é a amostra que
+chega no cliente, agora vestida.
+
+**O cuidado que a tela toma na cara:** são estudos do manual, **não** são as
+peças que a 46 Indústria Gráfica orçou. A nota de rodapé da tela diz isso,
+porque confundir as duas coisas custaria caro numa reunião cujo assunto
+seguinte é justamente o preço da embalagem.
+
+**Os recortes.** A peça grande fica numa moldura de ~1,5 e as duas menores
+em ~1,85 — é a conta do layout `galeria`, e é a faixa em que os mockups do
+manual (todos deitados, com margem sobrando) cortam sem perder a peça. A
+`geo.webp` é um recorte da metade de cima do JPEG original, que trazia a
+pasta fechada e a aberta no mesmo quadro.
 
 ### As que ficaram de fora
 
-- **A fita de embalagem.** Entrou e saiu: com três fotos o grid vira três
-  colunas, o corte de uma foto deitada vira retrato e a frase da caixa
-  ficava partida no meio. Duas fotos, deitadas como as peças, resolveram.
+- **A caixa azul e as pastas em areia.** Estavam na tela quando ela tinha
+  duas fotos e um argumento. Saíram quando virou galeria de três: a caixa
+  era a peça mais fácil de confundir com a embalagem orçada, e as pastas
+  em areia diziam a mesma coisa que a pasta técnica, com menos no quadro.
+- **A fita de embalagem.** Boa foto, e a terceira vaga foi para a paleta,
+  que liga com o bloco dos showrooms. Está no PDF para quem quiser.
 - **O render de arquitetura.** Bonito, e não sustenta argumento nenhum
   numa reunião de orçamento. Está no PDF para quem quiser.
 

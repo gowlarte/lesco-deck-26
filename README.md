@@ -473,7 +473,7 @@ ranking ao lado.
 
 Apresentação ao Lucas para aprovar investimentos e definir direção em cinco
 frentes: Arkos, INPI e rebrand, embalagens, Mono nos marketplaces e Mono
-Creators. São 31 telas e quinze layouts que as outras apresentações não têm.
+Creators. São 31 telas e dezesseis layouts que as outras apresentações não têm.
 
 Cada uma das seis frentes abre com uma **capa de bloco** numerada de 01 a 06 —
 os mesmos números da pauta, para quem se perder saber onde está. São o layout
@@ -489,7 +489,7 @@ decks/investimentos-e-direcao/
   deck.js        as 31 telas, sem um número escrito dentro
   identidade.css a paleta de 2027, só para este deck
   marca.js       o logo novo em vetor, em window.DRAWINGS
-  graficos.js    os quinze layouts de gráfico, foto, diagrama e decisão
+  graficos.js    os dezesseis layouts de gráfico, foto, diagrama e decisão
   graficos.css   o estilo deles
   img/           as fotos dos dois showrooms e as peças da identidade
                  (ver img/LEIA-ME.md: de onde veio cada uma e por quê)
@@ -540,6 +540,7 @@ classe num pacote muda o total do composto junto, que é o ponto.
 | `marca` | O logo de hoje e o de 2027, um ao lado do outro |
 | `topico` | Um assunto por tela, com ou sem foto |
 | `matriz` | O diagrama de marca × classe do INPI |
+| `galeria` | Peças da identidade: uma grande e duas ao lado, sem legenda |
 
 ### A identidade de 2027
 
@@ -570,9 +571,16 @@ consulta quando um slide pede `media: { svg: 'marca-lesco' }`. É embutido, e n�
 carregado por `fetch`, porque o deck abre em `file://`.
 
 Por que vestir a identidade numa reunião que ainda vai aprová-la: porque é mais
-honesto mostrar do que descrever. A tela 15 mostra a marca nova lado a lado com a
-atual, e o
-deck inteiro vestido é a resposta à pergunta "como isso fica".
+honesto mostrar do que descrever. A tela 15 põe a marca de hoje ao lado da de
+2027, a 16 abre três peças do manual e o deck inteiro vestido é a resposta à
+pergunta "como isso fica".
+
+**Nenhuma das duas defende o desenho**, e isso é deliberado: a identidade nova
+aparece, não se justifica. O bloco inteiro tem um argumento só, e ele é
+jurídico — não há barreira para trocar o logo na comunicação dentro do Brasil,
+porque os pedidos da Lesco são nominativos e o nome não muda. Ele cabe inteiro
+na tela 17, que por isso tem uma coluna só (`duas--uma`, que devolve a medida de
+leitura a um texto que de outro modo atravessaria os 1728px da área útil).
 
 ### A cor nos gráficos
 
